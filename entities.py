@@ -86,31 +86,6 @@ class MinerNotFull:
          str(self.position.y), str(self.resource_limit),
          str(self.rate), str(self.animation_rate)])
 
-   #save_load.py
-   def create_miner(self, properties, i_store):
-      MINER_KEY = 'miner'
-      MINER_NUM_PROPERTIES = 7
-      MINER_NAME = 1
-      MINER_LIMIT = 4
-      MINER_COL = 2
-      MINER_ROW = 3
-      MINER_RATE = 5
-      MINER_ANIMATION_RATE = 6
-
-   if len(properties) == MINER_NUM_PROPERTIES:
-      self.name = properties[MINER_NAME]
-      self.position = point.Point(int(properties[MINER_COL]), int(properties[MINER_ROW]))
-      self.rate = int(properties[MINER_RATE])
-      self.imgs = image_store.get_images(i_store, properties[PROPERTY_KEY])
-      self.current_img = 0
-      self.resource_limit = int(properties[MINER_LIMIT])
-      self.resource_count = 0
-      self.animation_rate = int(properties[MINER_ANIMATION_RATE])
-      self.pending_actions = []
-      return self
-   else:
-      return None
-
    #builder_controller.py
    def create_new_entity(pt, entity_select, i_store):
       MINER_LIMIT = 2
@@ -233,28 +208,6 @@ class Vein:
       return ' '.join(['vein', self.name, str(self.position.x),
          str(self.position.y), str(self.rate),
          str(self.resource_distance)])
-
-   #save_load.py
-   def create_vein(self, properties, i_store):
-      VEIN_KEY = 'vein'
-      VEIN_NUM_PROPERTIES = 6
-      VEIN_NAME = 1
-      VEIN_RATE = 4
-      VEIN_COL = 2
-      VEIN_ROW = 3
-      VEIN_REACH = 5
-
-      if len(properties) == VEIN_NUM_PROPERTIES:
-         self.name = properties[VEIN_NAME]
-         self.position = point.Point(int(properties[VEIN_COL]), int(properties[VEIN_ROW]))
-         self.rate = int(properties[VEIN_RATE])
-         self.imgs = image_store.get_images(i_store, properties[PROPERTY_KEY])
-         self.current_img = 0
-         self.resource_distance = int(properties[VEIN_REACH])
-         self.pending_actions = []
-         return self
-      else:
-         return None
 
    #builder_controller.py
    def create_new_entity(pt, entity_select, i_store):
