@@ -19,7 +19,7 @@ def on_keydown(event):
    return (x_delta, y_delta)
 
 
-def mouse_to_tile(pos, tile_width, tile_height):
+"""def mouse_to_tile(pos, tile_width, tile_height):
    return point.Point(pos[0] // tile_width, pos[1] // tile_height)
 
 
@@ -51,5 +51,5 @@ def activity_loop(view, world):
          elif event.type == pygame.MOUSEMOTION:
             handle_mouse_motion(view, event)
          elif event.type == pygame.KEYDOWN:
-            handle_keydown(view, event)
+            handle_keydown(view, event)"""
 
