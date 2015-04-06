@@ -182,23 +182,23 @@ class WorldView:
       tile_view_pt = viewport_to_world(self.viewport, mouse_pt)
       if event.button == mouse_buttons.LEFT and entity_select:
          if is_background_tile(entity_select):
-            set_background(world, tile_view_pt,
+            worldmodel.set_background(world, tile_view_pt,
                entities.Background(entity_select,
                   image_store.get_images(i_store, entity_select)))
             return [tile_view_pt]
          else:
             new_entity = create_new_entity(tile_view_pt, entity_select, i_store)
             if new_entity:
-               remove_entity_at(world, tile_view_pt)
-               add_entity(world, new_entity)
+               worldmodel.remove_entity_at(world, tile_view_pt)
+               world.model.add_entity(world, new_entity)
                return [tile_view_pt]
       elif event.button == mouse_buttons.RIGHT:
-         remove_entity_at(world, tile_view_pt)
+         worldmodel.remove_entity_at(world, tile_view_pt)
          return [tile_view_pt]
 
       return []
 
-   def activity_loop(view, world, i_store):
+   def activity_loop(self, world, i_store):
       pygame.key.set_repeat(keys.KEY_DELAY, keys.KEY_INTERVAL)
 
       entity_select = None
@@ -207,13 +207,13 @@ class WorldView:
             if event.type == pygame.QUIT:
                return
             elif event.type == pygame.MOUSEMOTION:
-               handle_mouse_motion(view, event)
+               self.handle_mouse_motion(event)
             elif event.type == pygame.MOUSEBUTTONDOWN:
-               tiles = handle_mouse_button(view, world, event, entity_select,
+               tiles = self.handle_mouse_button(world, event, entity_select,
                   i_store)
-               worldview.update_view_tiles(view, tiles)
+               self.update_view_tiles(tiles)
             elif event.type == pygame.KEYDOWN:
-               entity_select = handle_keydown(view, event, i_store, world,
+               entity_select = self.handle_keydown(event, i_store, world,
                   entity_select)
 
 """def viewport_to_world(viewport, pt):

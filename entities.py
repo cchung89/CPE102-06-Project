@@ -678,8 +678,4 @@ def next_image(entity):
          str(entity.position.y)])
    else:
       return 'unknown'"""
-<<<<<<< HEAD
-=======
-
->>>>>>> 4187a7afc23bb70340d42c70aab29412c30538ea
 
