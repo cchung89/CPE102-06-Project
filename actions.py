@@ -201,12 +201,7 @@ def create_vein_action(world, entity, i_store):
       entities.remove_pending_action(entity, action)
 
       open_pt = find_open_around(world, entities.get_position(entity),
-         entities.get_r.add_entity(world, ore))
-      if open_pt:
-         ore = create_ore(world,
-            "ore - " + entities.get_name(entity) + " - " + str(current_ticks),
-            open_pt, current_ticks, i_store)
-         worldmodel.add_entity(world, ore)
+         entities.get_r.add_entity(world, ore)
          tiles = [open_pt]
       else:
          tiles = []
@@ -312,7 +307,7 @@ def remove_entity(world, entity):
    entities.clear_pending_actions(entity)
    worldmodel.remove_entity(world, entity)
    
-"""
+""""
 """
 Move to worldModel.py
 def create_blob(world, name, pt, rate, ticks, i_store):
