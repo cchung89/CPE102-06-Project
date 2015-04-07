@@ -159,6 +159,169 @@ class WorldModel:
          entity_select = keys.ENTITY_KEYS[event.key]
       elif event.key == keys.SAVE_KEY: self.save_world(WORLD_FILE_NAME)
       elif event.key == keys.LOAD_KEY: self.load_world(i_store, WORLD_FILE_NAME)
+        
+   #ACTIONS.PY
+
+   def next_position(self, entity_pt, dest_pt):
+       horiz = sign(dest_pt.x - entity_pt.x)
+       new_pt = point.Point(entity_pt.x + horiz, entity_pt.y)
+
+       if horiz == 0 or self.is_occupied(new_pt):
+          vert = sign(dest_pt.y - entity_pt.y)
+          new_pt = point.Point(entity_pt.x, entity_pt.y + vert)
+
+          if vert == 0 or self.is_occupied(new_pt):
+             new_pt = point.Point(entity_pt.x, entity_pt.y)
+
+       return new_pt
+
+
+   def blob_next_position(self, entity_pt, dest_pt):
+       horiz = sign(dest_pt.x - entity_pt.x)
+       new_pt = point.Point(entity_pt.x + horiz, entity_pt.y)
+
+       if horiz == 0 or (self.is_occupied(new_pt) and
+          not isinstance(self.get_tile_occupant(new_pt),
+          entities.Ore)):
+          vert = sign(dest_pt.y - entity_pt.y)
+          new_pt = point.Point(entity_pt.x, entity_pt.y + vert)
+
+          if vert == 0 or (self.is_occupied(new_pt) and
+             not isinstance(self.get_tile_occupant(new_pt),
+             entities.Ore)):
+             new_pt = point.Point(entity_pt.x, entity_pt.y)
+
+       return new_pt
+
+   def find_open_around(self, pt, distance):
+       for dy in range(-distance, distance + 1):
+          for dx in range(-distance, distance + 1):
+             new_pt = point.Point(pt.x + dx, pt.y + dy)
+
+             if (self.within_bounds(new_pt) and
+                (not self.is_occupied(new_pt))):
+                return new_pt
+
+       return None
+
+   def create_animation_action(self, entity, repeat_count):
+       def action(current_ticks):
+          entities.remove_pending_action(entity, action)
+
+          entities.next_image(entity)
+
+          if repeat_count != 1:
+             self.schedule_action(entity,
+                self.create_animation_action( entity, max(repeat_count - 1, 0)),
+                current_ticks + entities.get_animation_rate(entity))
+
+          return [entities.get_position(entity)]
+       return action
+
+
+   def create_entity_death_action(self, entity):
+       def action(current_ticks):
+          entities.remove_pending_action(entity, action)
+          pt = entities.get_position(entity)
+          self.remove_entity(entity)
+          return [pt]
+       return action
+
+   def create_blob(self, name, pt, rate, ticks, i_store):
+       blob = entities.OreBlob(name, pt, rate,
+          image_store.get_images(i_store, 'blob'),
+          random.randint(BLOB_ANIMATION_MIN, BLOB_ANIMATION_MAX)
+          * BLOB_ANIMATION_RATE_SCALE)
+       self.schedule_blob(blob, ticks, i_store)
+       return blob
+
+
+   def schedule_blob(self, blob, ticks, i_store):
+       self.schedule_action(blob, create_ore_blob_action(world, blob, i_store),
+          ticks + entities.get_rate(blob))
+       self.schedule_animation( blob)
+
+
+   def schedule_miner(self, miner, ticks, i_store):
+       self.schedule_action( miner, create_miner_action(world, miner, i_store),
+          ticks + entities.get_rate(miner))
+       self.schedule_animation(miner)
+
+
+   def create_ore(self, name, pt, ticks, i_store):
+       ore = entities.Ore(name, pt, image_store.get_images(i_store, 'ore'),
+          random.randint(ORE_CORRUPT_MIN, ORE_CORRUPT_MAX))
+       self.schedule_ore( ore, ticks, i_store)
+
+       return ore
+   def create_ore_transform_action(self, entity, i_store):
+       def action(current_ticks):
+          entities.remove_pending_action(entity, action)
+          blob =self.create_blob(entities.get_name(entity) + " -- blob",
+             entities.get_position(entity),
+             entities.get_rate(entity) // BLOB_RATE_SCALE,
+             current_ticks, i_store)
+
+          self.remove_entity(entity)
+          self.add_entity(blob)
+
+          return [entities.get_position(blob)]
+       return action    
+
+
+   def schedule_ore(self, ore, ticks, i_store):
+       self.schedule_action( ore,
+          self.create_ore_transform_action(ore, i_store),
+          ticks + entities.get_rate(ore))
+
+
+   def create_quake(self, pt, ticks, i_store):
+       quake = entities.Quake("quake", pt,
+          image_store.get_images(i_store, 'quake'), QUAKE_ANIMATION_RATE)
+       self.schedule_quake( quake, ticks)
+       return quake
+
+
+   def schedule_quake(self, quake, ticks):
+       self.schedule_animation( quake, QUAKE_STEPS) 
+       self.schedule_action( quake, create_entity_death_action(world, quake),
+          ticks + QUAKE_DURATION)
+      
+    
+
+
+   def create_vein(self, name, pt, ticks, i_store):
+       vein = entities.Vein("vein" + name,
+          random.randint(VEIN_RATE_MIN, VEIN_RATE_MAX),
+          pt, image_store.get_images(i_store, 'vein'))
+       return vein
+
+
+   def schedule_vein(self, vein, ticks, i_store):
+       self.schedule_action( vein, create_vein_action(world, vein, i_store),
+          ticks + entities.get_rate(vein))
+
+
+   def schedule_action(self, entity, action, time):
+       entities.add_pending_action(entity, action)
+       self.schedule_action( action, time)
+
+
+   def schedule_animation(self, entity, repeat_count=0):
+       self.schedule_action(self, entity,
+          self.create_animation_action( entity, repeat_count),
+          entities.get_animation_rate(entity))
+     
+
+
+   def clear_pending_actions(self, entity):
+       for action in entities.get_pending_actions(entity):
+          self.unschedule_action( action)
+       entities.clear_pending_actions(entity)
+
+
+
+
 
 #def within_bounds(world, pt):
 #   return (pt.x >= 0 and pt.x < world.num_cols and
