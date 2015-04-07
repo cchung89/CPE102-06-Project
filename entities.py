@@ -87,21 +87,6 @@ class MinerNotFull:
          str(self.position.y), str(self.resource_limit),
          str(self.rate), str(self.animation_rate)])
 
-   #builder_controller.py
-   def create_new_entity(pt, entity_select, i_store):
-      MINER_LIMIT = 2
-      MINER_RATE_MIN = 600
-      MINER_RATE_MAX = 1000
-      MINER_ANIMATION_RATE = 100
-
-      name = entity_select + '_' + str(pt.x) + '_' + str(pt.y)
-      images = image_store.get_images(i_store, entity_select)
-
-      return MinerNotFull(name, MINER_LIMIT, pt,
-         random.randint(MINER_RATE_MIN, MINER_RATE_MAX),
-         images, MINER_ANIMATION_RATE)
-      return self
-
    #Actions.py
    
    
@@ -235,17 +220,6 @@ class Vein:
          str(self.position.y), str(self.rate),
          str(self.resource_distance)])
 
-   #builder_controller.py
-   def create_new_entity(pt, entity_select, i_store):
-      VEIN_RATE_MIN = 8000
-      VEIN_RATE_MAX = 17000
-
-      name = entity_select + '_' + str(pt.x) + '_' + str(pt.y)
-      images = image_store.get_images(i_store, entity_select)
-
-      return Vein(name,
-         random.randint(VEIN_RATE_MIN, VEIN_RATE_MAX), pt, images)
-
    #Actions.py 
      
    
@@ -300,37 +274,6 @@ class Ore:
    def entity_string(self):
       return ' '.join(['ore', self.name, str(self.position.x),
          str(self.position.y), str(self.rate)])
-
-   #save_load.py
-   def create_ore(self, properties, i_store):
-      ORE_KEY = 'ore'
-      ORE_NUM_PROPERTIES = 5
-      ORE_NAME = 1
-      ORE_COL = 2
-      ORE_ROW = 3
-      ORE_RATE = 4
-
-      if len(properties) == ORE_NUM_PROPERTIES:
-         self.name = properties[ORE_NAME]
-         self.position = point.Point(int(properties[ORE_COL]), int(properties[ORE_ROW]))
-         self.imgs = image_store.get_images(i_store, properties[PROPERTY_KEY])
-         self.current_img = 0
-         self.rate = int(properties[ORE_RATE])
-         self.pending_actions = []
-         return self
-      else:
-         return None
-
-   #builder_controller.py
-   def create_new_entity(pt, entity_select, i_store):
-      ORE_RATE_MIN = 20000
-      ORE_RATE_MAX = 30000
-
-      name = entity_select + '_' + str(pt.x) + '_' + str(pt.y)
-      images = image_store.get_images(i_store, entity_select)
-
-      return Ore(name, pt, images,
-         random.randint(ORE_RATE_MIN, ORE_RATE_MAX))
 
    #actions.py
 
@@ -408,45 +351,6 @@ class Blacksmith:
          str(self.position.y), str(self.resource_limit),
          str(self.rate), str(self.resource_distance)])
 
-   #save_load.py
-   def create_blacksmith(self, properties, i_store):
-      SMITH_KEY = 'blacksmith'
-      SMITH_NUM_PROPERTIES = 7
-      SMITH_NAME = 1
-      SMITH_COL = 2
-      SMITH_ROW = 3
-      SMITH_LIMIT = 4
-      SMITH_RATE = 5
-      SMITH_REACH = 6
-
-      if len(properties) == SMITH_NUM_PROPERTIES:
-         self.name = properties[SMITH_NAME]
-         self.position = point.Point(int(properties[SMITH_COL]), int(properties[SMITH_ROW]))
-         self.imgs = image_store.get_images(i_store, properties[PROPERTY_KEY])
-         self.current_img = 0
-         self.resource_limit = int(properties[SMITH_LIMIT])
-         self.resource_count = 0
-         self.rate = int(properties[SMITH_RATE])
-         self.resource_distance = int(properties[SMITH_REACH])
-         self.pending_actions = []
-         return self
-      else:
-         return None
-
-   #builder_controller.py
-   def create_new_entity(pt, entity_select, i_store):
-      SMITH_LIMIT_MIN = 10
-      SMITH_LIMIT_MAX = 15
-      SMITH_RATE_MIN = 2000
-      SMITH_RATE_MAX = 4000
-
-      name = entity_select + '_' + str(pt.x) + '_' + str(pt.y)
-      images = image_store.get_images(i_store, entity_select)
-
-      return entities.Blacksmith(name, pt, images,
-         random.randint(SMITH_LIMIT_MIN, SMITH_LIMIT_MAX),
-      randintandom.randint(SMITH_RATE_MIN, SMITH_RATE_MAX))
-
    #actions.py
       
 
@@ -485,30 +389,6 @@ class Obstacle:
    def entity_string(self):
       return ' '.join(['obstacle', self.name, str(self.position.x),
          str(self.position.y)])
-
-   #save_load.py
-   def create_obstacle(self, properties, i_store):
-      OBSTACLE_KEY = 'obstacle'
-      OBSTACLE_NUM_PROPERTIES = 4
-      OBSTACLE_NAME = 1
-      OBSTACLE_COL = 2
-      OBSTACLE_ROW = 3
-
-      if len(properties) == OBSTACLE_NUM_PROPERTIES:
-         self.name = properties[OBSTACLE_NAME]
-         self.position = point.Point(int(properties[OBSTACLE_COL]), int(properties[OBSTACLE_ROW]))
-         self.imgs = image_store.get_images(i_store, properties[PROPERTY_KEY])
-         self.current_img = 0
-         return self
-      else:
-         return None
-
-   #builder_controller.py
-   def create_new_entity(pt, entity_select, i_store):
-      name = entity_select + '_' + str(pt.x) + '_' + str(pt.y)
-      images = image_store.get_images(i_store, entity_select)
-
-      return Obstacle(name, pt, images)
 
    #Actions.py
 
