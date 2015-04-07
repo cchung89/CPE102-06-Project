@@ -1,6 +1,7 @@
 import point
 import image_store
 import random
+#import worldmodel.py 
 
 PROPERTY_KEY = 0
 
@@ -101,6 +102,18 @@ class MinerNotFull:
          images, MINER_ANIMATION_RATE)
       return self
 
+   #Actions.py
+   
+   
+   def remove_entity(self, world):
+       for action in self.get_pending_actions():
+          worldmodel.unschedule_action(world, action)
+       self.clear_pending_actions(self)
+       worldmodel.self.remove_entity(world)
+        
+  
+   
+
 
 class MinerFull:
    def __init__(self, name, resource_limit, position, rate, imgs,
@@ -156,7 +169,20 @@ class MinerFull:
 
    def next_image(self):
       self.current_img = (self.current_img + 1) % len(self.imgs)
+        
+   #Actions.py
+  
 
+
+   def remove_entity(self, world):
+       for action in self.get_pending_actions():
+          worldmodel.unschedule_action(world, action)
+       self.clear_pending_actions(self)
+       worldmodel.self.remove_entity(world)
+        
+   
+   
+  
 
 class Vein:
    def __init__(self, name, rate, position, imgs, resource_distance=1):
@@ -219,6 +245,17 @@ class Vein:
 
       return Vein(name,
          random.randint(VEIN_RATE_MIN, VEIN_RATE_MAX), pt, images)
+
+   #Actions.py 
+     
+   
+
+
+   def remove_entity(self, world):
+       for action in self.get_pending_actions():
+          worldmodel.unschedule_action(world, action)
+       self.clear_pending_actions(self)
+       worldmodel.self.remove_entity(world)
 
 
 class Ore:
@@ -294,6 +331,18 @@ class Ore:
 
       return Ore(name, pt, images,
          random.randint(ORE_RATE_MIN, ORE_RATE_MAX))
+
+   #actions.py
+
+
+   def remove_entity(self, world):
+       for action in self.get_pending_actions():
+          worldmodel.unschedule_action(world, action)
+       self.clear_pending_actions(self)
+       worldmodel.self.remove_entity(world)
+        
+  
+   
 
 
 class Blacksmith:
@@ -398,6 +447,15 @@ class Blacksmith:
          random.randint(SMITH_LIMIT_MIN, SMITH_LIMIT_MAX),
       randintandom.randint(SMITH_RATE_MIN, SMITH_RATE_MAX))
 
+   #actions.py
+      
+
+   def remove_entity(self, world):
+       for action in self.get_pending_actions():
+          worldmodel.unschedule_action(world, action)
+       self.clear_pending_actions(self)
+       worldmodel.self.remove_entity(world)
+
 
 class Obstacle:
    def __init__(self, name, position, imgs):
@@ -452,6 +510,15 @@ class Obstacle:
 
       return Obstacle(name, pt, images)
 
+   #Actions.py
+
+
+   def remove_entity(self, world):
+       for action in self.get_pending_actions():
+          worldmodel.unschedule_action(world, action)
+       self.clear_pending_actions(self)
+       worldmodel.self.remove_entity(world)
+
 class OreBlob:
    def __init__(self, name, position, rate, imgs, animation_rate):
       self.name = name
@@ -497,7 +564,16 @@ class OreBlob:
 
    def next_image(self):
       self.current_img = (self.current_img + 1) % len(self.imgs)
+        
+   #actions.py
 
+   def remove_entity(self, world):
+       for action in self.get_pending_actions():
+          worldmodel.unschedule_action(world, action)
+       self.clear_pending_actions(self)
+       worldmodel.self.remove_entity(world)
+        
+   
 
 class Quake:
    def __init__(self, name, position, imgs, animation_rate):
@@ -540,6 +616,18 @@ class Quake:
 
    def next_image(self):
       self.current_img = (self.current_img + 1) % len(self.imgs)
+        
+   #actions.py 
+
+
+   def remove_entity(self, world):
+       for action in self.get_pending_actions():
+          worldmodel.unschedule_action(world, action)
+       self.clear_pending_actions(self)
+       worldmodel.self.remove_entity(world)
+        
+ 
+   
 
 
 """def set_position(entity, point):
