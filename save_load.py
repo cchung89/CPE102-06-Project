@@ -112,7 +112,7 @@ def create_from_properties(properties, i_store):
    return None
 
 
-"""def create_miner(properties, i_store):
+def create_miner(properties, i_store):
    if len(properties) == MINER_NUM_PROPERTIES:
       miner = entities.MinerNotFull(properties[MINER_NAME],
          int(properties[MINER_LIMIT]),
@@ -165,13 +165,13 @@ def create_obstacle(properties, i_store):
          point.Point(int(properties[OBSTACLE_COL]), int(properties[OBSTACLE_ROW])),
          image_store.get_images(i_store, properties[PROPERTY_KEY]))
    else:
-      return None"""
+      return None
 
 
-def schedule_entity(world, entity, i_store):
+"""def schedule_entity(world, entity, i_store):
    if isinstance(entity, entities.MinerNotFull):
       actions.schedule_miner(world, entity, 0, i_store)
    elif isinstance(entity, entities.Vein):
       actions.schedule_vein(world, entity, 0, i_store)
    elif isinstance(entity, entities.Ore):
-      actions.schedule_ore(world, entity, 0, i_store)
+      actions.schedule_ore(world, entity, 0, i_store)"""
