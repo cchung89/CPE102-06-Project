@@ -70,7 +70,8 @@ def blob_next_position(world, entity_pt, dest_pt):
    return new_pt
    """
 
-
+"""
+Moved to miner class
 def miner_to_ore(world, entity, ore):
    entity_pt = entities.get_position(entity)
    if not ore:
@@ -100,9 +101,11 @@ def miner_to_smith(world, entity, smith):
    else:
       new_pt = next_position(world, entity_pt, smith_pt)
       return (worldmodel.move_entity(world, entity, new_pt), False)
+"""
 
 
-
+"""
+***Moved to miner_not full class***
 def create_miner_not_full_action(world, entity, i_store):
    def action(current_ticks):
       entities.remove_pending_action(entity, action)
@@ -121,7 +124,9 @@ def create_miner_not_full_action(world, entity, i_store):
          current_ticks + entities.get_rate(new_entity))
       return tiles
    return action
-
+"""
+"""
+***Moved to miner class***
 
 def create_miner_full_action(world, entity, i_store):
    def action(current_ticks):
@@ -141,9 +146,10 @@ def create_miner_full_action(world, entity, i_store):
          current_ticks + entities.get_rate(new_entity))
       return tiles
    return action
+"""
 
-
-
+"""
+Moved to world model.py
 def blob_to_vein(world, entity, vein):
    entity_pt = entities.get_position(entity)
    if not vein:
@@ -158,6 +164,7 @@ def blob_to_vein(world, entity, vein):
       if isinstance(old_entity, entities.Ore):
          remove_entity(world, old_entity)
       return (worldmodel.move_entity(world, entity, new_pt), False)
+
 
 
 def create_ore_blob_action(world, entity, i_store):
@@ -180,6 +187,7 @@ def create_ore_blob_action(world, entity, i_store):
 
       return tiles
    return action
+   """
 
 """
 ***Moved to worldmodel.py***
@@ -195,7 +203,8 @@ def find_open_around(world, pt, distance):
    return None
 """
 
-
+"""
+***Moved to worldmodel.py
 def create_vein_action(world, entity, i_store):
    def action(current_ticks):
       entities.remove_pending_action(entity, action)
@@ -211,8 +220,10 @@ def create_vein_action(world, entity, i_store):
          current_ticks + entities.get_rate(entity))
       return tiles
    return action
+   """
 
-
+"""
+***Moved to miner not full***
 
 def try_transform_miner_full(world, entity):
    new_entity = entities.MinerNotFull(
@@ -221,8 +232,10 @@ def try_transform_miner_full(world, entity):
       entities.get_images(entity), entities.get_animation_rate(entity))
 
    return new_entity
+   """
 
-
+"""
+*** moved to miner full***
 def try_transform_miner_not_full(world, entity):
    if entity.resource_count < entity.resource_limit:
       return entity
@@ -232,8 +245,9 @@ def try_transform_miner_not_full(world, entity):
          entities.get_position(entity), entities.get_rate(entity),
          entities.get_images(entity), entities.get_animation_rate(entity))
       return new_entity
-
-
+    """
+"""
+Moved to worldmodel.py
 def try_transform_miner(world, entity, transform):
    new_entity = transform(world, entity)
    if entity != new_entity:
@@ -250,6 +264,7 @@ def create_miner_action(world, entity, image_store):
       return create_miner_not_full_action(world, entity, image_store)
    else:
       return create_miner_full_action(world, entity, image_store)
+"""
     
 
 """
