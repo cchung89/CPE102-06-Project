@@ -101,33 +101,6 @@ class WorldModel:
       return self.entities
 
    #save_load.py
-   def save_world(self, file):
-      self.save_entities(file)
-      self.save_background(file)
-
-   def save_entities(self, file):
-      for entity in self.get_entities():
-         file.write(entities.entity_string(entity) + '\n')
-
-   def save_background(self, file):
-      for row in range(0, self.num_rows):
-         for col in range(0, self.num_cols):
-            file.write('background ' +
-               entities.get_name(
-                  self.get_background(point.Point(col, row))) +
-               ' ' + str(col) + ' ' + str(row) + '\n')
-
-   def load_world(self, images, file, run=False):
-      PROPERTY_KEY = 0
-      BGND_KEY = 'background'
-      for line in file:
-         properties = line.split()
-         if properties:
-            if properties[PROPERTY_KEY] == BGND_KEY:
-               self.add_background(properties, images)
-            else:
-               self.load_add_entity(properties, images, run)
-
    def add_background(self, properties, i_store):
       BGND_NUM_PROPERTIES = 4
       BGND_NAME = 1
@@ -146,34 +119,13 @@ class WorldModel:
          if run:
             self.schedule_entity(new_entity, i_store)
 
-   def schedule_entity(self, entity, i_store):
+   '''def schedule_entity(self, entity, i_store):
       if isinstance(entity, entities.MinerNotFull):
          self.schedule_miner(entity, 0, i_store)
       elif isinstance(entity, entities.Vein):
          self.schedule_vein(entity, 0, i_store)
       elif isinstance(entity, entities.Ore):
-         self.schedule_ore(entity, 0, i_store)
-
-   #builder_controller.py
-   def save_world(self, filename):
-      with open(filename, 'w') as file:
-         self.save_world(file)
-
-   def builder_load_world(self, i_store, filename):
-      with open(filename, 'r') as file:
-         self.load_world(i_store, file)
-
-   def on_keydown(self, event, entity_select, i_store):
-      x_delta = 0
-      y_delta = 0
-      if event.key == pygame.K_UP: y_delta -= 1
-      if event.key == pygame.K_DOWN: y_delta += 1
-      if event.key == pygame.K_LEFT: x_delta -= 1
-      if event.key == pygame.K_RIGHT: x_delta += 1
-      elif event.key in keys.ENTITY_KEYS:
-         entity_select = keys.ENTITY_KEYS[event.key]
-      elif event.key == keys.SAVE_KEY: self.save_world(WORLD_FILE_NAME)
-      elif event.key == keys.LOAD_KEY: self.builder_load_world(i_store, WORLD_FILE_NAME)
+         self.schedule_ore(entity, 0, i_store)'''
         
    #ACTIONS.PY
 
@@ -252,13 +204,13 @@ class WorldModel:
 
 
    def schedule_blob(self, blob, ticks, i_store):
-       self.schedule_action(blob, actions.create_ore_blob_action(world, blob, i_store),
+       self.schedule_action(blob, self.create_ore_blob_action(blob, i_store),
           ticks + entities.get_rate(blob))
        self.schedule_animation( blob)
 
 
    def schedule_miner(self, miner, ticks, i_store):
-       self.schedule_action( miner, actions.create_miner_action(world, miner, i_store),
+       self.schedule_action( miner, self.create_miner_action(miner, i_store),
           ticks + entities.get_rate(miner))
        self.schedule_animation(miner)
 
@@ -347,9 +299,9 @@ class WorldModel:
 
    def create_miner_action(self, entity, image_store):
        if isinstance(entity, entities.MinerNotFull):
-          return self.create_miner_not_full_action(entity, image_store)
+          return entities.MinerNotFull.create_miner_not_full_action(entity, image_store)
        else:
-          return self.create_miner_full_action(entity, image_store)  
+          return entities.MinerFull.create_miner_full_action(entity, image_store)  
         
    def blob_to_vein(self, entity, vein):
        entity_pt = entities.get_position(entity)
@@ -394,7 +346,12 @@ class WorldModel:
           entities.remove_pending_action(entity, action)
 
           open_pt = self.find_open_around(entities.get_position(entity),
-             entities.get_r.add_entity(world,ore)
+             entities.get_r.add_entity(world,ore))
+          if open_pt:
+             ore = create_ore(world,
+                "ore - " + entities.get_name(entity) + " - " + str(current_ticks),
+                open_pt, current_ticks, i_store)
+             worldmodel.add_entity(world, ore)
              tiles = [open_pt]
           else:
              tiles = []
@@ -404,12 +361,6 @@ class WorldModel:
              current_ticks + entities.get_rate(entity))
           return tiles
        return action
-
-   #main.py
-   def main_load_world(self, i_store, filename):
-       RUN_AFTER_LOAD = True
-       with open(filename, 'r') as file:
-          self.load_world(i_store, file, RUN_AFTER_LOAD)
 
 
 

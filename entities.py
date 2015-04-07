@@ -1,7 +1,7 @@
 import point
 import image_store
 import random
-#import worldmodel.py 
+import worldmodel
 
 PROPERTY_KEY = 0
 
@@ -88,7 +88,10 @@ class MinerNotFull:
          str(self.rate), str(self.animation_rate)])
 
    #Actions.py
-   
+   def schedule_miner(world, miner, ticks, i_store):
+       schedule_action(world, miner, create_miner_action(world, miner, i_store),
+          ticks + entities.get_rate(miner))
+       schedule_animation(world, miner)
    
    def remove_entity(self, world):
        for action in self.get_pending_actions():
@@ -131,7 +134,7 @@ class MinerNotFull:
 
 
    def miner_to_smith(self, smith):
-       entity_pt = .get_position()
+       entity_pt = self.get_position()
        if not smith:
           return ([entity_pt], False)
        smith_pt = get_position(smith)
@@ -225,7 +228,7 @@ class MinerFull:
        self.clear_pending_actions(self)
        worldmodel.self.remove_entity(world)
         
-   def create_miner_full_action(self,world i_store):
+   def create_miner_full_action(self, world, i_store):
        def action(current_ticks):
           self.remove_pending_action(action)
 
@@ -243,7 +246,7 @@ class MinerFull:
              current_ticks + entities.get_rate(new_entity))
           return tiles
        return action
-    def miner_to_ore(self,world,ore):
+   def miner_to_ore(self,world,ore):
        entity_pt = self.get_position()
        if not ore:
           return ([entity_pt], False)
@@ -259,7 +262,7 @@ class MinerFull:
 
 
    def miner_to_smith(self, smith):
-       entity_pt = .get_position()
+       entity_pt = self.get_position()
        if not smith:
           return ([entity_pt], False)
        smith_pt = get_position(smith)
@@ -341,7 +344,9 @@ class Vein:
 
    #Actions.py 
      
-   
+   def schedule_vein(world, vein, ticks, i_store):
+       schedule_action(world, vein, create_vein_action(world, vein, i_store),
+          ticks + entities.get_rate(vein))
 
 
    def remove_entity(self, world):
@@ -395,7 +400,10 @@ class Ore:
          str(self.position.y), str(self.rate)])
 
    #actions.py
-
+   def schedule_ore(world, ore, ticks, i_store):
+       schedule_action(world, ore,
+          create_ore_transform_action(world, ore, i_store),
+          ticks + entities.get_rate(ore))
 
    def remove_entity(self, world):
        for action in self.get_pending_actions():
@@ -630,13 +638,13 @@ class Quake:
 
 
 """def set_position(entity, point):
-   entity.position = point
+   entity.position = point"""
 
 def get_position(entity):
    return entity.position
 
 
-def get_images(entity):
+"""def get_images(entity):
    return entity.imgs
 
 def get_image(entity):

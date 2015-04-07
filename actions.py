@@ -322,7 +322,7 @@ def remove_entity(world, entity):
    entities.clear_pending_actions(entity)
    worldmodel.remove_entity(world, entity)
    
-""""
+"""
 """
 Move to worldModel.py
 def create_blob(world, name, pt, rate, ticks, i_store):

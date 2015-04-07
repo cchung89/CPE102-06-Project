@@ -52,7 +52,7 @@ VEIN_ROW = 3
 VEIN_REACH = 5
 
 
-"""def save_world(world, file):
+def save_world(world, file):
    save_entities(world, file)
    save_background(world, file)
 
@@ -80,7 +80,7 @@ def load_world(world, images, file, run=False):
             add_entity(world, properties, images, run)
 
 
-def add_background(world, properties, i_store):
+"""def add_background(world, properties, i_store):
    if len(properties) >= BGND_NUM_PROPERTIES:
       pt = point.Point(int(properties[BGND_COL]), int(properties[BGND_ROW]))
       name = properties[BGND_NAME]
