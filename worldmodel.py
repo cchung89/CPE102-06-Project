@@ -4,6 +4,7 @@ import ordered_list
 import actions
 import occ_grid
 import point
+import save_load
 
 class WorldModel:
    def __init__(self, num_rows, num_cols, background):
@@ -31,10 +32,10 @@ class WorldModel:
    def add_entity(self, entity):
       pt = entities.get_position(entity)
       if self.within_bounds(pt):
-         old_entity = occ_grid.get_cell(self.occupancy, pt)
+         old_entity = occ_grid.Grid.get_cell(self.occupancy, pt)
          if old_entity != None:
             entities.clear_pending_actions(old_entity)
-         occ_grid.set_cell(self.occupancy, pt, entity)
+         occ_grid.Grid.set_cell(self.occupancy, pt, entity)
          self.entities.append(entity)
 
    def move_entity(self, entity, pt):
@@ -117,15 +118,21 @@ class WorldModel:
                ' ' + str(col) + ' ' + str(row) + '\n')
 
    def load_world(self, images, file, run=False):
+      PROPERTY_KEY = 0
+      BGND_KEY = 'background'
       for line in file:
          properties = line.split()
          if properties:
             if properties[PROPERTY_KEY] == BGND_KEY:
                self.add_background(properties, images)
             else:
-               self.add_entity(properties, images, run)
+               self.load_add_entity(properties, images, run)
 
    def add_background(self, properties, i_store):
+      BGND_NUM_PROPERTIES = 4
+      BGND_NAME = 1
+      BGND_COL = 2
+      BGND_ROW = 3
       if len(properties) >= BGND_NUM_PROPERTIES:
          pt = point.Point(int(properties[BGND_COL]), int(properties[BGND_ROW]))
          name = properties[BGND_NAME]
@@ -133,18 +140,26 @@ class WorldModel:
             entities.Background(name, image_store.get_images(i_store, name)))
 
    def load_add_entity(self, properties, i_store, run):
-      new_entity = create_from_properties(properties, i_store)
+      new_entity = save_load.create_from_properties(properties, i_store)
       if new_entity:
          self.add_entity(new_entity)
          if run:
             self.schedule_entity(new_entity, i_store)
+
+   def schedule_entity(self, entity, i_store):
+      if isinstance(entity, entities.MinerNotFull):
+         self.schedule_miner(entity, 0, i_store)
+      elif isinstance(entity, entities.Vein):
+         self.schedule_vein(entity, 0, i_store)
+      elif isinstance(entity, entities.Ore):
+         self.schedule_ore(entity, 0, i_store)
 
    #builder_controller.py
    def save_world(self, filename):
       with open(filename, 'w') as file:
          self.save_world(file)
 
-   def load_world(self, i_store, filename):
+   def builder_load_world(self, i_store, filename):
       with open(filename, 'r') as file:
          self.load_world(i_store, file)
 
@@ -158,7 +173,7 @@ class WorldModel:
       elif event.key in keys.ENTITY_KEYS:
          entity_select = keys.ENTITY_KEYS[event.key]
       elif event.key == keys.SAVE_KEY: self.save_world(WORLD_FILE_NAME)
-      elif event.key == keys.LOAD_KEY: self.load_world(i_store, WORLD_FILE_NAME)
+      elif event.key == keys.LOAD_KEY: self.builder_load_world(i_store, WORLD_FILE_NAME)
         
    #ACTIONS.PY
 
@@ -237,13 +252,13 @@ class WorldModel:
 
 
    def schedule_blob(self, blob, ticks, i_store):
-       self.schedule_action(blob, create_ore_blob_action(world, blob, i_store),
+       self.schedule_action(blob, actions.create_ore_blob_action(world, blob, i_store),
           ticks + entities.get_rate(blob))
        self.schedule_animation( blob)
 
 
    def schedule_miner(self, miner, ticks, i_store):
-       self.schedule_action( miner, create_miner_action(world, miner, i_store),
+       self.schedule_action( miner, actions.create_miner_action(world, miner, i_store),
           ticks + entities.get_rate(miner))
        self.schedule_animation(miner)
 
@@ -318,7 +333,7 @@ class WorldModel:
        for action in entities.get_pending_actions(entity):
           self.unschedule_action( action)
        entities.clear_pending_actions(entity)
-    
+
    def try_transform_miner(self, entity, transform):
        new_entity = self.transform(entity)
        if entity != new_entity:
@@ -390,6 +405,11 @@ class WorldModel:
           return tiles
        return action
 
+   #main.py
+   def main_load_world(self, i_store, filename):
+       RUN_AFTER_LOAD = True
+       with open(filename, 'r') as file:
+          self.load_world(i_store, file, RUN_AFTER_LOAD)
 
 
 
@@ -421,8 +441,8 @@ def distance_sq(p1, p2):
 
 
 """def find_nearest(world, pt, type):
-   oftype = [(e, distance_sq(pt, entities.get_position(e)))
-      for e in world.entities if isinstance(e, type)]
+   oftype = [(e, distance_sq(pt, entities.get_positio(e)))
+      for e in world.entities if isinstance(e, type)]n
 
    return nearest_entity(oftype)
 
@@ -505,3 +525,5 @@ def get_tile_occupant(world, pt):
 
 def get_entities(world):
    return world.entities"""
+
+

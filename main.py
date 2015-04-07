@@ -26,9 +26,9 @@ def create_default_background(img):
    return entities.Background(image_store.DEFAULT_IMAGE_NAME, img)
 
 
-def load_world(world, i_store, filename):
+"""def load_world(world, i_store, filename):
    with open(filename, 'r') as file:
-      save_load.load_world(world, i_store, file, RUN_AFTER_LOAD)
+      save_load.load_world(world, i_store, file, RUN_AFTER_LOAD)"""
 
 
 def main():
@@ -48,7 +48,7 @@ def main():
    view = worldview.WorldView(SCREEN_WIDTH // TILE_WIDTH,
       SCREEN_HEIGHT // TILE_HEIGHT, screen, world, TILE_WIDTH, TILE_HEIGHT)
 
-   load_world(world, i_store, WORLD_FILE)
+   world.main_load_world(i_store, WORLD_FILE)
 
    worldview.update_view(view)
 
