@@ -119,13 +119,13 @@ class WorldModel:
          if run:
             self.schedule_entity(new_entity, i_store)
 
-   '''def schedule_entity(self, entity, i_store):
+   def schedule_entity(self, entity, i_store):
       if isinstance(entity, entities.MinerNotFull):
          self.schedule_miner(entity, 0, i_store)
       elif isinstance(entity, entities.Vein):
          self.schedule_vein(entity, 0, i_store)
       elif isinstance(entity, entities.Ore):
-         self.schedule_ore(entity, 0, i_store)'''
+         self.schedule_ore(entity, 0, i_store)
         
    #ACTIONS.PY
 
@@ -209,10 +209,10 @@ class WorldModel:
        self.schedule_animation( blob)
 
 
-   def schedule_miner(self, miner, ticks, i_store):
+   '''def schedule_miner(self, miner, ticks, i_store):
        self.schedule_action( miner, self.create_miner_action(miner, i_store),
           ticks + entities.get_rate(miner))
-       self.schedule_animation(miner)
+       self.schedule_animation(miner)'''
 
 
    def create_ore(self, name, pt, ticks, i_store):
