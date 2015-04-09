@@ -100,34 +100,9 @@ class WorldModel:
    def get_entities(self):
       return self.entities
 
-   """#save_load.py
-   def add_background(self, properties, i_store):
-      BGND_NUM_PROPERTIES = 4
-      BGND_NAME = 1
-      BGND_COL = 2
-      BGND_ROW = 3
-      if len(properties) >= BGND_NUM_PROPERTIES:
-         pt = point.Point(int(properties[BGND_COL]), int(properties[BGND_ROW]))
-         name = properties[BGND_NAME]
-         self.set_background(pt,
-            entities.Background(name, image_store.get_images(i_store, name)))
-
-   def load_add_entity(self, properties, i_store, run):
-      new_entity = save_load.create_from_properties(properties, i_store)
-      if new_entity:
-         self.add_entity(new_entity)
-         if run:
-            self.schedule_entity(new_entity, i_store)
-
-   def schedule_entity(self, entity, i_store):
-      if isinstance(entity, entities.MinerNotFull):
-         self.schedule_miner(entity, 0, i_store)
-      elif isinstance(entity, entities.Vein):
-         self.schedule_vein(entity, 0, i_store)
-      elif isinstance(entity, entities.Ore):
-         self.schedule_ore(entity, 0, i_store) """
+  
         
-   #ACTIONS.PY
+   
 
    
 

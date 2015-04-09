@@ -21,22 +21,7 @@ class WorldView:
       self.num_cols = world.num_cols
       self.mouse_img = mouse_img
 
-   def viewport_to_world(viewport, pt):
-      return point.Point(pt.x + viewport.left, pt.y + viewport.top)
-
-   def world_to_viewport(viewport, pt):
-      return point.Point(pt.x - viewport.left, pt.y - viewport.top)
-
-
-   def clamp(v, low, high):
-      return min(high, max(v, low))
-
-
-   def create_shifted_viewport(viewport, delta, num_rows, num_cols):
-      new_x = clamp(viewport.left + delta[0], 0, num_cols - viewport.width)
-      new_y = clamp(viewport.top + delta[1], 0, num_rows - viewport.height)
-
-      return pygame.Rect(new_x, new_y, viewport.width, viewport.height)
+   
 
    def draw_background(self):
       for y in range(0, self.viewport.height):
@@ -114,7 +99,7 @@ class WorldView:
             worldmodel.is_occupied(self.world,
                viewport_to_world(self.viewport, self.mouse_pt))))
 
-   def mouse_move(elf, new_mouse_pt):
+   def mouse_move(self, new_mouse_pt):
       rects = []
 
       rects.append(self.update_tile(self.mouse_pt,
@@ -127,6 +112,22 @@ class WorldView:
       rects.append(self.update_mouse_cursor())
 
       pygame.display.update(rects)
+
+
+def viewport_to_world(viewport, pt):
+      return point.Point(pt.x + viewport.left, pt.y + viewport.top)
+
+def world_to_viewport(viewport, pt):
+      return point.Point(pt.x - viewport.left, pt.y - viewport.top)
+
+def clamp(v, low, high):
+      return min(high, max(v, low))
+
+def create_shifted_viewport(viewport, delta, num_rows, num_cols):
+      new_x = clamp(viewport.left + delta[0], 0, num_cols - viewport.width)
+      new_y = clamp(viewport.top + delta[1], 0, num_rows - viewport.height)
+
+      return pygame.Rect(new_x, new_y, viewport.width, viewport.height)
 
 """def viewport_to_world(viewport, pt):
    return point.Point(pt.x + viewport.left, pt.y + viewport.top)
