@@ -135,19 +135,32 @@ class MinerNotFull:
           worldmodel.unschedule_action(world, action)
        self.clear_pending_actions()
        worldmodel.self.remove_entity(world)
+
+   def next_position(self,world, dest_pt):
+       horiz = sign(dest_pt.x - self.position.x)
+       new_pt = point.Point(self.position.x + horiz, self.position.y)
+
+       if horiz == 0 or worldmodel.is_occupied(world, new_pt):
+          vert = sign(dest_pt.y - self.position.y)
+          new_pt = point.Point(self.position.x, self.position.y + vert)
+
+          if vert == 0 or worldmodel.is_occupied(world, new_pt):
+             new_pt = point.Point(self.position.x, self.position.y)
+
+       return new_pt
         
    def miner_to_ore(self,world,ore):
        entity_pt = self.get_position()
        if not ore:
-          return ([entity_pt], False)
+          return ([self.position], False)
        ore_pt = get_position(ore)
-       if adjacent(entity_pt, ore_pt):
+       if adjacent(self.position, ore_pt):
           self.set_resource_count(
              1 + self.get_resource_count())
           remove_entity(world, ore)
           return ([ore_pt], True)
        else:
-          new_pt = next_position(world, entity_pt, ore_pt)
+          new_pt = self.next_position(world,ore_pt)
           return (worldmodel.move_entity(world, entity, new_pt), False)
 
 
@@ -163,16 +176,43 @@ class MinerNotFull:
           self.set_resource_count(0)
           return ([], True)
        else:
-          new_pt = next_position(world, entity_pt, smith_pt)
+          new_pt = self.next_position(world,smith_pt)
           return (worldmodel.move_entity(world, entity, new_pt), False)
-        
-   def try_transform_miner_full(self,world):
-       new_entity = MinerNotFull(
-          self.get_name(), self.get_resource_limit(),
-          self.get_position(), self.get_rate(),
-         self.get_images(), self.get_animation_rate())
+
+     def try_transform_miner(self,world, transform):
+       new_entity = self.transform(world)
+       if entity != new_entity:
+          self.clear_pending_actions(world)
+          worldmodel.remove_entity_at(world, self.get_position())
+          worldmodel.add_entity(world, new_entity)
+          schedule_animation(world, new_entity)
 
        return new_entity
+
+     def schedule_miner(self,world, ticks, i_store):
+       self.schedule_action(world, self.create_miner_action(world, i_store),
+          ticks + self.get_rate())
+       self.schedule_animation(world)
+        
+     def schedule_animation(self,world, repeat_count=0):
+       self.schedule_action(world, 
+          self.create_animation_action(world, repeat_count),
+          self.get_animation_rate())
+
+     def create_animation_action(self,world, repeat_count):
+        def action(current_ticks):
+            self.remove_pending_action( action)
+
+            self.next_image()
+
+            if repeat_count != 1:
+                self.schedule_action(world, 
+                    self.create_animation_action(world, max(repeat_count - 1, 0)),
+                current_ticks + self.get_animation_rate())
+
+            return [self.get_position()]
+        return action
+   
 
    
 
@@ -241,11 +281,11 @@ class MinerFull:
   
 
 
-   """def remove_entity(self, world):
+   def remove_entity(self, world):
        for action in self.get_pending_actions():
           worldmodel.unschedule_action(world, action)
        self.clear_pending_actions(self)
-       worldmodel.self.remove_entity(world)"""
+       worldmodel.self.remove_entity(world)
         
    def create_miner_full_action(self, world, i_store):
        def action(current_ticks):
@@ -266,25 +306,38 @@ class MinerFull:
           return tiles
        return action
 
+  def next_position(self,world, dest_pt):
+       horiz = sign(dest_pt.x - self.position.x)
+       new_pt = point.Point(self.position.x + horiz, self.position.y)
+
+       if horiz == 0 or worldmodel.is_occupied(world, new_pt):
+          vert = sign(dest_pt.y - self.position.y)
+          new_pt = point.Point(self.position.x, self.position.y + vert)
+
+          if vert == 0 or worldmodel.is_occupied(world, new_pt):
+             new_pt = point.Point(self.position.x, self.position.y)
+
+       return new_pt
+
    def miner_to_ore(self,world,ore):
        entity_pt = self.get_position()
        if not ore:
-          return ([entity_pt], False)
+          return ([self.position], False)
        ore_pt = get_position(ore)
-       if adjacent(entity_pt, ore_pt):
+       if adjacent(self.position, ore_pt):
           self.set_resource_count(
              1 + self.get_resource_count())
           remove_entity(world, ore)
           return ([ore_pt], True)
        else:
-          new_pt = next_position(world, entity_pt, ore_pt)
+          new_pt = self.next_position(world,ore_pt)
           return (worldmodel.move_entity(world, entity, new_pt), False)
 
 
    def miner_to_smith(self, smith):
        entity_pt = self.get_position()
        if not smith:
-          return ([entity_pt], False)
+          return ([self.position], False)
        smith_pt = get_position(smith)
        if adjacent(entity_pt, smith_pt):
           set_resource_count(smith,
@@ -293,7 +346,7 @@ class MinerFull:
           self.set_resource_count(0)
           return ([], True)
        else:
-          new_pt = next_position(world, entity_pt, smith_pt)
+          new_pt = self.next_position(world, smith_pt)
           return (worldmodel.move_entity(world, entity, new_pt), False)
         
    def try_transform_miner_not_full(world, entity):
@@ -306,15 +359,40 @@ class MinerFull:
              self.get_images(), self.get_animation_rate())
           return new_entity
 
-   def try_transform_miner(self,world, transform):
-       new_entity = self.transform(world)
-       if entity != new_entity:
-          self.clear_pending_actions(world)
-          worldmodel.remove_entity_at(world, self.get_position())
-          worldmodel.add_entity(world, new_entity)
-          schedule_animation(world, new_entity)
+  
+   def try_transform_miner_full(self,world):
+       new_entity = MinerNotFull(
+          self.get_name(), self.get_resource_limit(),
+          self.get_position(), self.get_rate(),
+          self.get_images(), self.get_animation_rate())
 
        return new_entity
+
+   def schedule_action(self,world,  action, time):
+       self.add_pending_action(action)
+       worldmodel.schedule_action(world, action, time)
+
+
+   def schedule_animation(self,world,  repeat_count=0):
+       self.schedule_action(world, 
+          self.create_animation_action(world,  repeat_count),
+          self.get_animation_rate())
+
+   def create_animation_action(self,world, repeat_count):
+        def action(current_ticks):
+            self.remove_pending_action( action)
+
+            self.next_image()
+
+            if repeat_count != 1:
+                self.schedule_action(world, 
+                    self.create_animation_action(world, max(repeat_count - 1, 0)),
+                current_ticks + self.get_animation_rate())
+
+            return [self.get_position()]
+        return action
+   
+
 
         
    
@@ -373,13 +451,13 @@ class Vein:
          str(self.resource_distance)])
 
    #Actions.py 
-   """def schedule_action(self, world, action, time):
+   def schedule_action(self, world, action, time):
        self.add_pending_action(action)
        worldmodel.schedule_action(world, action, time)
 
    def schedule_vein(self, world, ticks, i_store):
        self.schedule_action(world, create_vein_action(world, vein, i_store),
-          ticks + entities.get_rate(vein))"""
+          ticks + entities.get_rate(vein))
 
    def create_vein_action(self, world, i_store):
        def action(current_ticks):
@@ -402,11 +480,15 @@ class Vein:
           return tiles
        return action
 
-   """def remove_entity(self, world):
+   def remove_entity(self, world):
        for action in self.get_pending_actions():
           worldmodel.unschedule_action(world, action)
        self.clear_pending_actions(self)
-       worldmodel.self.remove_entity(world)"""
+       worldmodel.self.remove_entity(world)
+
+   def schedule_vein(self,world, ticks, i_store):
+       self.schedule_action(world, create_vein_action(world, vein, i_store),
+          ticks + self.get_rate())
 
 
 class Ore:
@@ -453,14 +535,14 @@ class Ore:
          str(self.position.y), str(self.rate)])
 
    #actions.py
-   """def schedule_action(self, world, action, time):
+   def schedule_action(self, world, action, time):
        self.add_pending_action(action)
        worldmodel.schedule_action(world, action, time)
 
    def schedule_ore(world, ore, ticks, i_store):
        self.schedule_action(world,
           self.create_ore_transform_action(world, i_store),
-          ticks + self.get_rate())"""
+          ticks + self.get_rate())
 
    def create_ore_transform_action(self, world, i_store):
        def action(current_ticks):
@@ -476,11 +558,16 @@ class Ore:
           return [blob.get_position()]
        return action
 
-   """def remove_entity(self, world):
+   def remove_entity(self, world):
        for action in self.get_pending_actions():
           worldmodel.unschedule_action(world, action)
        self.clear_pending_actions(self)
-       worldmodel.self.remove_entity(world)"""
+       worldmodel.self.remove_entity(world)
+
+   def schedule_ore(self.world, ticks, i_store):
+       self.schedule_action(world, 
+          self.create_ore_transform_action(world, i_store),
+          ticks + self.get_rate())
         
   
    
@@ -551,12 +638,16 @@ class Blacksmith:
 
    #actions.py
       
-"""
+
    def remove_entity(self, world):
        for action in self.get_pending_actions():
           worldmodel.unschedule_action(world, action)
        self.clear_pending_actions(self)
-       worldmodel.self.remove_entity(world)"""
+       worldmodel.self.remove_entity(world)
+
+   def schedule_action(self,world,  action, time):
+       self.add_pending_action( action)
+       worldmodel.schedule_action(world, action, time)
 
 
 class Obstacle:
@@ -591,11 +682,7 @@ class Obstacle:
    #Actions.py
 
 
-   """def remove_entity(self, world):
-       for action in self.get_pending_actions():
-          worldmodel.unschedule_action(world, action)
-       self.clear_pending_actions(self)
-       worldmodel.self.remove_entity(world)"""
+  
 
 class OreBlob:
    def __init__(self, name, position, rate, imgs, animation_rate):
@@ -645,11 +732,11 @@ class OreBlob:
         
    #actions.py
 
-   """def remove_entity(self, world):
+   def remove_entity(self, world):
        for action in self.get_pending_actions():
           worldmodel.unschedule_action(world, action)
        self.clear_pending_actions(self)
-       worldmodel.self.remove_entity(world)"""
+       worldmodel.self.remove_entity(world)
     
    def create_ore_blob_action(self, world, i_store):
        def action(current_ticks):
@@ -671,6 +758,70 @@ class OreBlob:
 
           return tiles
        return action
+
+   def blob_next_position(self,world, dest_pt):
+       horiz = sign(dest_pt.x - self.position.x)
+       new_pt = point.Point(self.position.x + horiz, self.position.y)
+
+       if horiz == 0 or (worldmodel.is_occupied(world, new_pt) and
+          not isinstance(worldmodel.get_tile_occupant(world, new_pt),
+          entities.Ore)):
+          vert = sign(dest_pt.y - self.position.y)
+          new_pt = point.Point(self.position.x, self.position.y + vert)
+
+          if vert == 0 or (worldmodel.is_occupied(world, new_pt) and
+             not isinstance(worldmodel.get_tile_occupant(world, new_pt),
+             entities.Ore)):
+             new_pt = point.Point(entity_pt.x, entity_pt.y)
+
+       return new_pt
+
+   def blob_to_vein(self, world, vein):
+       entity_pt = self.get_position()
+       if not vein:
+          return ([entity_pt], False)
+       vein_pt = entities.get_position(vein)
+       if adjacent(entity_pt, vein_pt):
+          remove_entity(world, vein)
+          return ([vein_pt], True)
+       else:
+          new_pt = self.blob_next_position(world, vein_pt)
+          old_entity = worldmodel.get_tile_occupant(world, new_pt)
+          if isinstance(old_entity, entities.Ore):
+             remove_entity(world, old_entity)
+          return (worldmodel.move_entity(world, entity, new_pt), False)
+
+   def schedule_blob(self,world, ticks, i_store):
+       self.schedule_action(world, self.create_ore_blob_action(world,  i_store),
+          ticks + self.get_rate())
+       self.schedule_animation(world)     
+
+   def schedule_action(self,world, action, time):
+       self.add_pending_action( action)
+       worldmodel.schedule_action(world, action, time)
+
+
+   def schedule_animation(self, world, repeat_count=0):
+       self.schedule_action(world, 
+          self.create_animation_action(world,  repeat_count),
+          self.get_animation_rate())  
+
+   def create_animation_action(self,world, repeat_count):
+        def action(current_ticks):
+            self.remove_pending_action( action)
+
+            self.next_image()
+
+            if repeat_count != 1:
+                self.schedule_action(world, 
+                    self.create_animation_action(world, max(repeat_count - 1, 0)),
+                current_ticks + self.get_animation_rate())
+
+            return [self.get_position()]
+        return action
+   
+ 
+ 
         
    
 
@@ -719,11 +870,34 @@ class Quake:
    #actions.py 
 
 
-   """def remove_entity(self, world):
+   def remove_entity(self, world):
        for action in self.get_pending_actions():
           worldmodel.unschedule_action(world, action)
        self.clear_pending_actions(self)
-       worldmodel.self.remove_entity(world)"""
+       worldmodel.self.remove_entity(world)
+
+   def create_entity_death_action(self,world):
+       def action(current_ticks):
+          self.remove_pending_action(action)
+          pt = self.get_position()
+          self.remove_entity(world)
+          return [pt]
+       return action
+
+   def schedule_quake(self,world, ticks):
+       self.schedule_animation(world,QUAKE_STEPS) 
+       self.schedule_action(world, self.create_entity_death_action(world),
+          ticks + QUAKE_DURATION)
+
+   def schedule_action(self,world, action, time):
+       self.add_pending_action( action)
+       worldmodel.schedule_action(world, action, time)
+
+
+   def schedule_animation(self, world, repeat_count=0):
+       self.schedule_action(world, 
+          self.create_animation_action(world,  repeat_count),
+          self.get_animation_rate())    
         
  
    
