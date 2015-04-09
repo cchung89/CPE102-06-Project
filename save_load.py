@@ -79,8 +79,7 @@ def load_world(world, images, file, run=False):
          else:
             add_entity(world, properties, images, run)
 
-
-"""def add_background(world, properties, i_store):
+def add_background(world, properties, i_store):
    if len(properties) >= BGND_NUM_PROPERTIES:
       pt = point.Point(int(properties[BGND_COL]), int(properties[BGND_ROW]))
       name = properties[BGND_NAME]
@@ -93,7 +92,7 @@ def add_entity(world, properties, i_store, run):
    if new_entity:
       worldmodel.add_entity(world, new_entity)
       if run:
-         schedule_entity(world, new_entity, i_store)"""
+         schedule_entity(world, new_entity, i_store)
 
 
 def create_from_properties(properties, i_store):
