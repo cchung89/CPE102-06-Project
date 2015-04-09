@@ -186,8 +186,8 @@ def find_open_around(world, pt, distance):
       for dx in range(-distance, distance + 1):
          new_pt = point.Point(pt.x + dx, pt.y + dy)
 
-         if (worldmodel.within_bounds(world, new_pt) and
-            (not worldmodel.is_occupied(world, new_pt))):
+         if (world.within_bounds( new_pt) and
+            (not world.is_occupied( new_pt))):
             return new_pt
 
    return None
@@ -331,7 +331,7 @@ def schedule_miner(world, miner, ticks, i_store):
 def create_ore(world, name, pt, ticks, i_store):
    ore = entities.Ore(name, pt, image_store.get_images(i_store, 'ore'),
       random.randint(ORE_CORRUPT_MIN, ORE_CORRUPT_MAX))
-   schedule_ore(world, ore, ticks, i_store)
+   ore.schedule_ore(world,  ticks, i_store)
 
    return ore
 
