@@ -30,7 +30,7 @@ class WorldModel:
       return nearest_entity(oftype)
 
    def add_entity(self, entity):
-      pt = entities.get_position(entity)
+      pt = entity.get_position()
       if self.within_bounds(pt):
          old_entity = occ_grid.Grid.get_cell(self.occupancy, pt)
          if old_entity != None:

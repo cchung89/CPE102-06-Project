@@ -112,11 +112,11 @@ class MinerNotFull:
 
    def try_transform_miner(self, world, transform):
        new_entity = self.transform(world)
-          if entity != new_entity:
-             clear_pending_actions(world, entity)
-             worldmodel.remove_entity_at(world, self.get_position())
-             worldmodel.add_entity(world, new_entity)
-             new_entity.schedule_animation(world)
+       if entity != new_entity:
+           clear_pending_actions(world, entity)
+           worldmodel.remove_entity_at(world, self.get_position())
+           worldmodel.add_entity(world, new_entity)
+           new_entity.schedule_animation(world)
 
        return new_entity
 
@@ -125,16 +125,16 @@ class MinerNotFull:
 
    def schedule_entity(self, world, ticks, i_store): #From save_load
        self.schedule_action(world, self.create_miner_action(world, i_store),
-          ticks + get_rate(miner))
-          self.schedule_animation(world)
+           ticks + get_rate(miner))
+       self.schedule_animation(world)
    
   
-"""
-  ??? def remove_entity(self, world):
+
+   def remove_entity(self, world):
        for action in self.get_pending_actions():
           worldmodel.unschedule_action(world, action)
        self.clear_pending_actions()
-       worldmodel.self.remove_entity(world)"""
+       worldmodel.self.remove_entity(world)
         
    def miner_to_ore(self,world,ore):
        entity_pt = self.get_position()
@@ -306,7 +306,7 @@ class MinerFull:
              self.get_images(), self.get_animation_rate())
           return new_entity
 
-    def try_transform_miner(self,world, transform):
+   def try_transform_miner(self,world, transform):
        new_entity = self.transform(world)
        if entity != new_entity:
           self.clear_pending_actions(world)
@@ -670,7 +670,7 @@ class OreBlob:
              next_time)
 
           return tiles
-        return action
+       return action
         
    
 
