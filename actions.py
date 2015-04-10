@@ -311,7 +311,7 @@ def create_blob(world, name, pt, rate, ticks, i_store):
       image_store.get_images(i_store, 'blob'),
       random.randint(BLOB_ANIMATION_MIN, BLOB_ANIMATION_MAX)
       * BLOB_ANIMATION_RATE_SCALE)
-   schedule_blob(world, blob, ticks, i_store)
+   blob.schedule_blob(world, ticks, i_store)
    return blob
 
 """
@@ -346,7 +346,7 @@ def schedule_ore(world, ore, ticks, i_store):
 def create_quake(world, pt, ticks, i_store):
    quake = entities.Quake("quake", pt,
       image_store.get_images(i_store, 'quake'), QUAKE_ANIMATION_RATE)
-   schedule_quake(world, quake, ticks)
+   quake.schedule_quake(world,  ticks)
    return quake
 """
 
@@ -386,9 +386,9 @@ def schedule_animation(world, entity, repeat_count=0):
 
 
 def clear_pending_actions(world, entity):
-   for action in entities.get_pending_actions(entity):
-      worldmodel.unschedule_action(world, action)
-   entities.clear_pending_actions(entity)
+   for action in entity.get_pending_actions():
+      world.unschedule_action( action)
+   entity.clear_pending_actions()
   
 
 

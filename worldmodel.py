@@ -51,15 +51,15 @@ class WorldModel:
       return tiles
 
    def remove_entity(self, entity):
-      self.remove_entity_at(entities.get_position(entity))
+      self.remove_entity_at(entity.get_position())
 
    def remove_entity_at(self, pt):
       if (self.within_bounds(pt) and
-         occ_grid.get_cell(self.occupancy, pt) != None):
-         entity = occ_grid.get_cell(elf.occupancy, pt)
-         entities.set_position(entity, point.Point(-1, -1))
+         self.occupancy.get_cell( pt) != None):
+         entity = self.occupancy.get_cell( pt)
+         entity.set_position(point.Point(-1, -1))
          self.entities.remove(entity)
-         occ_grid.set_cell(self.occupancy, pt, None)
+         self.occupancy.set_cell(pt, None)
 
    def schedule_action(self, action, time):
       self.action_queue.insert(action, time)
@@ -132,9 +132,9 @@ def nearest_entity(entity_dists):
 def distance_sq(p1, p2):
    return (p1.x - p2.x)**2 + (p1.y - p2.y)**2
 
-
-"""def find_nearest(world, pt, type):
-   oftype = [(e, distance_sq(pt, entities.get_positio(e)))
+"""
+def find_nearest(world, pt, type):
+   oftype = [(e, distance_sq(pt, entities.get_position(e)))
       for e in world.entities if isinstance(e, type)]n
 
    return nearest_entity(oftype)
