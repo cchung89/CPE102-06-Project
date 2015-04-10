@@ -853,7 +853,7 @@ class Quake:
         
    #actions.py 
 
-
+   
    def remove_entity(self, world):
        for action in self.get_pending_actions():
           world.unschedule_action(action)
