@@ -100,13 +100,13 @@ class MinerNotFull:
           entity_pt = self.get_position()
           ore = world.find_nearest(entity_pt, Ore)
           (tiles, found) = self.miner_to_ore(world, ore)
-
+          new_entity = self
           if found:
              new_entity = self.try_transform_miner(world, 
              self.try_transform_miner_not_full)
 
-          self.schedule_action(world,
-             self.create_miner_action(world, i_store),
+          new_entity.schedule_action(world,
+             new_entity.create_miner_action(world, i_store),
              current_ticks + self.get_rate())
           return tiles
        return action
@@ -237,7 +237,10 @@ class MinerFull:
 
    def get_resource_count(self):
       return self.resource_count
-
+   
+   def set_resource_count(self, n):
+      self.resource_count = n
+   
    def get_resource_limit(self):
       return self.resource_limit
 
@@ -280,10 +283,10 @@ class MinerFull:
           smith = world.find_nearest(entity_pt, Blacksmith)
           (tiles, found) = self.miner_to_smith(world, smith)
 
-          new_entity = entity
+          new_entity = self
           if found:
               new_entity = self.try_transform_miner(world,
-                try_transform_miner_full)
+                self.try_transform_miner_full)
 
           new_entity.schedule_action(world,
              new_entity.create_miner_action(world, i_store),
@@ -322,7 +325,7 @@ class MinerFull:
           return (world.move_entity(self, new_pt), False)
 
 """
-   def miner_to_smith(self, smith):
+   def miner_to_smith(self, world,smith):
        entity_pt = self.get_position()
        if not smith:
           return ([self.position], False)
@@ -338,7 +341,15 @@ class MinerFull:
           return (world.move_entity(self, new_pt), False)
         
    
+   def try_transform_miner(self,world, transform):
+       new_entity = transform(world)
+       if self != new_entity:
+          actions.clear_pending_actions(world,self)
+          world.remove_entity_at(self.get_position())
+          world.add_entity(new_entity)
+          new_entity.schedule_animation(world)
 
+       return new_entity
   
    def try_transform_miner_full(self,world):
        new_entity = MinerNotFull(
@@ -620,16 +631,7 @@ class Blacksmith:
 
    #actions.py
       
-
-   def remove_entity(self, world):
-       for action in self.get_pending_actions():
-          world.unschedule_action(action)
-       self.clear_pending_actions(self)
-       world.remove_entity(self)
-
-   def schedule_action(self,world,  action, time):
-       self.add_pending_action( action)
-       world.schedule_action(action, time)
+    
 
 
 class Obstacle:
@@ -734,7 +736,7 @@ class OreBlob:
              world.add_entity( quake)
              next_time = current_ticks + self.get_rate() * 2
 
-             self.schedule_action(world, 
+          self.schedule_action(world, 
              self.create_ore_blob_action(world, i_store),
              next_time)
 
