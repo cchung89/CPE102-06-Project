@@ -38,7 +38,7 @@ def adjacent(pt1, pt2):
 
    
 
-# goes throw world and returns a new point
+
 def find_open_around(world, pt, distance):
    for dy in range(-distance, distance + 1):
       for dx in range(-distance, distance + 1):
@@ -88,13 +88,6 @@ def create_vein(world, name, pt, ticks, i_store):
    return vein
 
 
-     
-
-
-def clear_pending_actions(world, entity):
-   for action in entity.get_pending_actions():
-      world.unschedule_action( action)
-   entity.clear_pending_actions()
   
 
 
