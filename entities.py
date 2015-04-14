@@ -6,6 +6,25 @@ import actions
 
 PROPERTY_KEY = 0
 
+class Entity:
+   def __init__(self, name, imgs):
+      self.name = name
+      self.imgs = imgs
+      self.current_img = 0
+
+   def get_images(self):
+      return self.imgs
+
+   def get_image(self):
+      return self.imgs[self.current_img]
+
+   def get_name(self):
+      return self.name
+
+   def next_image(self):
+      self.current_img = (self.current_img + 1) % len(self.imgs)
+
+
 class Background:
    def __init__(self, name, imgs):
       self.name = name
@@ -24,6 +43,101 @@ class Background:
    def next_image(self):
       self.current_img = (self.current_img + 1) % len(self.imgs)
 
+
+class OreUser(Entity):
+   def __init__(self, name, resource_limit, position, rate, imgs,
+      animation_rate):
+      super(OreUser, self).__init__(name, imgs)
+      self.position = position
+      self.rate = rate
+      self.resource_limit = resource_limit
+      self.pending_actions = []
+
+   def set_position(self, point):
+      self.position = point
+
+   def get_position(self):
+      return self.position
+
+   def get_rate(self):
+      return self.rate
+
+   def set_resource_count(self, n):
+      self.resource_count = n
+
+   def get_resource_count(self):
+      return self.resource_count
+
+   def get_resource_limit(self):
+      return self.resource_limit
+
+   def remove_pending_action(self, action):
+      self.pending_actions.remove(action)
+
+   def add_pending_action(self, action):
+      self.pending_actions.append(action)
+
+   def get_pending_actions(self):
+      return self.pending_actions
+
+   def clear_pending_actions(self):
+      self.pending_actions = []
+
+
+class Valuable(Entity):
+   def __init__(self, name, rate, position, imgs):
+      super(Valuable,  self).__init__(name, imgs)
+      self.position = position
+      self.rate = rate
+      self.pending_actions = []
+
+   def set_position(self, point):
+      self.position = point
+
+   def get_position(self):
+      return self.position
+
+   def get_rate(self):
+      return self.rate
+
+   def remove_pending_action(self, action):
+      self.pending_actions.remove(action)
+
+   def add_pending_action(self, action):
+      self.pending_actions.append(action)
+
+   def get_pending_actions(self):
+      return self.pending_actions
+
+   def clear_pending_actions(self):
+      self.pending_actions = []
+
+
+class Destroyer(Entity):
+   def __init__(self, name, position, imgs, animation_rate):
+      super(Destroyer, self).__init__(name, imgs)
+      self.position = position
+
+   def set_position(self, point):
+      self.position = point
+
+   def get_position(self):
+      return self.position
+
+   def get_animation_rate(self):
+      return self.animation_rate
+
+   def remove_pending_action(self, action):
+      self.pending_actions.remove(action)
+
+   def add_pending_action(self, action):
+      self.pending_actions.append(action)
+
+   def get_pending_actions(self):
+      return self.pending_actions
+
+   def clear_pending_actions(self):
+      self.pending_actions = []
 
 
 class MinerNotFull:
