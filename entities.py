@@ -25,23 +25,28 @@ class Entity:
       self.current_img = (self.current_img + 1) % len(self.imgs)
 
 
-class Background:
-   def __init__(self, name, imgs):
-      self.name = name
-      self.imgs = imgs
-      self.current_img = 0
+class Background(Entity):
+   pass
 
-   def get_images(self):
-      return self.imgs
+class Position(Entity):
+   def __init__(self,name,imgs,position):
+       super(Position,self).__init__(name,imgs)
+       self.position = position
+   
+   def set_position(self,point):
+       self.position = point 
+   
+   def get_position(self):
+       return self.position
 
-   def get_image(self):
-      return self.imgs[self.current_img]
+class Pending
+class Character(Position):
+   def __init__(self,name,imgs,position,rate,resource_limit):
+       super(Character,self).__init__(name,imgs,position)
+       self.rate = rate
+       self.resource_limit = resource_limit
 
-   def get_name(self):
-      return self.name
 
-   def next_image(self):
-      self.current_img = (self.current_img + 1) % len(self.imgs)
 
 
 class OreUser(Entity):
