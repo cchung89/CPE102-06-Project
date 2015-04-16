@@ -6,7 +6,7 @@ import actions
 
 PROPERTY_KEY = 0
 
-class Entity:
+class Entity(object):
    def __init__(self, name, imgs):
       self.name = name
       self.imgs = imgs
