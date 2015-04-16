@@ -6,7 +6,7 @@ import actions
 
 PROPERTY_KEY = 0
 
-class Entity(object):
+class Entity:
    def __init__(self, name, imgs):
       self.name = name
       self.imgs = imgs
@@ -28,9 +28,9 @@ class Entity(object):
 class Background(Entity):
    pass
 
-class Position(Entity):
+class Location(Entity):
    def __init__(self,name,imgs,position):
-       super(Position,self).__init__(name,imgs)
+       super(Location,self).__init__(name,imgs)
        self.position = position
    
    def set_position(self,point):
@@ -39,117 +39,66 @@ class Position(Entity):
    def get_position(self):
        return self.position
 
-class Obstacle(Position):
 
-   def entity_string(self):
-       return ' '.join(['obstacle', self.name, str(self.position.x),
-         str(self.position.y)])
-   
+class Job(Location):
+   def __init__(self,name,imgs,position):
+       super(Job, self).__init__(name, imgs, position)
+       self.pending_actions = []
+
+   def remove_pending_action(self, action):
+      self.pending_actions.remove(action)
+
+   def add_pending_action(self, action):
+      self.pending_actions.append(action)
+
+   def get_pending_actions(self):
+      return self.pending_actions
+
+   def clear_pending_actions(self):
+      self.pending_actions = []
 
 
-class Character(Position):
+class Character(Job):
    def __init__(self,name,imgs,position,rate,resource_limit):
        super(Character,self).__init__(name,imgs,position)
        self.rate = rate
        self.resource_limit = resource_limit
 
+class Natural(Job):
+   def schedule_action(self, world, action, time):
+      self.add_pending_action(action)
+      world.schedule_action(action, time)
+
+   def remove_entity(self, world):
+       for action in self.get_pending_actions():
+          world.unschedule_action(action)
+       self.clear_pending_actions()
+       world.remove_entity(self)
+
+class Miner(Character):
+   def __init__(self, name, imgs, position, resource_limit):
+       super(Miner,self).__init__(name,imgs,position)
+       self.resource_count = resource_limit
+
+class Mineral(Natural):
+   def __init__(self,name,imgs,position,rate):
+       super(Mineral, self).__init__(name, imgs, position)
+       self.rate = rate
 
 
+class Destroyer(Natural):
+   def __init__(self,name,imgs,position, animation_rate):
+       super(Destroyer, self).__init__(name, imgs, position)
+       self.animation_rate = animation_rate
 
-class OreUser(Entity):
-   def __init__(self, name, resource_limit, position, rate, imgs,
-      animation_rate):
-      super(OreUser, self).__init__(name, imgs)
-      self.position = position
-      self.rate = rate
-      self.resource_limit = resource_limit
-      self.pending_actions = []
+   def schedule_action(self,world,  action, time):
+       self.add_pending_action(action)
+       world.schedule_action(action, time)
 
-   def set_position(self, point):
-      self.position = point
-
-   def get_position(self):
-      return self.position
-
-   def get_rate(self):
-      return self.rate
-
-   def set_resource_count(self, n):
-      self.resource_count = n
-
-   def get_resource_count(self):
-      return self.resource_count
-
-   def get_resource_limit(self):
-      return self.resource_limit
-
-   def remove_pending_action(self, action):
-      self.pending_actions.remove(action)
-
-   def add_pending_action(self, action):
-      self.pending_actions.append(action)
-
-   def get_pending_actions(self):
-      return self.pending_actions
-
-   def clear_pending_actions(self):
-      self.pending_actions = []
-
-
-class Valuable(Entity): #Vein and Ore
-   def __init__(self, name, rate, position, imgs):
-      super(Valuable,  self).__init__(name, imgs)
-      self.position = position
-      self.rate = rate
-      self.pending_actions = []
-
-   def set_position(self, point):
-      self.position = point
-
-   def get_position(self):
-      return self.position
-
-   def get_rate(self):
-      return self.rate
-
-   def remove_pending_action(self, action):
-      self.pending_actions.remove(action)
-
-   def add_pending_action(self, action):
-      self.pending_actions.append(action)
-
-   def get_pending_actions(self):
-      return self.pending_actions
-
-   def clear_pending_actions(self):
-      self.pending_actions = []
-
-
-class Destroyer(Entity):
-   def __init__(self, name, position, imgs, animation_rate):
-      super(Destroyer, self).__init__(name, imgs)
-      self.position = position
-
-   def set_position(self, point):
-      self.position = point
-
-   def get_position(self):
-      return self.position
-
-   def get_animation_rate(self):
-      return self.animation_rate
-
-   def remove_pending_action(self, action):
-      self.pending_actions.remove(action)
-
-   def add_pending_action(self, action):
-      self.pending_actions.append(action)
-
-   def get_pending_actions(self):
-      return self.pending_actions
-
-   def clear_pending_actions(self):
-      self.pending_actions = []
+   def schedule_animation(self,world,  repeat_count=0):
+       self.schedule_action(world, 
+          self.create_animation_action(world,  repeat_count),
+          self.get_animation_rate())
 
 
 class MinerNotFull:
