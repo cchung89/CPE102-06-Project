@@ -6,7 +6,7 @@ import actions
 
 PROPERTY_KEY = 0
 
-class Entity:
+class Entity(object):
    def __init__(self, name, imgs):
       self.name = name
       self.imgs = imgs
@@ -39,7 +39,14 @@ class Position(Entity):
    def get_position(self):
        return self.position
 
-class Pending
+class Obstacle(Position):
+
+   def entity_string(self):
+       return ' '.join(['obstacle', self.name, str(self.position.x),
+         str(self.position.y)])
+   
+
+
 class Character(Position):
    def __init__(self,name,imgs,position,rate,resource_limit):
        super(Character,self).__init__(name,imgs,position)
@@ -89,7 +96,7 @@ class OreUser(Entity):
       self.pending_actions = []
 
 
-class Valuable(Entity):
+class Valuable(Entity): #Vein and Ore
    def __init__(self, name, rate, position, imgs):
       super(Valuable,  self).__init__(name, imgs)
       self.position = position
