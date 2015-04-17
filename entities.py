@@ -377,10 +377,10 @@ class MinerNotFull(Miner):
 
    
 class MinerFull(Miner):
-   """   
    def __init__(self, name, resource_limit, position, rate, imgs,
       animation_rate):
-      
+      super(MinerFull, self).__init__(name, imgs, position, rate, resource_limit,animation_rate)
+      """
       self.name = name
       self.position = position
       self.rate = rate
@@ -647,7 +647,7 @@ class Vein(Mineral):
 class Ore(Mineral):
    
    def __init__(self, name, position, imgs, rate=5000):
-      super(Ore,self).__init__(name,imgs,position,5000)
+      super(Ore,self).__init__(name,imgs,position,rate)
       """   
       self.name = name
       self.position = position
@@ -804,8 +804,9 @@ class Blacksmith(Character):
     
 
 class Obstacle(Location):
-   """
    def __init__(self, name, position, imgs):
+      super(Obstacle, self).__init__(name, imgs, position)
+      """
       self.name = name
       self.position = position
       self.imgs = imgs
@@ -982,8 +983,9 @@ class OreBlob(Destroyer):
  
 
 class Quake(Destroyer):
-   """
    def __init__(self, name, position, imgs, animation_rate):
+      super(Quake, self).__init__(name,imgs,position, animation_rate)
+      """
       self.name = name
       self.position = position
       self.imgs = imgs
