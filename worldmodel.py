@@ -6,7 +6,7 @@ import occ_grid
 import point
 import save_load
 
-class WorldModel:
+class WorldModel(object):
    def __init__(self, num_rows, num_cols, background):
       self.background = occ_grid.Grid(num_cols, num_rows, background)
       self.num_rows = num_rows

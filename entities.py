@@ -804,13 +804,14 @@ class Blacksmith(Character):
     
 
 class Obstacle(Location):
-   """
+   
    def __init__(self, name, position, imgs):
+      super(Obstacle,self).__init__(name,imgs,position)
       self.name = name
       self.position = position
       self.imgs = imgs
       self.current_img = 0
-
+   """ 
    def set_position(self, point):
       self.position = point
 
