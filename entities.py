@@ -804,11 +804,11 @@ class Blacksmith(Character):
     
 
 class Obstacle(Location):
-<<<<<<< HEAD
+
    
    def __init__(self, name, position, imgs):
       super(Obstacle,self).__init__(name,imgs,position)
-=======
+
    def __init__(self, name, position, imgs):
       super(Obstacle, self).__init__(name, imgs, position)
       """
@@ -817,7 +817,7 @@ class Obstacle(Location):
       self.position = position
       self.imgs = imgs
       self.current_img = 0
-   """ 
+   
    def set_position(self, point):
       self.position = point
 
@@ -925,7 +925,7 @@ class OreBlob(Destroyer):
             return [self.get_position()]
         return action
     
-       """
+   """
     
    def create_ore_blob_action(self, world, i_store):
        def action(current_ticks):
