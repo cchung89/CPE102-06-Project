@@ -396,35 +396,7 @@ class Obstacle(Location):
 
    def __init__(self, name, position, imgs):
       super(Obstacle, self).__init__(name, imgs, position)
-<<<<<<< HEAD
-      """
->>>>>>> ee77cee60a94d00607d8ac61db7f8a4fb1427f86
-      self.name = name
-      self.position = position
-      self.imgs = imgs
-      self.current_img = 0
-   
-   def set_position(self, point):
-      self.position = point
 
-   def get_position(self):
-      return self.position
-
-   def get_images(self):
-      return self.imgs
-
-   def get_image(self):
-      return self.imgs[self.current_img]
-
-   def get_name(self):
-      return self.name
-
-   def next_image(self):
-      self.current_img = (self.current_img + 1) % len(self.imgs)
-      """
-=======
-      
->>>>>>> 1c61efa0dfac916e778dac822a355dce354bb2b3
    def entity_string(self):
       return ' '.join(['obstacle', self.name, str(self.position.x),
          str(self.position.y)])
@@ -438,85 +410,7 @@ class OreBlob(Destroyer):
    def get_rate(self):
       return self.rate 
 
-<<<<<<< HEAD
-      """
-      self.imgs = imgs
-      self.current_img = 0
-      self.animation_rate = animation_rate
-      self.pending_actions = []
-      self.name = name
-      self.position = position
 
-   def set_position(self, point):
-      self.position = point
-
-   def get_position(self):
-      return self.position
-
-   def get_images(self):
-      return self.imgs
-
-   def get_image(self):
-      return self.imgs[self.current_img]
-
-   def get_rate(self):
-      return self.rate
-
-   def get_name(self):
-      return self.name
-
-   def get_animation_rate(self):
-      return self.animation_rate
-
-   def remove_pending_action(self, action):
-      self.pending_actions.remove(action)
-
-   def add_pending_action(self, action):
-      self.pending_actions.append(action)
-
-   def get_pending_actions(self):
-      return self.pending_actions
-
-   def clear_pending_actions(self):
-      self.pending_actions = []
-
-   def next_image(self):
-      self.current_img = (self.current_img + 1) (self.imgs)
-        
-   #actions.py
-   def remove_entity(self, world):
-       for action in self.get_pending_actions():
-          world.unschedule_action(action)
-       self.clear_pending_actions()
-       world.remove_entity(self)
-
-   def schedule_action(self,world, action, time):
-       self.add_pending_action( action)
-       world.schedule_action(action, time)
-
-   def schedule_animation(self, world, repeat_count=0):
-       self.schedule_action(world, 
-          self.create_animation_action(world,  repeat_count),
-          self.get_animation_rate())  
-
-   def create_animation_action(self,world, repeat_count):
-        def action(current_ticks):
-            self.remove_pending_action( action)
-
-            self.next_image()
-
-            if repeat_count != 1:
-                self.schedule_action(world, 
-                    self.create_animation_action(world, max(repeat_count - 1, 0)),
-                current_ticks + self.get_animation_rate())
-
-            return [self.get_position()]
-        return action
-    
-   """
-    
-=======
->>>>>>> 1c61efa0dfac916e778dac822a355dce354bb2b3
    def create_ore_blob_action(self, world, i_store):
        def action(current_ticks):
           self.remove_pending_action(action)
