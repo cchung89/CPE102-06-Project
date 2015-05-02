@@ -1,5 +1,5 @@
 
-public abstract class Destroyer extends Location 
+public abstract class Destroyer extends Natural
 {
 	
 

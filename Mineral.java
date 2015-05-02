@@ -1,4 +1,4 @@
-public abstract class Mineral extends Location
+public abstract class Mineral extends Natural
 {
 	private int rate;
 
