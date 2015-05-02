@@ -1,11 +1,13 @@
 
-public abstract class Location extends Entity:
+public abstract class Location extends Entity
+{
 	private Point position;
 	
-	public Location( String name, /*imgs*/ , Point position)
+	
+	public Location(String name, Point position)
 	{
 
-      super();
+      super(name);
       this.position = position;
 
 	}
@@ -21,5 +23,5 @@ public abstract class Location extends Entity:
 	{
 		return position;
 	}
-
+}
 

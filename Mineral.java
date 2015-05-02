@@ -1,13 +1,14 @@
-public abstract class Mineral extends Naturual:
+public abstract class Mineral extends Location
+{
 	private int rate;
 
-	public Mineral(String name, imgs, Point position)
-	{ Super(name,imgs,position);
-		this.rate = rate;
+	public Mineral(String name, Point position, int rate)
+	{ super(name, position);
+	  this.rate = rate;
+	}
 
-		public int get_rate()
+	public int get_rate()
 		{ return rate;
-
 		}
 
 	}

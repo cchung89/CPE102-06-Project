@@ -1,9 +1,12 @@
-public class Vein extends Mineral:
-	private double resource_distance ;
+public class Vein extends Mineral
+{
+	private int resource_distance = 1 ;
 
-	public Vein(name,rate,position,imgs,resource_distance = 1)
-	{super(name,imgs,position,rate);
-	 this.resource_distance = resource_distance;	
+	public Vein(String name , int rate , Point position, int resource_distance)
+	{
+		super(name,position,rate);
+	
+		this.resource_distance = resource_distance;	
 	}
 
 	public double get_resource_distance()
@@ -11,6 +14,8 @@ public class Vein extends Mineral:
 		return resource_distance;
 
 	}
+	
+}
 
 	//public string entity_string
 	//schedule methods/actions

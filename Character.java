@@ -1,13 +1,14 @@
-public abstract class Character extends Job:
+public abstract class Character extends Location
+{
 	private int rate;
 	private int resource_limit;
 	private int resource_count;
 
-	public Character(String name, imgs, Point position,int rate,int resource_limit)
-	{	super();
+	public Character(String name, Point position,int rate,int resource_limit)
+	{	super(name, position);
 		this.rate = rate;
 		this.resource_limit = resource_limit;
-		this.resource_count = resource_limit ;
+		this.resource_count = resource_limit;
 
 	}
 
@@ -17,7 +18,7 @@ public abstract class Character extends Job:
 
 	}
 
-	public void set_resource_count(int n);
+	public void set_resource_count(int n)
 	{
 		resource_count = n ;
 	}
@@ -31,3 +32,4 @@ public abstract class Character extends Job:
 	{	return resource_limit; 
 
 	}
+}

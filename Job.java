@@ -1,14 +1,15 @@
 
-public abstract class Job extends Location:
-	//private action actions = pending_actions;
-
-	public Job(name,imgs,position)
+public abstract class Job extends Location
+	//private Array<action> actions = pending_actions;
+{
+	public Job(String name, Point position)
 	{
 
-		super();
-		this.pending_actions = [];
+		super(name, position);
+		//this.pending_actions = [];
 
 	}
+	/*
 
 	public void remove_pending_actions(action)
 	{
@@ -18,16 +19,19 @@ public abstract class Job extends Location:
 
 	public void add_pending_action(action)
 	{
-		pending_actions.append(action);
+		pending_actions.add(action);
 	}
 
 	public actions get_pending_actions()
 	{
 		return pending_actions;
 	}
-xs
+
 	public void clear_pending_actions()
 	{
 		pending_actions = [] ;
 
 	}
+	*/
+}
+

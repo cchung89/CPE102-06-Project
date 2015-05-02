@@ -1,16 +1,20 @@
-public abstract class Miner extends Character:
+public abstract class Miner extends Character
+
+{
 	private int animation_rate;
 
-	public Miner(String name, imgs, Point position , int rate, int resource_limit, int animation_rate)
-	{	super();
+	public Miner(String name, Point position , int rate, int resource_limit, int animation_rate)
+	{	super(name, position,rate,resource_limit);
 		this.animation_rate = animation_rate;	
 
 	}
 
 	public int get_animation_rate()
 	{	return animation_rate;
+	
 	}
-
+	
+/*
 	public void schedule_action(world,action,time)
 	{
 		add_pending_action(action);
@@ -19,11 +23,12 @@ public abstract class Miner extends Character:
 
 	public void remove_entity(world)
 	{
-		for (actions pending_action : get_pending_actions();)
+		for (actions pending_action : get_pending_actions())
 			{unschedule_action(action);}
 		clear_pending_actions();
 		remove_entity(this);
 	}
+	*/
 
 	public Point next_position(world,dest_pt)
 	{
@@ -31,15 +36,19 @@ public abstract class Miner extends Character:
 		horiz = sign(dest_pt.x - position.x);
 		new_pt = Point(position.x,position.y);
 
-		if (horiz == 0; || is_occupied(new_pt);)
+		if (horiz == 0 || is_occupied(new_pt) )
 			{
 				vert = sign(dest_pt.y - position.y);
 				new_pt = Point(position.x , position.y + vert);
 
 				if (vert == 0 || is_occupied(new_pt))
-					{	new_pt = Point(position.x , position.y)
+					{	new_pt = Point(position.x , position.y);
 
 					} 
 				}
 		return new_pt;		
+		
+		//try_transform_miner, animations
 	}
+	
+}

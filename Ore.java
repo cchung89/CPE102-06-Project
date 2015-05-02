@@ -1,10 +1,12 @@
-public class Ore extends Mineral:
-	public Ore (name,position,rate,imgs,rate = 5000)
+public class Ore extends Mineral
+{
+	private int rate ;
+	public Ore (String name,Point position, int rate)
 	{
-		super(name,imgs,position,rate);
+		super(name,position,rate);
 	}
 
 	//public entity string and schedule/action methods
 
 
-	
+	}
