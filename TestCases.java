@@ -99,6 +99,7 @@ public class TestCases
 	public void testMinerNotFull()
 	{
 		Point pt = new Point(3,4);
+		Point setPt = new Point(4,3);
 		MinerNotFull  bob = new MinerNotFull("bob", 5 , pt , 500);
 		assertTrue(bob.get_name().equals("bob"));
 		assertEquals(bob.get_resource_limit() , 5);
@@ -108,12 +109,16 @@ public class TestCases
 		assertEquals(bob.get_resource_count() , 0 );
 		bob.set_resource_count(5);
 		assertEquals(bob.get_resource_count(), 5);
+		bob.set_position(setPt);
+		assertEquals(bob.get_position().x , 4);
+		assertEquals(bob.get_position().y, 3);
 	}
 	
 	@Test
-	public void testMiner()
+	public void testMinerFull()
 	{
 		Point pt = new Point(8,9);
+		Point setPt = new Point (1,0);
 		MinerFull brian = new MinerFull("brian" , 5 , pt , 144);
 		assertTrue(brian.get_name().equals("brian"));
 		assertEquals(brian.get_resource_limit() , 5);
@@ -123,6 +128,17 @@ public class TestCases
 		assertEquals(brian.get_resource_count(), 5);
 		brian.set_resource_count(2);
 		assertEquals(brian.get_resource_count() ,  2);
+		brian.set_position(setPt);
+		assertEquals(brian.get_position().x , 1);
+		assertEquals(brian.get_position().y , 0);
+	}
+	
+	@Test
+	public void testBackground()
+	{ Background img = new Background("miner1");
+	  assertTrue(img.get_name().equals("miner1"));
+	  
+		
 	}
 	
 }

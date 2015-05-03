@@ -12,7 +12,7 @@ public abstract class Character extends Location
 
 	}
 
-	protected int get_rate()
+	public int get_rate()
 	{	return rate;
 
 
