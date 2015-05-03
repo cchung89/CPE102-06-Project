@@ -5,7 +5,6 @@ import javax.lang.model.type.NullType;
 import javafx.util.Pair;
 
 public class WorldModel
-	extends Point
 {
 	private Background[][] background;
 	private int num_rows;
@@ -14,11 +13,9 @@ public class WorldModel
 	private List<Location> entities = new ArrayList<Location>();
 	//private action_queue;
 
-	
 
 	public WorldModel(int num_rows, int num_cols, Entity background, List<Location> entities)
 	{
-		super(x, y);
 		this.background = new Background[num_cols][num_rows];
 		this.num_rows = num_rows;
 		this.num_cols = num_cols;
@@ -37,13 +34,12 @@ public class WorldModel
 		return within_bounds(pt) && occupancy[pt.y][pt.x] != null;
 	}
 
-	public double find_nearest(Point pt, Object type)
+	public double find_nearest(Point pt, Class type)
 	{
 		List<Pair<Location, Double>> oftype = new ArrayList<Pair<Location, Double>>();
-		//Pair<Entity, Double> pair = Pair.with();
 		for (Location e : entities)
 		{
-			if (e instanceof type)
+			if (type.isInstance(e))
 			{
 				Pair<Location, Double> pair = new Pair<Location, Double>(e, distance_sq(pt, e.get_position()));
 				oftype.add(pair);
@@ -102,7 +98,7 @@ public class WorldModel
 		}
 	}
 
-	public Entity get_background_image(Point pt)
+	/*public Entity get_background_image(Point pt)
 	{
 		if (within_bounds(pt))
 		{
@@ -124,14 +120,15 @@ public class WorldModel
 		{
          	background[pt.y][pt.x] = bgnd;
 		}
-	}
+	}*/
 
-	public Entity get_tile_occupant(Point pt)
+	public Location get_tile_occupant(Point pt)
 	{
 		if (within_bounds(pt))
 		{
          	return occupancy[pt.y][pt.x];
 		}
+		return null;
 	}
 
 	public List<Location> get_entities()
@@ -139,25 +136,25 @@ public class WorldModel
 		return this.entities;
 	}
 
-	public double nearest_entity(List<Pair<Entity, Double>> entity_dists)
+	public double nearest_entity(List<Pair<Location, Double>> entity_dists)
 	{
 		if (entity_dists.size() > 0)
 		{
-      		Pair<Entity, Double> pair = entity_dists.get(0);
-      		for (Pair<Entity, Double> other : entity_dists)
+      		Pair<Location, Double> pair = entity_dists.get(0);
+      		for (Pair<Location, Double> other : entity_dists)
       		{
          		if (other.getValue() < pair.getValue())
          		{
             		pair = other;
          		}
       		}
-      		Entity nearest = pair.getKey();
+      		Location nearest = pair.getKey();
 		}
    		else
    		{
-      		NullType nearest = null;
+      		Location nearest = null;
    		}
-   		return nearest;
+   		return find_nearest(null, null);
 	}
 
 	private double distance_sq(Point p1, Point p2)
