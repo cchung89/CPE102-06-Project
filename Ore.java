@@ -9,7 +9,7 @@ public class Ore extends Mineral
 	//method overloading
 	public Ore(String name, Point position)
 	{
-		super(name,position,5000);
+		super(name,position, 5000);
 		
 	}
 

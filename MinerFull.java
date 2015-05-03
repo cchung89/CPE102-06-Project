@@ -4,7 +4,7 @@ public class MinerFull extends Miner
 	
 	public MinerFull(String name, int resource_limit, Point position, int rate)
 	{
-		super(name,position,rate,resource_limit);
+		super(name,position,rate,resource_limit, resource_limit);
 	}
 	
 	/*

@@ -7,7 +7,7 @@ public abstract class Mineral extends Natural
 	  this.rate = rate;
 	}
 
-	public int get_rate()
+	protected int get_rate()
 		{ return rate;
 		}
 

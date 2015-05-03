@@ -1,13 +1,13 @@
 public class Blacksmith extends Character
 {
 	private int resource_distance;
-	private int resource_count ;
+	
 	
 	public Blacksmith(String name, Point position, int resource_limit, int rate, int resource_distance)
 	{
-		super(name,position, rate,resource_limit);
+		super(name,position, rate,resource_limit, 0);
 		this.resource_distance = resource_distance;
-		this.resource_count = 0;
+		
 		
 	}
 	

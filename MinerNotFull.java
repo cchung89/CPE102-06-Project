@@ -1,11 +1,11 @@
 
 public class MinerNotFull extends Miner {
-	private int resource_count;
+	//private int resource_count;
 	
 	public MinerNotFull(String name,int resource_limit,Point position,int rate)
 	{
-		super(name,position,rate,resource_limit);
-		this.resource_count = 0 ;
+		super(name,position,rate,resource_limit, 0);
+		//this.resource_count = 0 ;
 	}
 	
     

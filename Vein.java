@@ -17,7 +17,7 @@ public class Vein extends Mineral
 		this.resource_distance = 1 ;
 	}
 
-	public double get_resource_distance()
+	public int get_resource_distance()
 	{
 		return resource_distance;
 

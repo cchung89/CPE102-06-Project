@@ -4,15 +4,15 @@ public abstract class Character extends Location
 	private int resource_limit;
 	private int resource_count;
 
-	public Character(String name, Point position,int rate,int resource_limit)
+	public Character(String name, Point position,int rate,int resource_limit, int resource_count)
 	{	super(name, position);
 		this.rate = rate;
 		this.resource_limit = resource_limit;
-		this.resource_count = resource_limit;
+		this.resource_count = resource_count;
 
 	}
 
-	public int get_rate()
+	protected int get_rate()
 	{	return rate;
 
 
