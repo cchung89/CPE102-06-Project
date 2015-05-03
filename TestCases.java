@@ -6,13 +6,19 @@ public class TestCases
 	
 	@Test
 	public void testQuake()
-	{
+	{   
 		Point pt = new Point(1,2);
 		Quake brian = new Quake("Brian",pt);
+		Point setPt = new Point(7,9);
+		
 		assertTrue(brian.get_name().equals("Brian"));
 		assertEquals(brian.get_position().x ,1);
 		assertEquals(brian.get_position().y , 2);
+		brian.set_position(setPt);
+		assertEquals(brian.get_position().x, 7);
+		assertEquals(brian.get_position().y, 9);
 	}
+	
 	@Test
 	public void testOre()
 	{

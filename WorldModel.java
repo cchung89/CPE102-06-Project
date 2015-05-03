@@ -34,7 +34,7 @@ public class WorldModel
 		return within_bounds(pt) && occupancy[pt.y][pt.x] != null;
 	}
 
-	public double find_nearest(Point pt, Class type)
+	public Location find_nearest(Point pt, Class type)
 	{
 		List<Pair<Location, Double>> oftype = new ArrayList<Pair<Location, Double>>();
 		for (Location e : entities)
@@ -49,7 +49,7 @@ public class WorldModel
       	return nearest_entity(oftype);
 	}
 
-	private void add_entity(Location entity)
+	public void add_entity(Location entity)
 	{
 		Point pt = entity.get_position();
       	if (within_bounds(pt))
@@ -136,7 +136,7 @@ public class WorldModel
 		return this.entities;
 	}
 
-	public double nearest_entity(List<Pair<Location, Double>> entity_dists)
+	private Location nearest_entity(List<Pair<Location, Double>> entity_dists)
 	{
 		if (entity_dists.size() > 0)
 		{
@@ -154,7 +154,7 @@ public class WorldModel
    		{
       		Location nearest = null;
    		}
-   		return find_nearest(null, null);
+   		return nearest;
 	}
 
 	private double distance_sq(Point p1, Point p2)
