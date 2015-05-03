@@ -28,7 +28,7 @@ public abstract class Miner extends Character
 		clear_pending_actions();
 		remove_entity(this);
 	}
-	*/
+	
 
 	public Point next_position(WorldModel world,Point dest_pt)
 	{
@@ -50,5 +50,7 @@ public abstract class Miner extends Character
 		
 		//try_transform_miner, animations
 	}
+	
+	*/
 	
 }

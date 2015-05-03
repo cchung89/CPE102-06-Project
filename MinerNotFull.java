@@ -8,10 +8,7 @@ public class MinerNotFull extends Miner {
 		this.resource_count = 0 ;
 	}
 	
-    public void set_resource_count()
-    {
-    	resource_count = 0 ;
-    }
+    
 	
 	//add Miner to Ore
 }

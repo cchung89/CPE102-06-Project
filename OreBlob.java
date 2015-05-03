@@ -8,8 +8,11 @@ public class OreBlob extends Destroyer
 		}
 
 	public int get_rate()
-		{return rate;
+		{
+		  return rate;
 		}
+	
+	/*
 
 		//blob to vein , blob_next_position
 	public Point blob_next_position(Worldmodel world, Point dest_pt)
@@ -19,5 +22,6 @@ public class OreBlob extends Destroyer
 		
 		if (horiz == 0 || (world. is_occupied(new_pt)) && )
 	}
+	*/
 
 }

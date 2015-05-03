@@ -7,7 +7,9 @@ public class MinerFull extends Miner
 		super(name,position,rate,resource_limit);
 	}
 	
-	public boolean miner_to_smith(WorldModel world,Blacksmith smith)
+	/*
+	
+	public miner_to_smith(WorldModel world,Blacksmith smith)
 	{
 	 Point entity_pt = this.get_position();
 	 if (! smith)
@@ -36,5 +38,5 @@ public class MinerFull extends Miner
 	 
 	}
 	
-	
+	*/
 }
