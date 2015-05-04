@@ -14,12 +14,12 @@ public class WorldModel
 	//private action_queue;
 
 
-	public WorldModel(int num_rows, int num_cols, Entity background, List<Location> entities)
+	public WorldModel(int num_rows, int num_cols, Location[][] occupancy, Background[][] background, List<Location> entities)
 	{
-		this.background = new Background[num_cols][num_rows];
+		this.background = background;
 		this.num_rows = num_rows;
 		this.num_cols = num_cols;
-		this.occupancy = new Location[num_cols][num_rows];
+		this.occupancy = occupancy;
 		this.entities = entities;
 		//this.action_queue = new OrderedList();
 	}
@@ -29,7 +29,7 @@ public class WorldModel
 		return pt.x >= 0 && pt.x < num_cols && pt.y >= 0 && pt.y < num_rows;
 	}
 
-	private boolean is_occupied(Point pt)
+	public boolean is_occupied(Point pt)
 	{
 		return within_bounds(pt) && occupancy[pt.y][pt.x] != null;
 	}
@@ -152,7 +152,7 @@ public class WorldModel
 		}
    		else
    		{
-      		Location nearest = null;
+      		nearest = null;
    		}
    		return nearest;
 	}
