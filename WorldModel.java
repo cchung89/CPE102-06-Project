@@ -1,8 +1,6 @@
 import java.util.*;
 
-import javax.lang.model.type.NullType;
-
-import javafx.util.Pair;
+//import javafx.util.Pair;
 
 public class WorldModel
 {
@@ -36,17 +34,17 @@ public class WorldModel
 
 	public Location find_nearest(Point pt, Class type)
 	{
-		List<Pair<Location, Double>> oftype = new ArrayList<Pair<Location, Double>>();
+		List<Location> oftype = new ArrayList<Location>();
 		for (Location e : entities)
 		{
 			if (type.isInstance(e))
 			{
-				Pair<Location, Double> pair = new Pair<Location, Double>(e, distance_sq(pt, e.get_position()));
-				oftype.add(pair);
+				//Pair<Location, Double> position = new Pair<Location, Double>(e, distance_sq(pt, e.get_position()));
+				oftype.add(e);
 			}
 		}
 		
-      	return nearest_entity(oftype);
+      	return nearest_entity(oftype, pt);
 	}
 
 	public void add_entity(Location entity)
@@ -133,30 +131,39 @@ public class WorldModel
 
 	public List<Location> get_entities()
 	{
-		return this.entities;
+		return entities;
 	}
-
-	private Location nearest_entity(List<Pair<Location, Double>> entity_dists)
-	{
-		if (entity_dists.size() > 0)
-		{
-      		Pair<Location, Double> pair = entity_dists.get(0);
-      		for (Pair<Location, Double> other : entity_dists)
-      		{
-         		if (other.getValue() < pair.getValue())
-         		{
-            		pair = other;
-         		}
-      		}
-      		Location nearest = pair.getKey();
-		}
-   		else
-   		{
-      		nearest = null;
-   		}
-   		return nearest;
-	}
-
+	
+	private Location nearest_entity(List<Location> entity_list, Point pt)
+    {
+        if(entity_list.size() > 0)
+        {
+        	boolean first = true;
+        	double shortest = 0;
+        	Location closest_entity = null;
+            for(Location entity : entity_list)
+            {
+                if(first)
+                {
+                    shortest = distance_sq(pt, entity.get_position());
+                    closest_entity = entity;
+                    first = false;
+                }
+                else
+                {
+                	double distance = distance_sq(pt, entity.get_position());
+                    if(distance < shortest)
+                    {
+                        closest_entity = entity;
+                        shortest = distance;
+                    }
+                }
+            }
+            return closest_entity;
+        }
+        return null;
+    }
+	
 	private double distance_sq(Point p1, Point p2)
 	{
 		return (p1.x - p2.x)*(p1.x - p2.x) + (p1.y - p2.y)*(p1.y - p2.y);
