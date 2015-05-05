@@ -10,7 +10,7 @@ public class TestCases
 	Location blob = new OreBlob("blob", pt1, 500); //OreBlob object
 	
 	Point pt2 = new Point(0,2);
-	Location obstacle = new Obstacle("obstacle",pt2); //obstacle object
+	Location obstacle = new Obstacle("obstacle",pt2); //Obstacle object
 	
 	Point pt3 = new Point(1,2);
 	Location smith = new Blacksmith("smith", pt3, 15, 20 ,30); //Blacksmith object
@@ -18,16 +18,31 @@ public class TestCases
 	Point pt4 = new Point(2,3);
 	Location miner = new MinerNotFull("miner", 5 , pt4 , 500); //MinerNotFull Object
 	
-	Background[][] background = new Background[4][4];
-	List<Location> entities = new ArrayList<Location>(Arrays.asList(blob, obstacle, smith, miner));
+	Point pt5 = new Point(3,3);
+	Location obstacle2 = new Obstacle("obstacle2",pt5); //Another Obstacle object
+	
+	/*Background[][] background = new Background[4][4];
+	List<Location> entities = new ArrayList<Location>(Arrays.asList(blob, obstacle, smith, miner, obstacle2));
 	Location[][] occupancy = new Location[][] {
 		{null, null, blob, null},
 		{null, null, null, null},
 		{obstacle, smith, null, null},
-		{null, null, miner, null}
-	};
-	WorldModel world = new WorldModel(4, 4, occupancy, background, entities);
+		{null, null, miner, obstacle2}
+	};*/
 	
+	WorldModel world = new WorldModel(4, 4);
+	
+	//Added entity to the world for the test cases
+	public void createWorld()
+	{
+		world.add_entity(blob);
+		world.add_entity(obstacle);
+		world.add_entity(smith);
+		world.add_entity(miner);
+		world.add_entity(obstacle2);
+	}
+	
+	List<Location> entities = world.get_entities();
 	
 	@Test
 	public void testQuake()
@@ -164,77 +179,160 @@ public class TestCases
 	  assertTrue(img.get_name().equals("miner1"));
 	}
 	
+	//Within the bounds
 	@Test
-	public void test_is_occupied()
+	public void test_is_occupied_1()
 	{
+		world.add_entity(blob);
 		Point pt1 = blob.get_position();
 		Point pt2 = new Point(1,3);
+		
+		//occupied by a Oreblob
 		boolean result1 = world.is_occupied(pt1);
-		boolean result2 = world.is_occupied(pt2);
 		assertTrue(result1);
+		
+		//Not occupied by any entity
+		boolean result2 = world.is_occupied(pt2);
 		assertFalse(result2);
 	}
 	
+	//Outside the bounds
 	@Test
-	public void test_add_entity()
+	public void test_is_occupied_2()
+	{
+		Point pt = new Point (2, 5);
+		boolean result = world.is_occupied(pt);
+		assertFalse(result);
+	}
+	
+	//Within the bounds
+	@Test
+	public void test_add_entity_1()
 	{	
-		Point pt = new Point (0, 0);
+		world.add_entity(blob);
+		world.add_entity(obstacle);
+		world.add_entity(smith);
+		world.add_entity(miner);
+		world.add_entity(obstacle2);
+		Point pt = new Point(0, 0);
 		
 		//Before adding an entity
 		boolean result1 = world.is_occupied(pt);
-		assertEquals(entities.size(), 4);
+		assertEquals(entities.size(), 5);
 		assertFalse(result1);
 		
 		//After adding an entity
 		Ore ore = new Ore("ore" , pt);
 		world.add_entity(ore);
 		boolean result2 = world.is_occupied(pt);
-		assertEquals(entities.size(), 5);
-		assertEquals(entities.get(4), ore);
+		assertEquals(entities.size(), 6);
+		assertTrue(entities.contains(ore));
 		assertTrue(result2);
 	}
 	
+	//Outside the bounds
 	@Test
-	public void test_move_entity()
+	public void test_add_entity_2()
 	{
-		Point pt1 = miner.get_position();
-		Point pt2 = new Point(1, 3);
+		Point pt = new Point(-1, 0);
+		MinerFull miner2 = new MinerFull("miner2", 6, pt, 500);
+		world.add_entity(miner2);
+		boolean result = world.is_occupied(pt);
+		assertFalse(result);
+		assertFalse(entities.contains(miner2));
+	}
+	
+	//Within the bounds
+	@Test
+	public void test_move_entity_1()
+	{
+		Point miner_pt = miner.get_position();
+		Point moved_pt = new Point(1, 3);
 		
 		//Before moving the entity
-		boolean result1 = world.is_occupied(pt2);
+		boolean result1 = world.is_occupied(moved_pt);
 		assertFalse(result1);
 		
 		//After moving the entity
-		List<Point> tiles = world.move_entity(miner, pt2);
-		boolean result2 = world.is_occupied(pt2);
+		List<Point> tiles = world.move_entity(miner, moved_pt);
+		boolean result2 = world.is_occupied(moved_pt);
 		assertTrue(result2);
-		assertEquals(tiles.get(0), pt1);
-		assertEquals(tiles.get(1), pt2);
+		assertEquals(tiles.get(0), miner_pt);
+		assertEquals(tiles.get(1), moved_pt);
+	}
+	
+	//Outside the bounds
+	@Test
+	public void test_move_entity_2()
+	{
+		Point miner_pt = miner.get_position();
+		Point moved_pt = new Point(4, 4);
+		
+		List<Point> tiles = world.move_entity(miner, moved_pt);
+		boolean result = world.is_occupied(moved_pt);
+		assertFalse(result);
+		assertFalse(tiles.contains(miner_pt));
+		assertFalse(tiles.contains(moved_pt));
 	}
 	
 	@Test
-	public void test_remove_entity()
+	public void test_remove_entity_1()
 	{
+		world.add_entity(blob);
+		world.add_entity(obstacle);
+		world.add_entity(smith);
+		world.add_entity(miner);
+		world.add_entity(obstacle2);
 		Point pt = obstacle.get_position();
 		
-		//Before removing the entity;
+		//Before removing the entity obstacle;
 		boolean result1 = world.is_occupied(pt);
-		assertEquals(entities.size(), 4);
+		assertTrue(entities.contains(obstacle));
 		assertTrue(result1);
 		
-		//After removing the entity
+		//After removing the entity obstacle
 		world.remove_entity(obstacle);
 		boolean result2 = world.is_occupied(pt);
-		assertEquals(entities.size(), 3);
+		assertFalse(entities.contains(obstacle));
 		assertFalse(result2);
 	}
 	
 	@Test
-	public void test_get_tile_occupant()
+	public void test_remove_entity_2()
 	{
+		world.add_entity(blob);
+		world.add_entity(obstacle);
+		world.add_entity(smith);
+		world.add_entity(miner);
+		world.add_entity(obstacle2);
+		Point pt = new Point(3, 4);
+		Quake quake = new Quake("quake", pt);
+		
+		/*check if "removing" an object that doesn't exist in the world affect anything,
+		  it shouldn't remove anything if it works properly*/
+		world.remove_entity(quake);
+		boolean result = world.is_occupied(pt); 
+		assertFalse(result);
+		assertEquals(entities.size(), 5); //make sure it doesn't remove any object when it is not suppose to
+		//remove_entity implicitly already check whether an object existed in a position
+	}
+	
+	//Within the bounds
+	@Test
+	public void test_get_tile_occupant_1()
+	{
+		world.add_entity(smith);
 		Point pt = smith.get_position();
 		Location occupant = world.get_tile_occupant(pt);
 		assertEquals(occupant, smith);
+	}
+	
+	@Test
+	public void test_tile_occupant_2()
+	{
+		Point pt = new Point(3, 4);
+		Location occupant = world.get_tile_occupant(pt);
+		assertEquals(occupant, null);
 	}
 	
 	@Test
@@ -247,7 +345,14 @@ public class TestCases
 	@Test
 	public void test_find_nearest()
 	{
-		
+		world.add_entity(blob);
+		world.add_entity(obstacle);
+		world.add_entity(smith);
+		world.add_entity(miner);
+		world.add_entity(obstacle2);
+		Point pt = new Point(2, 2);
+		Location closest_entity = world.find_nearest(pt, Obstacle.class);
+		assertEquals(closest_entity, obstacle2);
 	}
 	
 }
