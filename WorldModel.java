@@ -8,17 +8,17 @@ public class WorldModel
 	private int num_rows;
 	private int num_cols;
 	private Location[][] occupancy;
-	private List<Location> entities = new ArrayList<Location>();
+	private List<Location> entities;
 	//private action_queue;
 
 
-	public WorldModel(int num_rows, int num_cols, Location[][] occupancy, Background[][] background, List<Location> entities)
+	public WorldModel(int num_rows, int num_cols)
 	{
-		this.background = background;
+		this.background = new Background[num_rows][num_cols];
 		this.num_rows = num_rows;
 		this.num_cols = num_cols;
-		this.occupancy = occupancy;
-		this.entities = entities;
+		this.occupancy = new Location[num_rows][num_cols];
+		this.entities = new ArrayList<Location>();
 		//this.action_queue = new OrderedList();
 	}
 
@@ -39,7 +39,6 @@ public class WorldModel
 		{
 			if (type.isInstance(e))
 			{
-				//Pair<Location, Double> position = new Pair<Location, Double>(e, distance_sq(pt, e.get_position()));
 				oftype.add(e);
 			}
 		}
@@ -52,7 +51,7 @@ public class WorldModel
 		Point pt = entity.get_position();
       	if (within_bounds(pt))
       	{
-        	Entity old_entity = occupancy[pt.y][pt.x];
+        	Location old_entity = occupancy[pt.y][pt.x];
         	if (old_entity != null)
         	{
             //entities.clear_pending_actions(old_entity);
