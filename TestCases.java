@@ -185,15 +185,15 @@ public class TestCases
 	public void test_is_occupied_1()
 	{
 		world.add_entity(blob);
-		Point pt1 = blob.get_position();
-		Point pt2 = new Point(1,3);
+		Point blob_pt = blob.get_position();
+		Point other_pt = new Point(1,3);
 		
 		//occupied by a Oreblob
-		boolean result1 = world.is_occupied(pt1);
+		boolean result1 = world.is_occupied(blob_pt);
 		assertTrue(result1);
 		
 		//Not occupied by any entity
-		boolean result2 = world.is_occupied(pt2);
+		boolean result2 = world.is_occupied(other_pt);
 		assertFalse(result2);
 	}
 	
@@ -326,8 +326,8 @@ public class TestCases
 		world.remove_entity(quake);
 		boolean result = world.is_occupied(pt); 
 		assertFalse(result);
-		assertEquals(entities.size(), 5); //make sure it doesn't remove any object when it is not suppose to
-		//remove_entity implicitly already check whether an object existed in a position
+		assertEquals(entities.size(), 5); 
+		//make sure it doesn't remove any object when it is not suppose to
 	}
 	
 	//Within the bounds
@@ -335,11 +335,19 @@ public class TestCases
 	public void test_get_tile_occupant_1()
 	{
 		world.add_entity(smith);
-		Point pt = smith.get_position();
-		Location occupant = world.get_tile_occupant(pt);
-		assertEquals(occupant, smith);
+		Point smith_pt = smith.get_position();
+		Point empty_pt = new Point(3, 0);
+		
+		//Blacksmith is at this position
+		Location occupant1 = world.get_tile_occupant(smith_pt);
+		assertEquals(occupant1, smith);
+		
+		//No entity is at this position
+		Location occupant2 = world.get_tile_occupant(empty_pt);
+		assertEquals(occupant2, null);
 	}
 	
+	//Outside the bounds
 	@Test
 	public void test_tile_occupant_2()
 	{
@@ -373,7 +381,7 @@ public class TestCases
 		assertEquals(closest_entity, obstacle2);
 	}
 	
-	//When there are no entities in th world
+	//When there are no entities in the world
 	@Test
 	public void test_find_nearest_2()
 	{

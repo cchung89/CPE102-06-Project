@@ -1,7 +1,5 @@
 import java.util.*;
 
-//import javafx.util.Pair;
-
 public class WorldModel
 {
 	private Background[][] background;
@@ -95,29 +93,14 @@ public class WorldModel
 		}
 	}
 
-	/*public Entity get_background_image(Point pt)
-	{
-		if (within_bounds(pt))
-		{
-         	return background[pt.y][pt.x].get_image();
-		}
-	}
+	//methods implemented for the next assignment
+	/*
+	public Entity get_background_image(Point pt)
 
 	public Entity get_background(Point pt)
-	{
-		if (within_bounds(pt))
-		{
-         	return background[pt.y][pt.x];
-		}
-	}
 
 	public void set_background(Point pt, Background bgnd)
-	{
-		if (within_bounds(pt))
-		{
-         	background[pt.y][pt.x] = bgnd;
-		}
-	}*/
+	*/
 
 	public Location get_tile_occupant(Point pt)
 	{

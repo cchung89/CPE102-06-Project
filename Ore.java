@@ -12,6 +12,13 @@ public class Ore
 		super(name,position, 5000);
 	}
 	
-	//public entity string and schedule/action methods
+	//method implemented for the next assignments
+	/*
+	public String entity_string()
+	
+	public void schedule_ore(WorldModel world, int ticks, PImage i_store)
+	
+	public Action create_ore_action(WorldModel world, PImage i_store)
+	*/
 	
 }

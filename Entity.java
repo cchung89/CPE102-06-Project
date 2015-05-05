@@ -18,20 +18,11 @@ public abstract class Entity
 	
 	//image methods for next assignment
 	/*
-	public get_images()
-	{
-		return imgs;
-	}
+	public List<PImage> get_images()
 
-	public get_image()
-	{
-		return imgs[current_img];
-	}
+	public PImage get_image()
 
 	public void next_image()
-	{
-		current_img = (current_img + 1) % imgs.size();
-	}
 	*/
 }
 

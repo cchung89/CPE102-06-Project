@@ -14,8 +14,14 @@ public class OreBlob
 		  return rate;
 		}
 	
+	//methods implemented for the next assignments
 	/*
-		//blob to vein , blob_next_position
+	public Action create_ore_blob_action(WorldModel world, PImage i_store)
+	
 	public Point blob_next_position(Worldmodel world, Point dest_pt)
+	
+	public Pair<List<Point>, Boolean> blob_to_vein(WorldModel world, Vein vein)
+	
+	public void schedule_blob(WorldModel world int ticks, PImage i_store)
 	*/
 }

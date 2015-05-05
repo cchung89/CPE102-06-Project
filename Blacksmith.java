@@ -1,4 +1,5 @@
-public class Blacksmith extends Character
+public class Blacksmith 
+	extends Character
 {
 	private int resource_distance;
 	
@@ -7,20 +8,13 @@ public class Blacksmith extends Character
 	{
 		super(name,position, rate,resource_limit, 0);
 		this.resource_distance = resource_distance;
-		
-		
 	}
 	
-
 	public  int get_resource_distance()
 		{
-
 			return resource_distance;
 		}
 
-
-	//entity string
-
-
-
+	//methods implemented for the next assignment
+	//public String entity_string()
 }

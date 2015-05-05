@@ -21,6 +21,12 @@ public class Vein
 		return resource_distance;
 	}
 
-	//public string entity_string
-	//schedule methods/actions
+	//methods implemented for thee next assignment
+	/*
+	public String entity_string()
+	
+	public void schedule_vein(WorldModel world, int ticks, PImage i_store)
+	
+	public Action create_vein_action(WorldModel world, PImage i_store)
+	*/
 }
