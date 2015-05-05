@@ -1,4 +1,5 @@
-public class Obstacle extends Location
+public class Obstacle 
+	extends Location
 {
 	public Obstacle(String name, Point position)
 		{
@@ -6,6 +7,4 @@ public class Obstacle extends Location
 		}
 
 	//entity string
-
-
 }
