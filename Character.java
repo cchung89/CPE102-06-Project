@@ -1,4 +1,4 @@
-public abstract class Character extends Location
+public abstract class Character extends Job
 {
 	private int rate;
 	private int resource_limit;
