@@ -5,7 +5,7 @@ import static org.junit.Assert.assertFalse;
 import java.util.*;
 public class TestCases
 {   
-	//Testing entity objects
+	//Testing entity objects in a self-defined world
 	Point pt1 = new Point(2,0);
 	Location blob = new OreBlob("blob", pt1, 500); //OreBlob object
 	
@@ -21,28 +21,7 @@ public class TestCases
 	Point pt5 = new Point(3,3);
 	Location obstacle2 = new Obstacle("obstacle2",pt5); //Another Obstacle object
 	
-	/*Background[][] background = new Background[4][4];
-	List<Location> entities = new ArrayList<Location>(Arrays.asList(blob, obstacle, smith, miner, obstacle2));
-	Location[][] occupancy = new Location[][] {
-		{null, null, blob, null},
-		{null, null, null, null},
-		{obstacle, smith, null, null},
-		{null, null, miner, obstacle2}
-	};*/
-	
-	WorldModel world = new WorldModel(4, 4);
-	
-	//Added entity to the world for the test cases
-	public void createWorld()
-	{
-		world.add_entity(blob);
-		world.add_entity(obstacle);
-		world.add_entity(smith);
-		world.add_entity(miner);
-		world.add_entity(obstacle2);
-	}
-	
-	List<Location> entities = world.get_entities();
+	WorldModel world = new WorldModel(4, 4); // 4 by 4 grid world
 	
 	@Test
 	public void testQuake()
@@ -52,8 +31,10 @@ public class TestCases
 		Point setPt = new Point(7,9);
 		
 		assertTrue(brian.get_name().equals("Brian"));
-		assertEquals(brian.get_position().x ,1);
+		assertEquals(brian.get_position().x , 1);
 		assertEquals(brian.get_position().y , 2);
+		
+		//object position changed
 		brian.set_position(setPt);
 		assertEquals(brian.get_position().x, 7);
 		assertEquals(brian.get_position().y, 9);
@@ -64,6 +45,7 @@ public class TestCases
 	{
 		Point pt = new Point(5,7);
 		Ore chin = new Ore("Chin", pt , 10);
+		
 		assertTrue(chin.get_name().equals("Chin"));
 		assertEquals(chin.get_position().x , 5);
 		assertEquals(chin.get_position().y , 7);
@@ -75,6 +57,7 @@ public class TestCases
 	{
 		Point pt = new Point(6,7);
 		Ore chin = new Ore("chin" , pt );
+		
 		assertEquals(chin.get_rate() ,5000);
 	}
 	
@@ -83,6 +66,7 @@ public class TestCases
 	{
 		Point pt = new Point(4,5);
 		OreBlob bob = new OreBlob("blob", pt, 500);
+		
 		assertTrue(bob.get_name().equals("blob"));
 		assertEquals(bob.get_position().x , 4);
 		assertEquals(bob.get_position().y , 5);
@@ -95,21 +79,25 @@ public class TestCases
 		Point pt = new Point(7,8);
 		Point setPt = new Point(7,2);
 		Vein edward = new Vein("eddy",25, pt , 500);
+		
 		assertTrue(edward.get_name().equals("eddy"));
 		assertEquals(edward.get_rate() , 25);
 		assertEquals(edward.get_position().x , 7);
 		assertEquals(edward.get_position().y,8);
 		assertEquals(edward.get_resource_distance(),500);
+		
+		//object position changed
 		edward.set_position(setPt);
 		assertEquals(edward.get_position().x , 7);
 		assertEquals(edward.get_position().y , 2);
-		
 	}
 	
 	@Test
 	public void testVeinDefault()
-	{   Point pt = new Point(1,2);
+	{   
+		Point pt = new Point(1,2);
 		Vein edward = new Vein("brian",25, pt);
+		
 		assertEquals(edward.get_resource_distance(),1);
 	}
 	
@@ -118,15 +106,18 @@ public class TestCases
 	{
 		Point pt = new Point(5,5);
 		Obstacle mayweather = new Obstacle("mayweather",pt);
+		
 		assertTrue(mayweather.get_name().equals("mayweather"));
 		assertEquals(mayweather.get_position().x , 5);
 		assertEquals(mayweather.get_position().y,5);
 	}
+	
 	@Test
 	public void testBlackSmith()
 	{
 		Point pt = new Point(8,8);
 		Blacksmith chin = new Blacksmith("chin", pt, 15,20 ,30);
+		
 		assertTrue(chin.get_name().equals("chin"));
 		assertEquals(chin.get_position().x , 8);
 		assertEquals(chin.get_position().y , 8);
@@ -147,8 +138,12 @@ public class TestCases
 		assertEquals(bob.get_position().y , 4);
 		assertEquals(bob.get_rate(), 500);
 		assertEquals(bob.get_resource_count() , 0 );
+		
+		//resource count changed
 		bob.set_resource_count(5);
 		assertEquals(bob.get_resource_count(), 5);
+		
+		//object position changed
 		bob.set_position(setPt);
 		assertEquals(bob.get_position().x , 4);
 		assertEquals(bob.get_position().y, 3);
@@ -160,14 +155,19 @@ public class TestCases
 		Point pt = new Point(8,9);
 		Point setPt = new Point (1,0);
 		MinerFull brian = new MinerFull("brian" , 5 , pt , 144);
+		
 		assertTrue(brian.get_name().equals("brian"));
 		assertEquals(brian.get_resource_limit() , 5);
 		assertEquals(brian.get_position().x , 8);
 		assertEquals(brian.get_position().y , 9);
 		assertEquals(brian.get_rate() , 144);
 		assertEquals(brian.get_resource_count(), 5);
+		
+		//resource count changed
 		brian.set_resource_count(2);
 		assertEquals(brian.get_resource_count() ,  2);
+		
+		//object position changed
 		brian.set_position(setPt);
 		assertEquals(brian.get_position().x , 1);
 		assertEquals(brian.get_position().y , 0);
@@ -175,8 +175,9 @@ public class TestCases
 	
 	@Test
 	public void testBackground()
-	{ Background img = new Background("miner1");
-	  assertTrue(img.get_name().equals("miner1"));
+	{ 
+		Background img = new Background("miner1");
+		assertTrue(img.get_name().equals("miner1"));
 	}
 	
 	//Within the bounds
@@ -214,6 +215,7 @@ public class TestCases
 		world.add_entity(smith);
 		world.add_entity(miner);
 		world.add_entity(obstacle2);
+		List<Location> entities = world.get_entities();
 		Point pt = new Point(0, 0);
 		
 		//Before adding an entity
@@ -236,6 +238,8 @@ public class TestCases
 	{
 		Point pt = new Point(-1, 0);
 		MinerFull miner2 = new MinerFull("miner2", 6, pt, 500);
+		List<Location> entities = world.get_entities();
+		
 		world.add_entity(miner2);
 		boolean result = world.is_occupied(pt);
 		assertFalse(result);
@@ -246,17 +250,22 @@ public class TestCases
 	@Test
 	public void test_move_entity_1()
 	{
+		world.add_entity(miner);
 		Point miner_pt = miner.get_position();
 		Point moved_pt = new Point(1, 3);
 		
 		//Before moving the entity
-		boolean result1 = world.is_occupied(moved_pt);
-		assertFalse(result1);
+		boolean before_result_1 = world.is_occupied(miner_pt);
+		boolean before_result_2 = world.is_occupied(moved_pt);
+		assertTrue(before_result_1);
+		assertFalse(before_result_2);
 		
 		//After moving the entity
 		List<Point> tiles = world.move_entity(miner, moved_pt);
-		boolean result2 = world.is_occupied(moved_pt);
-		assertTrue(result2);
+		boolean after_result_1 = world.is_occupied(miner_pt);
+		boolean after_result_2 = world.is_occupied(moved_pt);
+		assertFalse(after_result_1);
+		assertTrue(after_result_2);
 		assertEquals(tiles.get(0), miner_pt);
 		assertEquals(tiles.get(1), moved_pt);
 	}
@@ -283,16 +292,19 @@ public class TestCases
 		world.add_entity(smith);
 		world.add_entity(miner);
 		world.add_entity(obstacle2);
+		List<Location> entities = world.get_entities();
 		Point pt = obstacle.get_position();
 		
 		//Before removing the entity obstacle;
 		boolean result1 = world.is_occupied(pt);
+		assertEquals(entities.size(), 5);
 		assertTrue(entities.contains(obstacle));
 		assertTrue(result1);
 		
 		//After removing the entity obstacle
 		world.remove_entity(obstacle);
 		boolean result2 = world.is_occupied(pt);
+		assertEquals(entities.size(), 4);
 		assertFalse(entities.contains(obstacle));
 		assertFalse(result2);
 	}
@@ -305,6 +317,7 @@ public class TestCases
 		world.add_entity(smith);
 		world.add_entity(miner);
 		world.add_entity(obstacle2);
+		List<Location> entities = world.get_entities();
 		Point pt = new Point(3, 4);
 		Quake quake = new Quake("quake", pt);
 		
@@ -338,12 +351,17 @@ public class TestCases
 	@Test
 	public void test_get_entities()
 	{
-		List<Location> worldObj = world.get_entities();
-		assertEquals(entities, worldObj);
+		world.add_entity(blob);
+		world.add_entity(obstacle);
+		List<Location> entities = world.get_entities();
+		assertEquals(entities.size(), 2);
+		assertEquals(entities.get(0), blob);
+		assertEquals(entities.get(1), obstacle);
 	}
 	
+	//When there are entities in the world
 	@Test
-	public void test_find_nearest()
+	public void test_find_nearest_1()
 	{
 		world.add_entity(blob);
 		world.add_entity(obstacle);
@@ -353,6 +371,15 @@ public class TestCases
 		Point pt = new Point(2, 2);
 		Location closest_entity = world.find_nearest(pt, Obstacle.class);
 		assertEquals(closest_entity, obstacle2);
+	}
+	
+	//When there are no entities in th world
+	@Test
+	public void test_find_nearest_2()
+	{
+		Point pt = new Point(3, 1);
+		Location closest_entity = world.find_nearest(pt,  Obstacle.class);
+		assertEquals(closest_entity, null);
 	}
 	
 }
