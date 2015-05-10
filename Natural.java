@@ -1,16 +1,24 @@
+import java.util.*;
+import processing.core.*;
+
 public abstract class Natural 
 	extends Job
 { 
-	public Natural(String name, Point position)
+	public Natural(String name, List<PImage> imgs, Point position)
 	{
-	  super(name,position);
+	  super(name, imgs, position);
 	}
 
-	//methods implemented for the next assignments
 	/*
-	public void schedule_action(world,action,time)
-
-	public void remove_entity(world)
-	*/
+	protected void schedule_action(WorldModel world, Job action, long time)
+	{
+		
 	}
+	
+	protected void remove_entity(WorldModel world)
+	{
+		
+	}
+	*/
+}
 

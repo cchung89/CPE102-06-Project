@@ -1,17 +1,25 @@
+import java.util.*;
+import processing.core.*;
+
 public abstract class Destroyer 
 	extends Natural
 {
-	public Destroyer(String name, Point position)
+	private int animation_rate;
+	
+	public Destroyer(String name, List<PImage> imgs, Point position, int animation_rate)
 	{
-		super(name, position);
+		super(name, imgs, position);
+		this.animation_rate = animation_rate;
 	}
 	
-	//methods implemented for the next assignments
 	/*
-	public void schedue_animation(WorldModel world, int repeat_count)
+	protected void schedule_animation(WorldModel world, int repeat_count)
 	
-	public Action create_animation_action(WorldModel world, int repeat_count)
+	protected Action create_animation_action(WorldModel world, int repeat_count)
+	*/
 	
-	public int get_animation_rate()
-	 */
+	protected int get_animation_rate()
+	{
+		return animation_rate;
+	}
 }

@@ -1,12 +1,13 @@
+import java.util.*;
+import processing.core.*;
+
 public class Quake
 	extends Destroyer
 {
-		public Quake (String name, Point position)
+		public Quake (String name, List<PImage> imgs, Point position, int animation_rate)
 		{
-			super(name, position );
+			super(name, imgs, position, animation_rate);
 		}
-		
-		//methods implemented for the next assignment
 		/*
 		public Action create_entity_death_action(WorldModel world)
 		

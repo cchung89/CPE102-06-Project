@@ -1,11 +1,14 @@
+import java.util.*;
+import processing.core.*;
+
 public class OreBlob 
 	extends Destroyer
 {
 	private int rate;
 	
-	public OreBlob(String name,Point position, int rate)
+	public OreBlob(String name, List<PImage> imgs, Point position, int rate, int animation_rate)
 		{
-			super(name,position);
+			super(name, imgs, position, animation_rate);
 			this.rate = rate;
 		}
 
@@ -13,8 +16,6 @@ public class OreBlob
 		{
 		  return rate;
 		}
-	
-	//methods implemented for the next assignments
 	/*
 	public Action create_ore_blob_action(WorldModel world, PImage i_store)
 	

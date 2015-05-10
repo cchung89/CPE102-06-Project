@@ -1,17 +1,20 @@
+import java.util.*;
+import processing.core.*;
+
 public abstract class Location 
 	extends Entity
 {
 	private Point position;
 	
-	public Location(String name, Point position)
+	public Location(String name, List<PImage> imgs, Point position)
 	{
-      super(name);
+      super(name, imgs);
       this.position = position;
 	}
 
-	public void set_position(Point point)
+	public void set_position(Point pt)
 	{
-		position = point;
+		position = pt;
 	}
 
 	public Point get_position()

@@ -1,3 +1,6 @@
+import java.util.*;
+import processing.core.*;
+
 public abstract class Character 
 	extends Job
 {
@@ -5,9 +8,9 @@ public abstract class Character
 	private int resource_limit;
 	private int resource_count;
 
-	public Character(String name, Point position, int rate, int resource_limit, int resource_count)
+	public Character(String name, List<PImage> imgs, Point position, int rate, int resource_limit, int resource_count)
 	{	
-		super(name, position);
+		super(name, imgs, position);
 		this.rate = rate;
 		this.resource_limit = resource_limit;
 		this.resource_count = resource_count;

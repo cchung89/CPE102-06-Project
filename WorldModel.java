@@ -1,6 +1,8 @@
 import java.util.*;
 
-public class WorldModel
+import processing.core.*;
+
+public class WorldModel extends PApplet
 {
 	private Background[][] background;
 	private int num_rows;
@@ -93,14 +95,31 @@ public class WorldModel
 		}
 	}
 
-	//methods implemented for the next assignment
-	/*
-	public Entity get_background_image(Point pt)
-
-	public Entity get_background(Point pt)
+	public PImage get_background_image(Point pt)
+	{
+		if (within_bounds(pt))
+		{
+    		return background[pt.y][pt.x].get_image();
+		}
+		return g;
+	}
+	
+	public Background get_background(Point pt)
+	{
+		if (within_bounds(pt))
+		{
+    		return background[pt.y][pt.x];
+    	}
+		return null;
+	}
 
 	public void set_background(Point pt, Background bgnd)
-	*/
+	{
+		if (within_bounds(pt))
+		{
+         	background[pt.y][pt.x] = bgnd;
+		}
+	}
 
 	public Location get_tile_occupant(Point pt)
 	{

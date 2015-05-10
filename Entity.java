@@ -1,14 +1,18 @@
-public abstract class Entity
+import java.util.*;
+import processing.core.*;
+
+public abstract class Entity 
+	extends PApplet
 {	
 	private String name;
-	//private  imgs;
-	//private  current_img;
+	private List<PImage> imgs;
+	private int current_img;
   
-	public Entity (String name)
+	public Entity (String name, List<PImage> imgs)
 	{
 		this.name = name;
-		//this.imgs = imgs;
-		//this.current_img = 0;
+		this.imgs = imgs;
+		this.current_img = 0;
 	}
 	
 	public String get_name()
@@ -16,13 +20,19 @@ public abstract class Entity
 		return name;
 	}
 	
-	//image methods for next assignment
-	/*
 	public List<PImage> get_images()
-
+	{
+		return imgs;
+	}
+	
 	public PImage get_image()
+	{
+		return imgs.get(current_img);
+	}
 
 	public void next_image()
-	*/
+	{
+		current_img = (current_img + 1) % imgs.size();
+	}
 }
 
