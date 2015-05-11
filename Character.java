@@ -13,7 +13,7 @@ public abstract class Character
 		super(name, imgs, position);
 		this.rate = rate;
 		this.resource_limit = resource_limit;
-		this.resource_count = resource_count;
+		this.resource_count = 0;
 	}
 
 	public int get_rate()

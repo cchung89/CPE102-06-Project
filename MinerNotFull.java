@@ -5,10 +5,9 @@ import static java.util.Arrays.asList;
 public class MinerNotFull 
 	extends Miner
 {
-	public MinerNotFull(String name, List<PImage> imgs, int resource_limit, Point position, int rate, int animation_rate)
+	public MinerNotFull(String name, List<PImage> imgs, int resource_limit, int resource_count, Point position, int rate, int animation_rate)
 	{
-		super(name, imgs, position, rate, resource_limit, 0, animation_rate);
-		//this.resource_count = 0 ;
+		super(name, imgs, position, rate, resource_limit, resource_count, animation_rate);
 	}
 
 	public String entity_string()

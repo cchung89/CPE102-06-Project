@@ -8,11 +8,10 @@ public class Blacksmith
 {
 	private int resource_distance;
 	
-	
-	public Blacksmith(String name, List<PImage> imgs, Point position, int resource_limit, int rate, int resource_distance)
+	public Blacksmith(String name, List<PImage> imgs, Point position, int resource_limit, int resource_count, int rate, int resource_distance)
 	{
-		super(name, imgs, position, rate, resource_limit, 0);
-		this.resource_distance = resource_distance;
+		super(name, imgs, position, rate, resource_limit, resource_count);
+		this.resource_distance = 1;
 	}
 	
 	protected int get_resource_distance()

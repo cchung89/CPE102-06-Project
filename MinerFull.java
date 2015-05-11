@@ -4,9 +4,9 @@ import processing.core.*;
 public class MinerFull 
 	extends Miner 
 {
-	public MinerFull(String name, List<PImage> imgs, int resource_limit, Point position, int rate, int animation_rate)
+	public MinerFull(String name, List<PImage> imgs, int resource_limit, int resource_count, Point position, int rate, int animation_rate)
 	{
-		super(name, imgs, position, rate,resource_limit, resource_limit, animation_rate);
+		super(name, imgs, position, rate, resource_limit, resource_limit, animation_rate);
 	}
 	
 	//methods implemented for next assignment
