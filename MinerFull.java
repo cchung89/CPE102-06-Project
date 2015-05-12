@@ -10,13 +10,21 @@ public class MinerFull
 	}
 	
 	//methods implemented for next assignment
-	/*
+	
 	public Action create_miner_full_action(WorldModel world, PImage i_store)
 	
-	public Action create_miner_action(WorldModel world, PImage i_store)
-	
+	public Action create_miner_action(WorldModel world, PImage image_store)
+	{
+		return this.create_miner_action(world, image_store);
+	}
 	public List<Pair<Point>, Boolean> miner_to_smith(WorldModel world,Blacksmith smith)
 	
 	public MinerNotFull try_transform_minr_full(WorldModel world)
-	*/
+	{
+		new_entity = new MinerNotFull(this.get_name(),this.get_images(), this.get_resource_limit(), 
+				this.get_position(), this.get_rate() , 
+				this.get_animation_rate());
+		return new_entity;
+	}
+	
 }
