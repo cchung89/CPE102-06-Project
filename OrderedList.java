@@ -11,7 +11,7 @@ public class OrderedList {
 	{
 		int size = list.size();
 		int idx = 0;
-		while(idx < size && this.list[idx].ord < ord)
+		while(idx < size && this.list.get(idx).get_ord() < ord)
 		{
 			idx+=1;
 		}
@@ -23,7 +23,7 @@ public class OrderedList {
 	{
 		int size = list.size();
 		int idx = 0;
-		while(idx<size && this.list[idx].item != item)
+		while(idx<size && this.list.get(idx).get_item() != item)
 		{
 			idx += 1;
 		}
@@ -36,7 +36,7 @@ public class OrderedList {
 	
 	public ListItem head()
 	{
-		return this.list[0] if this.list else null ;
+		return this.list.get(0) if (this.list) {;}else {null;} ;
 	}
 	
 	public ListItem pop()
