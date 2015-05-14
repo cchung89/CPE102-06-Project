@@ -7,7 +7,7 @@ public class OrderedList {
 		this.list = list ;
 	}
 	
-	public void insert( item, int ord )
+	public void insert( Function item, int ord )
 	{
 		int size = list.size();
 		int idx = 0;
@@ -19,7 +19,7 @@ public class OrderedList {
 		this.list.subList(idx,idx) = [ListItem(item,item)] ;
 	}
 
-	public void remove(actions item)
+	public void remove(Function item)
 	{
 		int size = list.size();
 		int idx = 0;
@@ -30,7 +30,7 @@ public class OrderedList {
 		
 		if (idx<size)
 		{
-			this.list.subList(idx, idx+1) = [] ;
+			this.list.subList(idx, idx+1) = [ ] ;
 		}
 	}
 	

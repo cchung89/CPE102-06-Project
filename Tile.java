@@ -23,12 +23,12 @@ public class Tile {
 		return y;
 	}
 	
-	public int width()
+	public int get_width()
 	{
 		return width;
 	}
 
-	public int height()
+	public int get_height()
 	{
 		return height;
 	}

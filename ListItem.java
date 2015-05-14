@@ -1,9 +1,9 @@
 
 public class ListItem {
-	private action item;
+	private Function item;
 	private int ord;
 	
-	public ListItem(action item, int ord)
+	public ListItem(Function item, int ord)
 	
 	{
 		this.item = item;

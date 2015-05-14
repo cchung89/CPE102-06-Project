@@ -4,7 +4,7 @@ import processing.core.*;
 public abstract class Job 
 	extends Location
 {
-	private List<Job> pending_actions;
+	private List<Function> pending_actions = new ArrayList<Function>();
 	
 	public Job(String name, List<PImage> imgs, Point position)
 	{

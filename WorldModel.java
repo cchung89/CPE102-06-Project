@@ -106,6 +106,32 @@ public class WorldModel extends PApplet
          	occupancy[pt.y][pt.x] = null;
 		}
 	}
+	
+	public void schedule_action(Function action, int time)
+	{
+	      this.action_queue.insert(Function action, time);
+	}
+
+	public void unschedule_action(Function action)
+	{
+	      this.action_queue.remove(action);
+	}
+
+	public void update_on_time(long ticks)
+	{
+	      List<Tile> tiles = new ArrayList<Tile>() ;
+
+	      ListItem next = this.action_queue.head()
+	      while (next and next.ord < ticks)
+	      {
+	         self.action_queue.pop()
+	         tiles.extend(next.item(ticks))  # invoke action function
+	         next = self.action_queue.head()
+	      }
+
+	      return tiles
+	}
+
 
 	public PImage get_background_image(Point pt)
 	{
