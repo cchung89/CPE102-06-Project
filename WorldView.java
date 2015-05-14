@@ -64,16 +64,16 @@ public class WorldView
     	this.draw_background();
     	this.draw_entities();
     }
-//default????
-public void update_view( view_delta)
+
+public void update_view(int [ ] view_delta)
 {
-	Rectangle this.viewport = create_shifted_viewport(this.viewport , view_delta, this.num_rows , this.num_cols);
+	this.viewport = create_shifted_viewport(this.viewport , view_delta, this.num_rows , this.num_cols);
 	this.draw_viewport();
 	//display.update draw??
 	
 	
 }
-
+/*
 public void update_view_tiles( List<Tile> tiles)
 {   
 	List<Rectangle> rects = new ArrayList<Rectangle>();
@@ -122,12 +122,11 @@ public PImage get_tile_image(Point view_tile_pt)
 }
 
 
+*/
 
 
 
-
-//Functions
-public static Point  viewport_to_world(Rectangle viewport, Point pt)
+public static Point viewport_to_world(Rectangle viewport, Point pt)
 {
 
       return new Point(pt.x + viewport.get_left(), pt.y + viewport.get_top()) ;
@@ -142,7 +141,7 @@ public static int  clamp(int v, int low, int high)
       return Math.min(high, Math.max(v, low)) ;
 }
 
-public static Rectangle create_shifted_viewport(Rectangle viewport, delta, int num_rows, int num_cols)
+public static Rectangle create_shifted_viewport(Rectangle viewport, int [ ] delta, int num_rows, int num_cols)
 {
       int new_x = clamp(viewport.get_left() + delta[0], 0, num_cols - viewport.get_width());
       int new_y = clamp(viewport.get_top() + delta[1], 0, num_rows - viewport.get_height());

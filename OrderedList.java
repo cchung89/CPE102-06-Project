@@ -16,7 +16,7 @@ public class OrderedList {
 			idx+=1;
 		}
 		
-		this.list.subList(idx,idx) = [ListItem(item,item)] ;
+		this.list.add(idx, ListItem(item,ord));
 	}
 
 	public void remove(Function item)
@@ -30,20 +30,31 @@ public class OrderedList {
 		
 		if (idx<size)
 		{
-			this.list.subList(idx, idx+1) = [ ] ;
+			this.list.remove(idx) ;
 		}
 	}
 	
 	public ListItem head()
 	{
-		return this.list.get(0) if (this.list) {;}else {null;} ;
+		if (!this.list.isEmpty())
+		{
+		return this.list.get(0);
+	
+		}	
+		
+		else
+		{
+			return null;
+		}
+		
+	
 	}
 	
 	public ListItem pop()
 	{
-		if (this.list)
+		if (!this.list.isEmpty())
 		{
-			return this.list.pop(0)
+			return this.list.pop(0);
 		}
 	}
 
