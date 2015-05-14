@@ -9,7 +9,7 @@ public class WorldModel extends PApplet
 	private int num_cols;
 	private Location[][] occupancy;
 	private List<Location> entities;
-	//private action_queue;
+	private OrderedList action_queue;
 
 
 	public WorldModel(int num_rows, int num_cols)
@@ -19,8 +19,20 @@ public class WorldModel extends PApplet
 		this.num_cols = num_cols;
 		this.occupancy = new Location[num_rows][num_cols];
 		this.entities = new ArrayList<Location>();
-		//this.action_queue = new OrderedList();
+		this.action_queue = new OrderedList();
 	}
+	
+	public int get_num_rows()
+	{
+		return num_rows;
+	}
+	
+	public int get_num_cols()
+	{
+		return num_cols;
+	}
+	
+
 
 	private boolean within_bounds(Point pt)
 	{

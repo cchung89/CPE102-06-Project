@@ -7,7 +7,7 @@ public class OrderedList {
 		this.list = list ;
 	}
 	
-	public void insert(actions item, int ord )
+	public void insert( item, int ord )
 	{
 		int size = list.size();
 		int idx = 0;
