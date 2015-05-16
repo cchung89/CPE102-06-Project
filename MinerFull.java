@@ -24,7 +24,7 @@ public class MinerFull
           	if (tiles_found.getValue())
           	{
           		new_entity = this.try_transform_miner(world, 
-             				this.try_transform_miner_full);
+             				this::try_transform_miner_full);
           	}
           	new_entity.schedule_action(world,
              				new_entity.create_miner_action(world, i_store),

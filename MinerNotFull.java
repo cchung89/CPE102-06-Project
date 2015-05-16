@@ -31,12 +31,11 @@ public class MinerNotFull
           	Point entity_pt = this.get_position();
           	Ore ore = (Ore) world.find_nearest(entity_pt, Ore.class);
           	SimpleEntry<List<Point>, Boolean> tiles_found = this.miner_to_ore(world, ore);
-          	List<Point> tiles = tiles_found.getKey();
           	Miner new_entity = this;
           	if (tiles_found.getValue())
           	{
           		new_entity = this.try_transform_miner(world, 
-             				try_transform_miner_not_full);
+             				this::try_transform_miner_not_full);
           	}
           	new_entity.schedule_action(world,
              				new_entity.create_miner_action(world, i_store),
