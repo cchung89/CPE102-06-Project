@@ -163,10 +163,10 @@ public class Save_load
       	{
       		Point miner_pt = new Point(Integer.parseInt(properties[MINER_COL]), Integer.parseInt(properties[MINER_ROW]));
       		Miner miner = new MinerNotFull(properties[MINER_NAME],
+      					Integer.parseInt(properties[MINER_LIMIT]),
+      					miner_pt,
+      					Integer.parseInt(properties[MINER_RATE]),
       					Image_store.get_images(i_store, properties[PROPERTY_KEY]),
-         				Integer.parseInt(properties[MINER_LIMIT]),
-         				miner_pt,
-         				Integer.parseInt(properties[MINER_RATE]),
          				Integer.parseInt(properties[MINER_ANIMATION_RATE]));
       		return miner;
       	}
@@ -179,9 +179,10 @@ public class Save_load
    		if (properties.length == VEIN_NUM_PROPERTIES)
       	{
       		Point vein_pt = new Point(Integer.parseInt(properties[VEIN_COL]), Integer.parseInt(properties[VEIN_ROW]));
-      		Vein vein = new Vein(properties[VEIN_NAME], Image_store.get_images(i_store, properties[PROPERTY_KEY]),
+      		Vein vein = new Vein(properties[VEIN_NAME],
       					Integer.parseInt(properties[VEIN_RATE]),
-         				vein_pt,
+      					vein_pt,
+      					Image_store.get_images(i_store, properties[PROPERTY_KEY]),
          				Integer.parseInt(properties[VEIN_REACH]));
       		return vein;
       	}
@@ -195,8 +196,8 @@ public class Save_load
       	{
       		Point ore_pt = new Point(Integer.parseInt(properties[ORE_COL]), Integer.parseInt(properties[ORE_ROW]));
       		Ore ore = new Ore(properties[ORE_NAME],
+      					ore_pt,
       					Image_store.get_images(i_store, properties[PROPERTY_KEY]),
-         				ore_pt,
          				Integer.parseInt(properties[ORE_RATE]));
       		return ore;
       	}
@@ -210,9 +211,10 @@ public class Save_load
       	{
       		Point smith_pt = new Point(Integer.parseInt(properties[SMITH_COL]), Integer.parseInt(properties[SMITH_ROW]));
       		Blacksmith smith = new Blacksmith(properties[SMITH_NAME],
+      					smith_pt,
       					Image_store.get_images(i_store, properties[PROPERTY_KEY]),
-         				smith_pt,
-         				Integer.parseInt(properties[SMITH_LIMIT]), 0, Integer.parseInt(properties[SMITH_RATE]),
+         				Integer.parseInt(properties[SMITH_LIMIT]), 
+         				Integer.parseInt(properties[SMITH_RATE]),
          				Integer.parseInt(properties[SMITH_REACH]));
       		return smith;
       	}
@@ -225,9 +227,10 @@ public class Save_load
       	{
       		Point obstacle_pt = new Point(Integer.parseInt(properties[OBSTACLE_COL]), Integer.parseInt(properties[OBSTACLE_ROW]));
       		Obstacle obstacle = new Obstacle(properties[OBSTACLE_NAME],
-      						Image_store.get_images(i_store, properties[PROPERTY_KEY]),
-         					obstacle_pt
+      						obstacle_pt,
+      						Image_store.get_images(i_store, properties[PROPERTY_KEY])
          					);
+      		return obstacle;
         }
 		return null;
     }

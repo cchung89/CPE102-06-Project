@@ -6,7 +6,7 @@ import static java.util.Arrays.asList;
 public class Obstacle 
 	extends Location
 {
-	public Obstacle(String name, List<PImage> imgs, Point position)
+	public Obstacle(String name, Point position, List<PImage> imgs)
 		{
 			super(name, imgs, position);
 		}

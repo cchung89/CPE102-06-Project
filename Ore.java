@@ -8,13 +8,13 @@ import java.util.function.*;
 public class Ore 
 	extends Mineral
 {
-	public Ore (String name, List<PImage> imgs, Point position, int rate)
+	public Ore (String name, Point position, List<PImage> imgs, int rate)
 	{
 		super(name, imgs, position, rate);
 	}
 	
 	//method overloading
-	public Ore(String name, List<PImage> imgs, Point position)
+	public Ore(String name, Point position, List<PImage> imgs)
 	{
 		super(name, imgs, position, 5000);
 	}

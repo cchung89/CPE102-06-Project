@@ -7,7 +7,7 @@ import java.util.function.*;
 public class MinerNotFull 
 	extends Miner
 {
-	public MinerNotFull(String name, List<PImage> imgs, int resource_limit, Point position, int rate, int animation_rate)
+	public MinerNotFull(String name, int resource_limit, Point position, int rate, List<PImage> imgs, int animation_rate)
 	{
 		super(name, imgs, position, rate, resource_limit, 0, animation_rate);
 	}
@@ -52,9 +52,8 @@ public class MinerNotFull
 		}
 		else
 		{
-			Miner new_entity = new MinerFull(this.get_name(), this.get_images(),this.get_resource_limit(),
-					this.get_resource_count(),
-					this.get_position(), this.get_rate(), 
+			Miner new_entity = new MinerFull(this.get_name(), this.get_resource_limit(), 
+					this.get_position(), this.get_rate(),  this.get_images(),
 					this.get_animation_rate());
 			return new_entity;
 		}

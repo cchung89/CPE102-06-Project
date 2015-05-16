@@ -6,7 +6,7 @@ import processing.core.*;
 public class Quake
 	extends Destroyer
 {
-		public Quake (String name, List<PImage> imgs, Point position, int animation_rate)
+		public Quake (String name, Point position, List<PImage> imgs, int animation_rate)
 		{
 			super(name, imgs, position, animation_rate);
 		}

@@ -8,14 +8,14 @@ public class Vein
 {
 	private int resource_distance;
 
-	public Vein(String name, List<PImage> imgs, int rate, Point position, int resource_distance)
+	public Vein(String name, int rate, Point position, List<PImage> imgs, int resource_distance)
 	{
 		super(name, imgs, position, rate);
 		this.resource_distance = resource_distance;	
 	}
 	
 	//method overloading 
-	public Vein(String name, List<PImage> imgs, int rate, Point position)
+	public Vein(String name, int rate, Point position, List<PImage> imgs)
 	{
 		super(name, imgs, position, rate);
 		this.resource_distance = 1 ;

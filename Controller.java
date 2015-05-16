@@ -2,33 +2,35 @@ import processing.core.*;
 
 public class Controller {
 
-private static final int  EY_DELAY = 400;
-private static final int KEY_INTERVAL = 100;
+	private static final int KEY_DELAY = 400;
+	private static final int KEY_INTERVAL = 100;
 
-private static final int TIMER_FREQUENCY = 100;
+	private static final int TIMER_FREQUENCY = 100;
 
-public static int [ ] keyPressed (event)
+	public static int [ ] keyPressed (event)
 {
-int [ ] value; 
-int x_delta = 0;
-int y_delta = 0;
+	int [ ] value; 
+	int x_delta = 0;
+	int y_delta = 0;
 
-switch(key)
-{
-case 'w':
-	{y_delta -= 1;
-	
+	switch(key)
+	{
+	case 'w':
+	{
+		y_delta -= 1;
 	}
-case 's':
-{
-  y_delta +=1;	
-}
-case'a':
-{
-	x_delta -=1;
-}
-case'd':
-	x_delta+=1;
+	case 's':
+	{
+		y_delta +=1;	
+	}
+	case'a':
+	{
+		x_delta -=1;
+	}
+	case'd':
+	{
+		x_delta+=1;
+	}
 			   
 }
 value = new int[] {x_delta,y_delta} ;

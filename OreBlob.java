@@ -9,7 +9,7 @@ public class OreBlob
 {
 	private int rate;
 	
-	public OreBlob(String name, List<PImage> imgs, Point position, int rate, int animation_rate)
+	public OreBlob(String name, Point position, int rate, List<PImage> imgs, int animation_rate)
 		{
 			super(name, imgs, position, animation_rate);
 			this.rate = rate;

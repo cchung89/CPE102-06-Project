@@ -61,8 +61,8 @@ public class Actions
 
    public static OreBlob create_blob(WorldModel world, String name, Point pt, int rate, long ticks, HashMap<String, List<PImage>> i_store)
    {
-      OreBlob blob = new OreBlob(name, Image_store.get_images(i_store, "blob"), 
-    		  pt, rate, ((int)Math.random() * BLOB_ANIMATION_MAX + BLOB_ANIMATION_MIN)
+      OreBlob blob = new OreBlob(name, pt, rate, Image_store.get_images(i_store, "blob"), 
+    		  ((int)Math.random() * BLOB_ANIMATION_MAX + BLOB_ANIMATION_MIN)
     		  * BLOB_ANIMATION_RATE_SCALE);
       blob.schedule_blob(world, ticks, i_store);
       return blob;
@@ -71,7 +71,7 @@ public class Actions
 
    public static Ore create_ore(WorldModel world, String name, Point pt, long ticks, HashMap<String, List<PImage>> i_store)
    {
-      Ore ore = new Ore(name,  Image_store.get_images(i_store, "ore"), pt,
+      Ore ore = new Ore(name, pt, Image_store.get_images(i_store, "ore"), 
          (int)Math.random() * (ORE_CORRUPT_MAX + 1 - ORE_CORRUPT_MIN) + ORE_CORRUPT_MIN);
       ore.schedule_ore(world,  ticks, i_store);
 
@@ -80,7 +80,7 @@ public class Actions
 
    public static Quake create_quake(WorldModel world, Point pt, long ticks, HashMap<String, List<PImage>> i_store)
    {
-      Quake quake = new Quake("quake", Image_store.get_images(i_store, "quake"), pt,
+      Quake quake = new Quake("quake", pt, Image_store.get_images(i_store, "quake"), 
           QUAKE_ANIMATION_RATE);
       quake.schedule_quake(world,  ticks);
       return quake;
@@ -88,9 +88,9 @@ public class Actions
 
    public static Vein create_vein(WorldModel world, String name, Point pt, long ticks, HashMap<String, List<PImage>> i_store)
    {
-      Vein vein = new Vein("vein" + name, Image_store.get_images(i_store, "vein"),
-         (int)Math.random() * (VEIN_RATE_MAX + 1 - VEIN_RATE_MIN) + VEIN_RATE_MIN,
-         pt);
+      Vein vein = new Vein("vein" + name, 
+    		  		((int)Math.random() * (VEIN_RATE_MAX + 1 - VEIN_RATE_MIN) + VEIN_RATE_MIN),
+    		  		pt, Image_store.get_images(i_store, "vein"));
       return vein;
    }
 }
