@@ -1,4 +1,6 @@
 import java.util.*;
+import java.util.function.*;
+
 import processing.core.*;
 
 public class Quake
@@ -8,9 +10,21 @@ public class Quake
 		{
 			super(name, imgs, position, animation_rate);
 		}
-		/*
-		public Action create_entity_death_action(WorldModel world)
 		
-		public void schedule_quake(WorldModel world, int ticks)
-		*/
+		public LongConsumer create_entity_death_action(WorldModel world)
+		{
+			LongConsumer [] action = {null};
+			action[0] = (long current_ticks) -> {
+				this.remove_pending_action(action[0]);
+          		this.remove_entity(world);
+			};
+       		return action[0];
+		}
+		
+		public void schedule_quake(WorldModel world, long ticks)
+		{
+			this.schedule_animation(world, Actions.QUAKE_STEPS); 
+			this.schedule_action(world, this.create_entity_death_action(world),
+          					ticks + Actions.QUAKE_DURATION);
+		}
 }

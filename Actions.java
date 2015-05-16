@@ -1,20 +1,23 @@
+import java.util.*;
+import processing.core.*;
+
 public class Actions
 {
-   private static final int BLOB_RATE_SCALE = 4;
-   private static final int BLOB_ANIMATION_RATE_SCALE = 50;
-   private static final int BLOB_ANIMATION_MIN = 1;
-   private static final int BLOB_ANIMATION_MAX = 3;
+   public static final int BLOB_RATE_SCALE = 4;
+   public static final int BLOB_ANIMATION_RATE_SCALE = 50;
+   public static final int BLOB_ANIMATION_MIN = 1;
+   public static final int BLOB_ANIMATION_MAX = 3;
 
-   private static final int ORE_CORRUPT_MIN = 20000;
-   private static final int ORE_CORRUPT_MAX = 30000;
+   public static final int ORE_CORRUPT_MIN = 20000;
+   public static final int ORE_CORRUPT_MAX = 30000;
 
-   private static final int QUAKE_STEPS = 10;
-   private static final int QUAKE_DURATION = 1100;
-   private static final int QUAKE_ANIMATION_RATE = 100;
+   public static final int QUAKE_STEPS = 10;
+   public static final int QUAKE_DURATION = 1100;
+   public static final int QUAKE_ANIMATION_RATE = 100;
 
-   private static final int VEIN_SPAWN_DELAY = 500;
-   private static final int VEIN_RATE_MIN = 8000;
-   private static final int VEIN_RATE_MAX = 17000;
+   public static final int VEIN_SPAWN_DELAY = 500;
+   public static final int VEIN_RATE_MIN = 8000;
+   public static final int VEIN_RATE_MAX = 17000;
 
 
    public static int sign(int x)
@@ -35,19 +38,19 @@ public class Actions
 
    public static boolean adjacent(Point pt1, Point pt2)
    {
-      return (pt1.x == pt2.x && abs(pt1.y - pt2.y) == 1) ||
-            (pt1.y == pt2.y && abs(pt1.x - pt2.x) == 1);
+      return (pt1.x == pt2.x && Math.abs(pt1.y - pt2.y) == 1) ||
+            (pt1.y == pt2.y && Math.abs(pt1.x - pt2.x) == 1);
    }
 
    public static Point find_open_around(WorldModel world, Point pt, int distance)
    {
-      for (int dx = -distance; dx < distance + 1; x++)
+      for (int dx = -distance; dx < distance + 1; dx++)
       {
-         for (int dy = -distance; dy < distance + 1; y++)
+         for (int dy = -distance; dy < distance + 1; dy++)
          {
             Point new_pt = new Point(pt.x + dx, pt.y + dy);
 
-            if (within_bounds(new_pt) && !(is_occupied(new_pt)))
+            if (world.within_bounds(new_pt) && !(world.is_occupied(new_pt)))
             {
                return new_pt;
             }
@@ -56,39 +59,39 @@ public class Actions
       return null;
    }
 
-   public static OreBlob create_blob(WorldModel world, String name, Point pt, int rate, int ticks, HashMap<String, List<PImage>> i_store)
+   public static OreBlob create_blob(WorldModel world, String name, Point pt, int rate, long ticks, HashMap<String, List<PImage>> i_store)
    {
-      Entity blob = new OreBlob(name, pt, rate,
-         image_store.get_images(i_store, 'blob'),
-         random(BLOB_ANIMATION_MIN, BLOB_ANIMATION_MAX)
+      OreBlob blob = new OreBlob(name, pt, rate,
+         image_store.get_images(i_store, "blob"),
+         ((int)Math.random() * BLOB_ANIMATION_MAX + BLOB_ANIMATION_MIN)
          * BLOB_ANIMATION_RATE_SCALE);
       blob.schedule_blob(world, ticks, i_store);
       return blob;
    }
 
 
-   public static Ore create_ore(WorldModel world, String name, Point pt, int ticks, HashMap<String, List<PImage>> i_store)
+   public static Ore create_ore(WorldModel world, String name, Point pt, long ticks, HashMap<String, List<PImage>> i_store)
    {
-      entity ore = new Ore(name, pt, image_store.get_images(i_store, 'ore'),
-         random(ORE_CORRUPT_MIN, ORE_CORRUPT_MAX));
+      Ore ore = new Ore(name, pt, image_store.get_images(i_store, "ore"),
+         (int)Math.random() * (ORE_CORRUPT_MAX + 1 - ORE_CORRUPT_MIN) + ORE_CORRUPT_MIN);
       ore.schedule_ore(world,  ticks, i_store);
 
       return ore;
    }
 
-   public static Quake create_quake(WorldModel world, Point pt, int ticks, HashMap<String, List<PImage>> i_store)
+   public static Quake create_quake(WorldModel world, Point pt, long ticks, HashMap<String, List<PImage>> i_store)
    {
-      Entity quake = new Quake("quake", pt,
-         image_store.get_images(i_store, 'quake'), QUAKE_ANIMATION_RATE);
+      Quake quake = new Quake("quake", pt,
+         image_store.get_images(i_store, "quake"), QUAKE_ANIMATION_RATE);
       quake.schedule_quake(world,  ticks);
       return quake;
    }
 
-   public static Vein create_vein(WorldModel world, String name, Point pt, int ticks, HashMap<String, List<PImage>> i_store)
+   public static Vein create_vein(WorldModel world, String name, Point pt, long ticks, HashMap<String, List<PImage>> i_store)
    {
-      Entity vein = new Vein("vein" + name,
-         random(VEIN_RATE_MIN, VEIN_RATE_MAX),
-         pt, image_store.get_images(i_store, 'vein'));
+      Vein vein = new Vein("vein" + name,
+         (int)Math.random() * (VEIN_RATE_MAX + 1 - VEIN_RATE_MIN) + VEIN_RATE_MIN,
+         pt, image_store.get_images(i_store, "vein"));
       return vein;
    }
 }

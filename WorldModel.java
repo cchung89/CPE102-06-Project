@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.function.*;
 
 import processing.core.*;
 
@@ -7,8 +8,8 @@ public class WorldModel extends PApplet
 	private Background[][] background;
 	private int num_rows;
 	private int num_cols;
-	private Location[][] occupancy;
-	private List<Location> entities;
+	private Job[][] occupancy;
+	private List<Job> entities;
 	private OrderedList action_queue;
 
 
@@ -17,8 +18,8 @@ public class WorldModel extends PApplet
 		this.background = new Background[num_rows][num_cols];
 		this.num_rows = num_rows;
 		this.num_cols = num_cols;
-		this.occupancy = new Location[num_rows][num_cols];
-		this.entities = new ArrayList<Location>();
+		this.occupancy = new Job[num_rows][num_cols];
+		this.entities = new ArrayList<Job>();
 		this.action_queue = new OrderedList();
 	}
 	
@@ -31,10 +32,8 @@ public class WorldModel extends PApplet
 	{
 		return num_cols;
 	}
-	
 
-
-	private boolean within_bounds(Point pt)
+	public boolean within_bounds(Point pt)
 	{
 		return pt.x >= 0 && pt.x < num_cols && pt.y >= 0 && pt.y < num_rows;
 	}
@@ -44,10 +43,10 @@ public class WorldModel extends PApplet
 		return within_bounds(pt) && occupancy[pt.y][pt.x] != null;
 	}
 
-	public Location find_nearest(Point pt, Class type)
+	public Job find_nearest(Point pt, Class type)
 	{
-		List<Location> oftype = new ArrayList<Location>();
-		for (Location e : entities)
+		List<Job> oftype = new ArrayList<Job>();
+		for (Job e : entities)
 		{
 			if (type.isInstance(e))
 			{
@@ -58,22 +57,22 @@ public class WorldModel extends PApplet
       	return nearest_entity(oftype, pt);
 	}
 
-	public void add_entity(Location entity)
+	public void add_entity(Job entity)
 	{
 		Point pt = entity.get_position();
       	if (within_bounds(pt))
       	{
-        	Location old_entity = occupancy[pt.y][pt.x];
+        	Job old_entity = occupancy[pt.y][pt.x];
         	if (old_entity != null)
         	{
-            //entities.clear_pending_actions(old_entity);
+            	old_entity.clear_pending_actions();
         	}
         	occupancy[pt.y][pt.x] = entity;
         	entities.add(entity);
       	}
 	}
 
-	public List<Point> move_entity(Location entity, Point pt)
+	public List<Point> move_entity(Job entity, Point pt)
 	{
 		List<Point> tiles = new ArrayList<Point>();
 
@@ -95,7 +94,7 @@ public class WorldModel extends PApplet
 		remove_entity_at(entity.get_position());
 	}
 
-	private void remove_entity_at(Point pt)
+	public void remove_entity_at(Point pt)
 	{
 		if (within_bounds(pt) && occupancy[pt.y][pt.x] != null)
 		{
@@ -106,32 +105,31 @@ public class WorldModel extends PApplet
          	occupancy[pt.y][pt.x] = null;
 		}
 	}
-	
-	public void schedule_action(Function action, int time)
-	{
-	      this.action_queue.insert(Function action, time);
-	}
 
-	public void unschedule_action(Function action)
-	{
-	      this.action_queue.remove(action);
-	}
+	public void schedule_action(LongConsumer action, long time)
+    {
+    	this.action_queue.insert(action, time);
+    }
 
-	public void update_on_time(long ticks)
-	{
-	      List<Tile> tiles = new ArrayList<Tile>() ;
+    public void unschedule_action(LongConsumer action)
+    {
+    	this.action_queue.remove(action);
+    }
 
-	      ListItem next = this.action_queue.head()
-	      while (next and next.ord < ticks)
-	      {
-	         self.action_queue.pop()
-	         tiles.extend(next.item(ticks))  # invoke action function
-	         next = self.action_queue.head()
-	      }
+    public List<LongConsumer> update_on_time(long ticks)
+    {
+    	tiles = [];
 
-	      return tiles
-	}
+      	next = this.action_queue.head();
+      	while (next != null && next.ord < ticks)
+        {
+        	this.action_queue.pop();
+         	tiles.extend(next.item(ticks));
+         	next = this.action_queue.head();
+        }
 
+      	return tiles;
+    }
 
 	public PImage get_background_image(Point pt)
 	{
@@ -139,7 +137,7 @@ public class WorldModel extends PApplet
 		{
     		return background[pt.y][pt.x].get_image();
 		}
-		return g;
+		return null;
 	}
 	
 	public Background get_background(Point pt)
@@ -159,7 +157,7 @@ public class WorldModel extends PApplet
 		}
 	}
 
-	public Location get_tile_occupant(Point pt)
+	public Job get_tile_occupant(Point pt)
 	{
 		if (within_bounds(pt))
 		{
@@ -168,19 +166,19 @@ public class WorldModel extends PApplet
 		return null;
 	}
 
-	public List<Location> get_entities()
+	public List<Job> get_entities()
 	{
 		return entities;
 	}
 	
-	private Location nearest_entity(List<Location> entity_list, Point pt)
+	private Location nearest_entity(List<Job> entity_list, Point pt)
     {
         if(entity_list.size() > 0)
         {
         	boolean first = true;
         	double shortest = 0;
-        	Location closest_entity = null;
-            for(Location entity : entity_list)
+        	Job closest_entity = null;
+            for(Job entity : entity_list)
             {
                 if(first)
                 {

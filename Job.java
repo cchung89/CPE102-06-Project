@@ -1,35 +1,38 @@
 import java.util.*;
+
 import processing.core.*;
+
+import java.util.function.*;
 
 public abstract class Job 
 	extends Location
 {
-	private List<Function> pending_actions = new ArrayList<Function>();
+	private List<LongConsumer> pending_actions;
 	
 	public Job(String name, List<PImage> imgs, Point position)
 	{
 		super(name, imgs, position);
-		this.pending_actions = new ArrayList<Job>();
+		this.pending_actions = new ArrayList<LongConsumer>();
 	}
 	
-	public void remove_pending_actions(Job action)
+	public void remove_pending_action(LongConsumer action)
 	{
 		pending_actions.remove(action);
 	}
 
-	public void add_pending_action(Job action)
+	public void add_pending_action(LongConsumer action)
 	{
 		pending_actions.add(action);
 	}
 	
-	public List<Job> get_pending_actions()
+	public List<LongConsumer> get_pending_actions()
 	{
 		return pending_actions;
 	}
 
 	public void clear_pending_actions()
 	{
-		pending_actions = new ArrayList<Job>();
+		pending_actions = new ArrayList<LongConsumer>();
 	}
 	
 }

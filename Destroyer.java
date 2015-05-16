@@ -1,5 +1,6 @@
 import java.util.*;
 import processing.core.*;
+import java.util.function.*;
 
 public abstract class Destroyer 
 	extends Natural
@@ -15,32 +16,25 @@ public abstract class Destroyer
 	
 	protected void schedule_animation(WorldModel world, int repeat_count)
 	{
-		
-	}
-	//default 
-	protected void schedule_animation(WorldModel world)
-	{
-		this.schedule_action(world,this.create_animation_action(world, 0),
-				this.get_animation_rate());
+		this.schedule_action(world, 
+          				this.create_animation_action(world, repeat_count),
+          				this.get_animation_rate());
 	}
 	
-	protected Action create_animation_action(WorldModel world, int repeat_count)
+	protected LongConsumer create_animation_action(WorldModel world, int repeat_count)
 	{
-		protected Action action(current_ticks)
-		{
-			this.remove_pending_action(action);
-			this.next_image();
-			
-			if (repeat_count != 1)
-			{
-				this.schedule_action(world, this.create_animation_action(world, 
-						Math.max(repeat_count - 1, 0)),
-						current_ticks + this.get_animation_rate()) ;
-			}
-			return [this.get_position];
-		}
-		
-		return action;
+		LongConsumer[] action = { null };
+		action[0] = (long current_ticks) -> {
+			this.remove_pending_action(action[0]);
+            this.next_image();
+            if (repeat_count != 1)
+            {
+                this.schedule_action(world, 
+                    this.create_animation_action(world, max(repeat_count - 1, 0)),
+                current_ticks + this.get_animation_rate());
+            }
+		};
+        return action[0];
 	}
 	
 	
