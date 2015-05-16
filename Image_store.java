@@ -1,20 +1,42 @@
+import java.io.*;
+import java.util.Scanner;
+import processing.core.*;
+import java.util.*;
+
+
 public class Image_store
 {
-   private static final String DEFAULT_IMAGE_NAME = 'background_default';
-   private static final DEFAULT_IMAGE_COLOR = (128, 128, 128, 0);
-
-
-   public static PImage create_default_image(int tile_width, int tile_height)
+   //private static final String DEFAULT_IMAGE_NAME = 'background_default';
+   //private static final DEFAULT_IMAGE_COLOR = (128, 128, 128, 0);
+   private static final int FILE_IDX = 0;
+   private static final int MIN_ARGS = 1;
+   private Scanner imageFile;
+   
+   private static boolean verifyArguments(String [] args)
    {
-      PImage surf = pygame.Surface((tile_width, tile_height));
-      surf.fill(DEFAULT_IMAGE_COLOR);
-      return surf;
+      return args.length >= MIN_ARGS;
+   }
+   
+   public static void readFile(Scanner in)
+   {
+	   
+	   
+	   while(in.hasNextLine())
+	   {
+		   String [ ] words = in.nextLine().split("//s");
+		   String type = words[0];
+		   String
+		   
+	   }
    }
 
-   public static Dictionary<String, List<PImage>> load_images(File filename, int tile_width, int tile_height):
-   {
-      Dictionary<String, List<PImage>> images = new Dictionary<String, List<PImage>>();
-      with open(filename) as fstr:
+   
+   public static PImage load_images(Scanner in, int tile_width, int tile_height):
+   {  PImage [] image;
+
+      while(in.hasNextLine())
+    	  
+      { String [ ] words = in.nextLine().split("//s");
          for (line : fstr)
          {
             process_image_line(images, line);
@@ -31,7 +53,7 @@ public class Image_store
 
    public static void process_image_line(List<PImage> images, String line)
    {
-      List<String> attrs = new ArrayList<String> line.split();
+      List<String> attrs = new ArrayList<String> line.split("//s");
       if (attrs.size() >= 2)
       {
          String key = attrs.get(0);
