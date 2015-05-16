@@ -6,8 +6,8 @@ import processing.core.*;
 public class WorldModel extends PApplet
 {
 	private Background[][] background;
-	private int num_rows;
-	private int num_cols;
+	public final int num_rows;
+	public final int num_cols;
 	private Job[][] occupancy;
 	private List<Job> entities;
 	private OrderedList action_queue;

@@ -67,7 +67,7 @@ public abstract class Miner
           	this.clear_pending_actions();
           	world.remove_entity_at(this.get_position());
           	world.add_entity(new_entity);
-          	new_entity.schedule_animation(world);
+          	new_entity.schedule_animation(world, 0);
         }
        	return new_entity; 
 	}
@@ -94,5 +94,7 @@ public abstract class Miner
 		};
         return action[0];
 	}
+	
+	protected abstract LongConsumer create_miner_action(WorldModel world, HashMap<String, List<PImage>> image_store);
 	
 }

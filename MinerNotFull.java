@@ -100,6 +100,6 @@ public class MinerNotFull
 	{
 		this.schedule_action(world, this.create_miner_action(world, i_store),
 				ticks + this.get_rate());
-		this.schedule_animation(world);
+		this.schedule_animation(world, 0);
 	}
 }
