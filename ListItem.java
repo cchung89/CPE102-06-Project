@@ -1,21 +1,28 @@
+import java.util.function.*;
 
 public class ListItem {
-	private Function item;
-	private int ord;
+	private LongConsumer item;
+	private long ord;
 	
-	public ListItem(Function item, int ord)
+	public ListItem(LongConsumer item, long ord)
 	
 	{
 		this.item = item;
 		this.ord = ord;
 	}
-	public action get_item()
+	
+	public LongConsumer get_item()
 	{
 		return item;
 	}
-	public int get_ord()
+	
+	public long get_ord()
 	{
 		return ord;
 	}
 
+	public boolean equals(ListItem other)
+	{
+		return this.item == other.item && this.ord == other.ord;
+	}
 }

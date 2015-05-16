@@ -30,7 +30,7 @@ public abstract class Destroyer
             if (repeat_count != 1)
             {
                 this.schedule_action(world, 
-                    this.create_animation_action(world, max(repeat_count - 1, 0)),
+                    this.create_animation_action(world, Math.max(repeat_count - 1, 0)),
                 current_ticks + this.get_animation_rate());
             }
 		};

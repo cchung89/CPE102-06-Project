@@ -14,7 +14,7 @@ public class Obstacle
 	public String entity_string()
 	{
 		List<String> strings = new ArrayList<String>(asList(
-				"blacksmith", this.get_name(), String.valueOf(this.get_position().x),
+				"obstacle", this.get_name(), String.valueOf(this.get_position().x),
 		         String.valueOf(this.get_position().y)));
 		String result = String.join(" ", strings);
 		return result;

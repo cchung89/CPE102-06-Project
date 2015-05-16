@@ -1,14 +1,14 @@
 import java.util.*;
+
 import processing.core.*;
 
-public abstract class Entity 
-	extends PApplet
+public abstract class Entity
 {	
 	private String name;
 	private List<PImage> imgs;
 	private int current_img;
-  
-	public Entity (String name, List<PImage> imgs)
+	
+	public Entity(String name, List<PImage> imgs)
 	{
 		this.name = name;
 		this.imgs = imgs;

@@ -57,7 +57,7 @@ public abstract class Miner
 	
 	public Miner try_transform_miner(WorldModel world, Function<WorldModel, Miner> transform)
 	{
-		Miner new_entity = transform(world);
+		Miner new_entity = transform.apply(world);
        	if (this != new_entity)
        	{
           	for (LongConsumer action : this.get_pending_actions())
@@ -88,7 +88,7 @@ public abstract class Miner
             if (repeat_count != 1)
             {
                 this.schedule_action(world, 
-                    this.create_animation_action(world, max(repeat_count - 1, 0)),
+                    this.create_animation_action(world, Math.max(repeat_count - 1, 0)),
                 current_ticks + this.get_animation_rate());
             }
 		};

@@ -1,88 +1,113 @@
 import java.io.*;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
+
 import processing.core.*;
+
 import java.util.*;
 
 
 public class Image_store
+	extends PApplet
 {
-   //private static final String DEFAULT_IMAGE_NAME = 'background_default';
-   //private static final DEFAULT_IMAGE_COLOR = (128, 128, 128, 0);
-   private static final int FILE_IDX = 0;
-   private static final int MIN_ARGS = 1;
-   private Scanner imageFile;
+	private static final int COLOR_MASK = 0xffffff;
+	public static final String DEFAULT_IMAGE_NAME = "background_default";
+	private final int DEFAULT_IMAGE_COLOR = color(128, 128, 128);
+	private static final int FILE_IDX = 0;
+	private static final int MIN_ARGS = 1;
+	private Scanner imageFile;
    
-   private static boolean verifyArguments(String [] args)
-   {
-      return args.length >= MIN_ARGS;
-   }
+	private static boolean verifyArguments(String [] args)
+	{
+		return args.length >= MIN_ARGS;
+	}
    
-   public static void readFile(Scanner in)
-   {
+	public static void readFile(Scanner in)
+	{
 	   
 	   
-	   while(in.hasNextLine())
-	   {
-		   String [ ] words = in.nextLine().split("//s");
-		   String type = words[0];
-		   String
+		while(in.hasNextLine())
+		{
+			String [ ] words = in.nextLine().split("//s");
+			String type = words[0];
+			String
 		   
-	   }
-   }
+		}
+	}
 
    
-   public static PImage load_images(Scanner in, int tile_width, int tile_height):
-   {  PImage [] image;
+	public static PImage load_images(Scanner in, int tile_width, int tile_height)
+			throws IOException
+	{
+		PImage [] image;
 
-      while(in.hasNextLine())
+		while(in.hasNextLine())
     	  
-      { String [ ] words = in.nextLine().split("//s");
-         for (line : fstr)
-         {
-            process_image_line(images, line);
-         }
+		{ String [ ] words = in.nextLine().split("//s");
+         	for (line : fstr)
+         	{
+         		process_image_line(images, line);
+         	}
 
-      if (DEFAULT_IMAGE_NAME not in images)
-         {
-            PImage default_image = create_default_image(tile_width, tile_height);
-            images[DEFAULT_IMAGE_NAME] = [default_image];
-         }
+         	if (DEFAULT_IMAGE_NAME not in images)
+         	{
+         		PImage default_image = create_default_image(tile_width, tile_height);
+         		images[DEFAULT_IMAGE_NAME] = [default_image];
+         	}
 
-      return images;
-   }
+         	return images;
+		}
+	}
 
-   public static void process_image_line(List<PImage> images, String line)
-   {
-      List<String> attrs = new ArrayList<String> line.split("//s");
-      if (attrs.size() >= 2)
-      {
-         String key = attrs.get(0);
-         PImage img = pygame.image.load(attrs[1]).convert();     
+	private static PImage setAlpha(PImage img, int maskColor, int alpha)
+	{
+		int alphaValue = alpha << 24;
+	    int nonAlpha = maskColor & COLOR_MASK;
+	    img.format = PApplet.ARGB;
+	    img.loadPixels();
+	    for (int i = 0; i < img.pixels.length; i++)
+	    {
+	       if ((img.pixels[i] & COLOR_MASK) == nonAlpha)
+	       {
+	          img.pixels[i] = alphaValue | nonAlpha;
+	       }
+	    }
+	    img.updatePixels();
+	    return img;
+	}
+	
+	public void process_image_line(HashMap<String, List<PImage>> images, String line)
+	{
+		String[] attrs = line.split(" ");
+		if (attrs.length >= 2)
+		{
+			String key = attrs[0];
+			PImage img = setAlpha(loadImage(attrs[1]), color(252, 252, 252), 0);
 
-         if (img)
+         if (img != null)
          {
             List<PImage> imgs = get_images_internal(images, key);
             imgs.add(img);
-            images[key] = imgs;
+            images.put(key, imgs);
          
-            if (attrs.size() == 6)
+            if (attrs.length == 6)
             {
-               int r = String.valueOf(attrs[2]);
-               int g = String.valueOf(attrs[3]);
-               int b = String.valueOf(attrs[4]);
-               int a = String.valueOf(attrs[5]);
-               img.set_colorkey(pygame.Color(r, g, b, a));
+               String r = attrs[2];
+               String g = attrs[3];
+               String b = attrs[4];
+               String a = attrs[5];
             }
          }
       }
    }
 
 
-   public static List<PImage> get_images_internal(List<PImage> images, String key)
+   public static List<PImage> get_images_internal(HashMap<String, List<PImage>> images, String key)
    {
-      if (key : images)
+      if (images.containsKey(key))
       {
-         return images[key];
+         return images.get(key);
       }
       else
       {
@@ -92,15 +117,16 @@ public class Image_store
    }
 
 
-   public static List<PImage> get_images(List<PImage> images, String key)
+   public static List<PImage> get_images(HashMap<String, List<PImage>> images, String key)
    {
-      if (key : images)
+      if (images.containsKey(key))
       {
-         return images[key];
+         return images.get(key);
       }
       else
       {
-         return images[DEFAULT_IMAGE_NAME];
+         return images.get(DEFAULT_IMAGE_NAME);
       }
+   }
 }
 

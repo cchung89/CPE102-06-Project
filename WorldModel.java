@@ -8,8 +8,8 @@ public class WorldModel extends PApplet
 	private Background[][] background;
 	public final int num_rows;
 	public final int num_cols;
-	private Job[][] occupancy;
-	private List<Job> entities;
+	private Location[][] occupancy;
+	private List<Location> entities;
 	private OrderedList action_queue;
 
 
@@ -18,8 +18,8 @@ public class WorldModel extends PApplet
 		this.background = new Background[num_rows][num_cols];
 		this.num_rows = num_rows;
 		this.num_cols = num_cols;
-		this.occupancy = new Job[num_rows][num_cols];
-		this.entities = new ArrayList<Job>();
+		this.occupancy = new Location[num_rows][num_cols];
+		this.entities = new ArrayList<Location>();
 		this.action_queue = new OrderedList();
 	}
 	
@@ -40,13 +40,13 @@ public class WorldModel extends PApplet
 
 	public boolean is_occupied(Point pt)
 	{
-		return within_bounds(pt) && occupancy[pt.y][pt.x] != null;
+		return within_bounds(pt) && (occupancy[pt.y][pt.x] != null);
 	}
 
-	public Job find_nearest(Point pt, Class type)
+	public Location find_nearest(Point pt, Class type)
 	{
-		List<Job> oftype = new ArrayList<Job>();
-		for (Job e : entities)
+		List<Location> oftype = new ArrayList<Location>();
+		for (Location e : entities)
 		{
 			if (type.isInstance(e))
 			{
@@ -57,12 +57,12 @@ public class WorldModel extends PApplet
       	return nearest_entity(oftype, pt);
 	}
 
-	public void add_entity(Job entity)
+	public void add_entity(Location entity)
 	{
 		Point pt = entity.get_position();
       	if (within_bounds(pt))
       	{
-        	Job old_entity = occupancy[pt.y][pt.x];
+        	Job old_entity = (Job) occupancy[pt.y][pt.x];
         	if (old_entity != null)
         	{
             	old_entity.clear_pending_actions();
@@ -72,7 +72,7 @@ public class WorldModel extends PApplet
       	}
 	}
 
-	public List<Point> move_entity(Job entity, Point pt)
+	public List<Point> move_entity(Location entity, Point pt)
 	{
 		List<Point> tiles = new ArrayList<Point>();
 
@@ -116,15 +116,15 @@ public class WorldModel extends PApplet
     	this.action_queue.remove(action);
     }
 
-    public List<LongConsumer> update_on_time(long ticks)
+    public List<Rectangle> update_on_time(long ticks)
     {
-    	tiles = [];
+    	List<Rectangle> tiles = new ArrayList<Rectangle>();
 
-      	next = this.action_queue.head();
-      	while (next != null && next.ord < ticks)
+      	ListItem next = this.action_queue.head();
+      	while (next != null && next.get_ord() < ticks)
         {
         	this.action_queue.pop();
-         	tiles.extend(next.item(ticks));
+         	tiles.add(next.get_item()(ticks));
          	next = this.action_queue.head();
         }
 
@@ -157,7 +157,7 @@ public class WorldModel extends PApplet
 		}
 	}
 
-	public Job get_tile_occupant(Point pt)
+	public Location get_tile_occupant(Point pt)
 	{
 		if (within_bounds(pt))
 		{
@@ -166,37 +166,24 @@ public class WorldModel extends PApplet
 		return null;
 	}
 
-	public List<Job> get_entities()
+	public List<Location> get_entities()
 	{
 		return entities;
 	}
 	
-	private Location nearest_entity(List<Job> entity_list, Point pt)
+	private Location nearest_entity(List<Location> entity_list, Point pt)
     {
         if(entity_list.size() > 0)
         {
-        	boolean first = true;
-        	double shortest = 0;
-        	Job closest_entity = null;
-            for(Job entity : entity_list)
+        	Location closest = entity_list.get(0);
+            for(Location entity : entity_list)
             {
-                if(first)
-                {
-                    shortest = distance_sq(pt, entity.get_position());
-                    closest_entity = entity;
-                    first = false;
-                }
-                else
-                {
-                	double distance = distance_sq(pt, entity.get_position());
-                    if(distance < shortest)
-                    {
-                        closest_entity = entity;
-                        shortest = distance;
-                    }
-                }
+            	if(distance_sq(pt, entity.get_position()) < distance_sq(pt, closest.get_position()))
+            	{
+            		closest = entity;
+            	}
             }
-            return closest_entity;
+            return closest;
         }
         return null;
     }

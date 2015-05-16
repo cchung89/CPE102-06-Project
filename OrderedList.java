@@ -1,34 +1,36 @@
 import java.util.*;
+import java.util.function.*;
+
+
 public class OrderedList {
-	private ArrayList<ListItem> list = new ArrayList<ListItem>() ;
+	private ArrayList<ListItem> list;
 	
 	public OrderedList()
 	{
-		this.list = list ;
+		this.list = new ArrayList<ListItem>();
 	}
 	
-	public void insert( Function item, int ord )
+	public void insert(LongConsumer item, long ord)
 	{
 		int size = list.size();
 		int idx = 0;
 		while(idx < size && this.list.get(idx).get_ord() < ord)
 		{
-			idx+=1;
+			idx++;
 		}
 		
-		this.list.add(idx, ListItem(item,ord));
+		this.list.add(idx, new ListItem(item, ord));
 	}
 
-	public void remove(Function item)
+	public void remove(LongConsumer item)
 	{
 		int size = list.size();
 		int idx = 0;
 		while(idx<size && this.list.get(idx).get_item() != item)
 		{
-			idx += 1;
+			idx++;
 		}
-		
-		if (idx<size)
+		if (idx < size)
 		{
 			this.list.remove(idx) ;
 		}
@@ -36,26 +38,22 @@ public class OrderedList {
 	
 	public ListItem head()
 	{
-		if (!this.list.isEmpty())
+		if (this.list != null)
 		{
 		return this.list.get(0);
-	
 		}	
-		
-		else
-		{
 			return null;
-		}
-		
-	
 	}
 	
 	public ListItem pop()
 	{
-		if (!this.list.isEmpty())
-		{
-			return this.list.pop(0);
+		if (this.list != null)
+		{	
+			ListItem popped = this.list.get(0);
+			this.list.remove(0);
+			return popped;
 		}
+		return null;
 	}
 
 }

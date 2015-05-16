@@ -28,7 +28,7 @@ public class OreBlob
           	
           	Point entity_pt = this.get_position();
           	Vein vein = (Vein) world.find_nearest(entity_pt, Vein.class);
-          	SimpleEntry<List<Point>, Boolean> tiles_found = this.miner_to_ore(world, vein);
+          	SimpleEntry<List<Point>, Boolean> tiles_found = this.blob_to_vein(world, vein);
           	List<Point> tiles = tiles_found.getKey();
 
           	long next_time = current_ticks + this.get_rate();
@@ -104,7 +104,7 @@ public class OreBlob
 	{
 		this.schedule_action(world, this.create_ore_blob_action(world, i_store),
           ticks + this.get_rate());
-       	this.schedule_animation(world);
+       	this.schedule_animation(world, 0);
 	}
 	
 }
