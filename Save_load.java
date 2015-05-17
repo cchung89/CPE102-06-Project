@@ -1,5 +1,10 @@
 import java.util.*;
+import java.io.*;
+
 import processing.core.*;
+
+import java.util.Scanner;
+import java.io.FileInputStream;
 
 
 public class Save_load
@@ -52,22 +57,21 @@ public class Save_load
 	private static final int VEIN_REACH = 5;
 
 	/*
-	public static void save_world(WorldModel world, File file)
+	public static void save_world(WorldModel world, String file)
    	{
    		save_entities(world, file);
    		save_background(world, file);
    	}
 
-	public static void save_entities(WorldModel world, File file)
+	public static void save_entities(WorldModel world, String file)
    	{
    		for (Entity entity : world.get_entities())
       	{
       		file.write(entity.entity_string() + 'n');
       	}
     }
-	*/
 
-	public static void save_background(WorldModel world, File file)
+	public static void save_background(WorldModel world, String file)
    	{
    		for (int row = 0; row < world.num_rows; row++)
       	{
@@ -80,28 +84,34 @@ public class Save_load
             			' ' + String.valueOf(col) + ' ' + String.valueOf(row) + 'n');
          	}
         }
-    }
+    }*/
 
 
-	public static void load_world(WorldModel world, HashMap<String, List<PImage>> images, File file, boolean run)
+	public static void load_world(WorldModel world, HashMap<String, List<PImage>> images, String file, boolean run)
    	{
-   		run = false;
-   		for (String line : file)
-      	{
-      		
-      		String [] properties = line.split(" ");
-      		if (properties != null)
-         	{
-         		if (properties[PROPERTY_KEY] == BGND_KEY)
-            	{
-            		add_background(world, properties, images);
-            	}
-         		else
-            	{
-            		add_entity(world, properties, images, run);
-            	}
-            }
-        }
+		try 
+		{
+			Scanner in = new Scanner(new FileInputStream(file));
+			while (in.hasNextLine())
+			{
+				String [] properties = in.nextLine().split("\\s");
+				if (properties != null)
+				{
+					if (properties[PROPERTY_KEY] == BGND_KEY)
+					{
+						add_background(world, properties, images);
+					}
+					else
+					{
+						add_entity(world, properties, images, run);
+					}
+				}
+			}
+		}
+		catch (FileNotFoundException e)
+		{
+			System.err.println(e.getMessage());
+		}
     }
 
 	public static void add_background(WorldModel world, String[] properties, HashMap<String, List<PImage>> i_store)
@@ -117,13 +127,13 @@ public class Save_load
 
 	public static void add_entity(WorldModel world, String[] properties, HashMap<String, List<PImage>> i_store, boolean run)
    	{
-   		 Location new_entity = create_from_properties(properties, i_store);
+   		Location new_entity = create_from_properties(properties, i_store);
    		if (new_entity != null)
       	{
-      		world.add_entity((Job) new_entity);
+      		world.add_entity(new_entity);
       		if (run)
          	{
-         		schedule_entity(world, (Job) new_entity, i_store);
+         		schedule_entity(world, new_entity, i_store);
          	}
         }
     }
@@ -228,8 +238,7 @@ public class Save_load
       		Point obstacle_pt = new Point(Integer.parseInt(properties[OBSTACLE_COL]), Integer.parseInt(properties[OBSTACLE_ROW]));
       		Obstacle obstacle = new Obstacle(properties[OBSTACLE_NAME],
       						obstacle_pt,
-      						Image_store.get_images(i_store, properties[PROPERTY_KEY])
-         					);
+      						Image_store.get_images(i_store, properties[PROPERTY_KEY]));
       		return obstacle;
         }
 		return null;

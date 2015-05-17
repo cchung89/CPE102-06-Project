@@ -34,27 +34,20 @@ public class Main
 	
 	public void setup()
 	{
+		new Random();
 		size(SCREEN_WIDTH, SCREEN_HEIGHT);
 		
-		HashMap<String, List<PImage>> i_store = Image_store.load_images(IMAGE_LIST_FILE_NAME,
-			      TILE_WIDTH, TILE_HEIGHT);
+		HashMap<String, List<PImage>> i_store = Image_store.load_images(TILE_WIDTH, TILE_HEIGHT);
 
 		int num_cols = SCREEN_WIDTH; // TILE_WIDTH * WORLD_WIDTH_SCALE
 		int num_rows = SCREEN_HEIGHT; // TILE_HEIGHT * WORLD_HEIGHT_SCALE
 		
-		Background default = create_default_background(i_store.get_images(Image_store.DEFAULT_IMAGE_NAME));
+		Background default_background = create_default_background(Image_store.get_images(i_store, Image_store.DEFAULT_IMAGE_NAME));
 		
 		world = new WorldModel(num_rows, num_cols);
 		view = new WorldView(SCREEN_WIDTH / TILE_WIDTH, SCREEN_HEIGHT / TILE_HEIGHT, this, world, TILE_WIDTH, TILE_HEIGHT);
 		
-		try
-		{
-			world.load_world(i_store, RUN_AFTER_LOAD);
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
+		Save_load.load_world(world, i_store, WORLD_FILE, RUN_AFTER_LOAD);
 		view.update_view(0, 0);
 		
 		next_time = System.currentTimeMillis() + ANIMATION_TIME;
@@ -87,7 +80,18 @@ public class Main
 	
 	private void moves()
 	{
-		
+		for (int x = 0; x < world.num_cols; x++)
+		{
+			for (int y = 0; y < world.num_rows; y++)
+			{
+				Point tile_location = new Point(x, y);
+				if (world.is_occupied(tile_location))
+				{
+					Location entity = world.get_tile_occupant(tile_location);
+					if (entity.get_pending_action())
+				}
+			}
+		}
 	}
 	
 	public void keyPressed()

@@ -1,7 +1,7 @@
 import java.io.*;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
+import java.io.FileInputStream;
 
 import processing.core.*;
 
@@ -13,51 +13,53 @@ public class Image_store
 {
 	private static final int COLOR_MASK = 0xffffff;
 	public static final String DEFAULT_IMAGE_NAME = "background_default";
+	private static final String IMAGE_LIST_FILE_NAME = "imagelist";
 	private final int DEFAULT_IMAGE_COLOR = color(128, 128, 128);
 	private static final int FILE_IDX = 0;
 	private static final int MIN_ARGS = 1;
-	private Scanner imageFile;
+	private static PApplet processor = new PApplet();
+	private static final String source_path = "images";
    
 	private static boolean verifyArguments(String [] args)
 	{
 		return args.length >= MIN_ARGS;
 	}
    
-	public static void readFile(Scanner in)
+	private static PImage create_default_image(int tile_width, int tile_height)
 	{
-	   
-	   
-		while(in.hasNextLine())
-		{
-			String [ ] words = in.nextLine().split("//s");
-			String type = words[0];
-			String
-		   
-		}
+		return processor.loadImage(source_path + "/" + "none.bmp");
 	}
-
-   
-	public static PImage load_images(Scanner in, int tile_width, int tile_height)
-			throws IOException
+	
+	public static HashMap<String, List<PImage>> load_images(int tile_width, int tile_height)
 	{
-		PImage [] image;
-
-		while(in.hasNextLine())
-    	  
-		{ String [ ] words = in.nextLine().split("//s");
-         	for (line : fstr)
-         	{
-         		process_image_line(images, line);
-         	}
-
-         	if (DEFAULT_IMAGE_NAME not in images)
-         	{
-         		PImage default_image = create_default_image(tile_width, tile_height);
-         		images[DEFAULT_IMAGE_NAME] = [default_image];
-         	}
-
-         	return images;
+		HashMap<String, List<PImage>> images = new HashMap<String, List<PImage>>();
+		try
+		{
+			Scanner imageFile = new Scanner(new FileInputStream(IMAGE_LIST_FILE_NAME));
+			while(imageFile.hasNextLine())	  
+			{ 
+				String[] line = imageFile.nextLine().split("\\s");
+				if (line.length >= 2)
+				{
+					if (!(images.containsKey(line[0])))
+					{
+						images.put(line[0], new ArrayList<PImage>());
+					}
+					images.get(line[0]).add(processor.loadImage(line[1]));
+				}
+			}
 		}
+		catch (FileNotFoundException e)
+		{
+			System.err.println(e.getMessage());
+		}
+		
+        if (!(images.containsKey(DEFAULT_IMAGE_NAME)))
+        {
+         	images.put(DEFAULT_IMAGE_NAME, new ArrayList<PImage>());
+         	images.get(DEFAULT_IMAGE_NAME).add(create_default_image(tile_width, tile_height));
+        }
+        return images;
 	}
 
 	private static PImage setAlpha(PImage img, int maskColor, int alpha)
