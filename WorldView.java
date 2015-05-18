@@ -32,7 +32,7 @@ public class WorldView
     	{
     		for(int x = 0; x < this.viewport.get_width(); x++)
     		{
-    			Point w_pt = viewport_to_world(this.viewport, new Point(x,y));
+    			Point w_pt = this.viewport_to_world(new Point(x,y));
     			PImage img = this.world.get_background_image(w_pt);
     			processor.image(img,x * this.tile_width , y * this.tile_height);			
     		}	
@@ -45,7 +45,7 @@ public class WorldView
     	{
     		if (this.viewport.collidepoint(entity.get_position().x, entity.get_position().y ))
     		{
-    			Point v_pt = world_to_viewport(this.viewport, entity.get_position());
+    			Point v_pt = this.world_to_viewport(entity.get_position());
     			processor.image(entity.get_image(), v_pt.x * this.tile_width, v_pt.y * this.tile_height);
     		}
     	}
@@ -59,7 +59,7 @@ public class WorldView
 
     public void update_view(int delta_x, int delta_y)
     {
-    	this.viewport = create_shifted_viewport(this.viewport , delta_x, delta_y, this.num_rows , this.num_cols);
+    	this.viewport = this.create_shifted_viewport(delta_x, delta_y, this.num_rows , this.num_cols);
     	//this.draw_viewport();
 	}
 
@@ -69,7 +69,7 @@ public class WorldView
 		{
 			if (this.viewport.collidepoint(tile.x , tile.y))
 			{
-				Point v_pt = world_to_viewport(this.viewport, tile);
+				Point v_pt = this.world_to_viewport(tile);
 		        PImage img = this.get_tile_image(v_pt);
 		        this.update_tile(v_pt, img);
 			}
@@ -88,15 +88,16 @@ public class WorldView
 
 	public PImage get_tile_image(Point view_tile_pt)
 	{
-		Point pt = viewport_to_world(this.viewport, view_tile_pt);
+		Point pt = this.viewport_to_world(view_tile_pt);
 		PImage bgnd = this.world.get_background_image(pt);
     	Location occupant = this.world.get_tile_occupant(pt);
     	if (occupant != null)
     	{
-    		PGraphics graphic = processor.createGraphics(this.tile_width, this.tile_height);
+    		return occupant.get_image();
+    		/*PGraphics graphic = processor.createGraphics(this.tile_width, this.tile_height);
 		    graphic.image(bgnd, 0, 0);
 		    graphic.image(occupant.get_image(), 0, 0);
-		    return graphic.get();
+		    return graphic.get();*/
 		}
 		else
 		{
@@ -104,12 +105,12 @@ public class WorldView
 		}
 	}
 
-    public static Point viewport_to_world(Rectangle viewport, Point pt)
+    public Point viewport_to_world(Point pt)
     {
       return new Point(pt.x + viewport.get_left(), pt.y + viewport.get_top()) ;
     }
 
-    public static Point world_to_viewport(Rectangle viewport, Point pt)
+    public Point world_to_viewport(Point pt)
     {
     	return new Point(pt.x - viewport.get_left(), pt.y - viewport.get_top());
     }
@@ -119,7 +120,7 @@ public class WorldView
     	return Math.min(high, Math.max(v, low)) ;
     }
 
-    public static Rectangle create_shifted_viewport(Rectangle viewport, int delta_x, int delta_y, int num_rows, int num_cols)
+    public Rectangle create_shifted_viewport(int delta_x, int delta_y, int num_rows, int num_cols)
     {
     	int new_x = clamp(viewport.get_left() + delta_x, 0, num_cols - viewport.get_width());
     	int new_y = clamp(viewport.get_top() + delta_y, 0, num_rows - viewport.get_height());

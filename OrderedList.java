@@ -3,11 +3,16 @@ import java.util.function.*;
 
 
 public class OrderedList {
-	private ArrayList<ListItem> list;
+	private List<ListItem> list;
 	
 	public OrderedList()
 	{
 		this.list = new ArrayList<ListItem>();
+	}
+	
+	public List<ListItem> get_list()
+	{
+		return this.list;
 	}
 	
 	public void insert(LongConsumer item, long ord)

@@ -11,6 +11,13 @@ public class Quake
 			super(name, imgs, position, animation_rate);
 		}
 		
+		protected void schedule_animation(WorldModel world, int repeat_count)
+		{
+			this.schedule_action(world, 
+	          				this.create_animation_action(world, repeat_count),
+	          				this.get_animation_rate());
+		}
+		
 		public LongConsumer create_entity_death_action(WorldModel world)
 		{
 			LongConsumer [] action = {null};

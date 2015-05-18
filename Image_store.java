@@ -29,7 +29,7 @@ public class Image_store
    
 	private PImage create_default_image(int tile_width, int tile_height)
 	{
-		return processor.loadImage(source_path + "none.bmp");
+		return processor.loadImage(source_path + "grass.bmp");
 	}
 	
 	public HashMap<String, List<PImage>> load_images(int tile_width, int tile_height)
@@ -92,14 +92,6 @@ public class Image_store
 				List<PImage> imgs = get_images_internal(key);
 				imgs.add(img);
 				images.put(key, imgs);
-         
-				if (attrs.length == 6)
-				{
-					String r = attrs[2];
-					String g = attrs[3];
-					String b = attrs[4];
-					String a = attrs[5];
-				}
 			}
 		}
 	}

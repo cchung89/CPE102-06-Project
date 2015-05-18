@@ -29,16 +29,6 @@ public class WorldModel extends PApplet
 			}
 		}
 	}
-	
-	public int get_num_rows()
-	{
-		return num_rows;
-	}
-	
-	public int get_num_cols()
-	{
-		return num_cols;
-	}
 
 	public boolean within_bounds(Point pt)
 	{

@@ -31,17 +31,9 @@ public class Rectangle {
 	{
 		return top;
 	}
-	public boolean collidepoint(int x2, int y2) {
-		// TODO Auto-generated method stub
-		if (left > x2 && left < (x2 + width) && y2 < top &&  y2 > (top - height) ) 
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	
-
-}
+	public boolean collidepoint(int x2, int y2) 
+	{
+		//if (left < x2 && left < (x2 + width) && y2 < top &&  y2 > (top - height) )
+		return (((x2 <= (left + width)) && (x2 >= left)) && (y2 <= (top + height)) && (y2 >= top));
 	}
+}

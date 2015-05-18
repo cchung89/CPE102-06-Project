@@ -104,7 +104,7 @@ public class OreBlob
 	{
 		this.schedule_action(world, this.create_ore_blob_action(world, i_store),
           ticks + this.get_rate());
-       	this.schedule_animation(world, 0);
+       	this.schedule_animation(world);
 	}
 	
 }

@@ -56,6 +56,8 @@ public class Save_load
 	private static final int VEIN_ROW = 3;
 	private static final int VEIN_REACH = 5;
 
+	private static Scanner in;
+
 	/*
 	public static void save_world(WorldModel world, String file)
    	{
@@ -91,7 +93,7 @@ public class Save_load
    	{
 		try 
 		{
-			Scanner in = new Scanner(new FileInputStream(file));
+			in = new Scanner(new FileInputStream(file));
 			while (in.hasNextLine())
 			{
 				String [] properties = in.nextLine().split(" ");

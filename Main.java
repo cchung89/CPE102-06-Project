@@ -11,6 +11,8 @@ public class Main
 {	
 	private long next_time;
 	private static final int ANIMATION_TIME = 100;
+	private Background default_background;
+	private final int BACKGROUND_COLOR = color(100, 100, 100);
 	
 	private static final boolean RUN_AFTER_LOAD = true;
 	private static String SOURCE_PATH = "images/";
@@ -39,13 +41,14 @@ public class Main
 	{
 		new Random();
 		size(SCREEN_WIDTH, SCREEN_HEIGHT);
+		background(BACKGROUND_COLOR);
 		
 		image_store.load_images(TILE_WIDTH, TILE_HEIGHT);
 		
 		int num_cols = SCREEN_WIDTH / TILE_WIDTH * WORLD_WIDTH_SCALE; // TILE_WIDTH * WORLD_WIDTH_SCALE
-		int num_rows = SCREEN_HEIGHT / TILE_HEIGHT * WORLD_WIDTH_SCALE; // TILE_HEIGHT * WORLD_HEIGHT_SCALE
+		int num_rows = SCREEN_HEIGHT / TILE_HEIGHT * WORLD_HEIGHT_SCALE; // TILE_HEIGHT * WORLD_HEIGHT_SCALE
 		
-		Background default_background = create_default_background(image_store.get_images(Image_store.DEFAULT_IMAGE_NAME));
+		default_background = create_default_background(image_store.get_images(Image_store.DEFAULT_IMAGE_NAME));
 		
 		world = new WorldModel(num_rows, num_cols, default_background);
 		view = new WorldView(this, SCREEN_WIDTH / TILE_WIDTH, SCREEN_HEIGHT / TILE_HEIGHT, world, TILE_WIDTH, TILE_HEIGHT);
@@ -53,6 +56,7 @@ public class Main
 		Save_load.load_world(world, image_store, WORLD_FILE, RUN_AFTER_LOAD);
 		
 		view.update_view(0, 0);
+		view.draw_viewport();
 		
 		next_time = System.currentTimeMillis() + ANIMATION_TIME;
 	}
@@ -72,12 +76,12 @@ public class Main
 	    {
 			next_images();
 	        next_time = time + ANIMATION_TIME;
-	        try {
-				moves();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+				try {
+					moves();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 	    }
 		this.view.draw_viewport();
 	}
@@ -92,16 +96,28 @@ public class Main
 				Point tile_location = new Point(x, y);
 				if (world.is_occupied(tile_location))
 				{
-					Job entity = (Job) world.get_tile_occupant(tile_location);
-					if (entity.get_pending_actions().size() != 0)
+					try
 					{
-						LongConsumer action = entity.get_pending_actions().get(0);
-						action.accept(System.currentTimeMillis());
-						break;
+						Job entity = (Job) world.get_tile_occupant(tile_location);
+						if (entity.get_pending_actions().size() != 0)
+						{
+							LongConsumer action = entity.get_pending_actions().get(0);
+							action.accept(System.currentTimeMillis());
+							break;
+						}
+					}
+					catch (ClassCastException e)
+					{
+						
 					}
 				}
 			}
 		}
+	}
+	
+	public void handler_time_event(WorldModel world)
+	{
+		world.update_on_time(System.currentTimeMillis());
 	}
 	
 	public void keyPressed()
@@ -110,22 +126,22 @@ public class Main
 		int dx = 0;
 		switch(key)
 		{
-			case UP:
+			case 'w':
 			{
 				dy = -1;
 				break;
 			}
-			case DOWN:
+			case 's':
 			{
 				dy = 1;
 				break;
 			}
-			case RIGHT:
+			case 'd':
 			{
 				dx = 1;
 				break;
 			}
-			case LEFT:
+			case 'a':
 			{
 				dx = -1;
 				break;

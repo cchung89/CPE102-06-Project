@@ -74,6 +74,7 @@ public abstract class Miner
 	
 	protected void schedule_animation(WorldModel world, int repeat_count)
 	{
+		repeat_count = 0;
 		this.schedule_action(world, 
           				this.create_animation_action(world, repeat_count),
           				this.get_animation_rate());
