@@ -15,7 +15,7 @@ public class WorldView
 	private Rectangle viewport;
 	private PApplet processor = new PApplet();
 	
-    public WorldView(int view_cols, int view_rows, PApplet screen, WorldModel world , int tile_width, int tile_height)
+    public WorldView(PApplet processor, int view_cols, int view_rows, WorldModel world , int tile_width, int tile_height)
     {
     	this.processor = processor;
     	this.world = world;
@@ -60,8 +60,7 @@ public class WorldView
     public void update_view(int delta_x, int delta_y)
     {
     	this.viewport = create_shifted_viewport(this.viewport , delta_x, delta_y, this.num_rows , this.num_cols);
-    	this.draw_viewport();
-    	//display.update draw??
+    	//this.draw_viewport();
 	}
 
 	public void update_view_tiles(List<Point> tiles)
@@ -77,7 +76,7 @@ public class WorldView
 		}
 	}
 
-	public Rectangle update_tile(Point view_tile_pt, PImage surface )
+	public Rectangle update_tile(Point view_tile_pt, PImage surface)
 	{
 		int abs_x = view_tile_pt.x * this.tile_width;
 		int abs_y = view_tile_pt.y * this.tile_height;
@@ -115,7 +114,7 @@ public class WorldView
     	return new Point(pt.x - viewport.get_left(), pt.y - viewport.get_top());
     }
     
-    public static int  clamp(int v, int low, int high)
+    public static int clamp(int v, int low, int high)
     {
     	return Math.min(high, Math.max(v, low)) ;
     }

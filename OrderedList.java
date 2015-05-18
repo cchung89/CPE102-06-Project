@@ -22,7 +22,7 @@ public class OrderedList {
 		this.list.add(idx, new ListItem(item, ord));
 	}
 
-	public void remove(LongConsumer item)
+	public void remove(Object item)
 	{
 		int size = list.size();
 		int idx = 0;

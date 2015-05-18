@@ -36,13 +36,13 @@ public class Vein
 		return result;
 	}
 	
-	public void schedule_vein(WorldModel world, long ticks, HashMap<String, List<PImage>> i_store)
+	public void schedule_vein(WorldModel world, long ticks, Image_store i_store)
 	{
 		this.schedule_action(world, this.create_vein_action(world, i_store),
           					ticks + this.get_rate());
 	}
 	
-	public LongConsumer create_vein_action(WorldModel world, HashMap<String, List<PImage>> i_store)
+	public LongConsumer create_vein_action(WorldModel world, Image_store i_store)
 	{
 		LongConsumer [] action = {null};
 		action[0] = (long current_ticks) -> {

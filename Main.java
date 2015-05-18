@@ -1,6 +1,7 @@
 import processing.core.*;
 
 import java.util.*;
+import java.util.function.*;
 import java.io.File;
 import java.io.IOException;
 
@@ -8,13 +9,11 @@ import java.io.IOException;
 public class Main 
 	extends PApplet
 {	
-	private WorldModel world;
-	private WorldView view;
 	private long next_time;
 	private static final int ANIMATION_TIME = 100;
 	
 	private static final boolean RUN_AFTER_LOAD = true;
-
+	private static String SOURCE_PATH = "images/";
 	private static final String IMAGE_LIST_FILE_NAME = "imagelist";
 	private static final String WORLD_FILE = "gaia.sav";
 
@@ -25,6 +24,10 @@ public class Main
 	private static final int SCREEN_HEIGHT = 480;
 	private static final int TILE_WIDTH = 32;
 	private static final int TILE_HEIGHT = 32;
+	
+	private WorldModel world;
+	private WorldView view;
+	private Image_store image_store = new Image_store(this, SOURCE_PATH, IMAGE_LIST_FILE_NAME);
 	
 	
 	private Background create_default_background(List<PImage> imgs)
@@ -37,17 +40,18 @@ public class Main
 		new Random();
 		size(SCREEN_WIDTH, SCREEN_HEIGHT);
 		
-		HashMap<String, List<PImage>> i_store = Image_store.load_images(TILE_WIDTH, TILE_HEIGHT);
-
-		int num_cols = SCREEN_WIDTH; // TILE_WIDTH * WORLD_WIDTH_SCALE
-		int num_rows = SCREEN_HEIGHT; // TILE_HEIGHT * WORLD_HEIGHT_SCALE
+		image_store.load_images(TILE_WIDTH, TILE_HEIGHT);
 		
-		Background default_background = create_default_background(Image_store.get_images(i_store, Image_store.DEFAULT_IMAGE_NAME));
+		int num_cols = SCREEN_WIDTH / TILE_WIDTH * WORLD_WIDTH_SCALE; // TILE_WIDTH * WORLD_WIDTH_SCALE
+		int num_rows = SCREEN_HEIGHT / TILE_HEIGHT * WORLD_WIDTH_SCALE; // TILE_HEIGHT * WORLD_HEIGHT_SCALE
 		
-		world = new WorldModel(num_rows, num_cols);
-		view = new WorldView(SCREEN_WIDTH / TILE_WIDTH, SCREEN_HEIGHT / TILE_HEIGHT, this, world, TILE_WIDTH, TILE_HEIGHT);
+		Background default_background = create_default_background(image_store.get_images(Image_store.DEFAULT_IMAGE_NAME));
 		
-		Save_load.load_world(world, i_store, WORLD_FILE, RUN_AFTER_LOAD);
+		world = new WorldModel(num_rows, num_cols, default_background);
+		view = new WorldView(this, SCREEN_WIDTH / TILE_WIDTH, SCREEN_HEIGHT / TILE_HEIGHT, world, TILE_WIDTH, TILE_HEIGHT);
+		
+		Save_load.load_world(world, image_store, WORLD_FILE, RUN_AFTER_LOAD);
+		
 		view.update_view(0, 0);
 		
 		next_time = System.currentTimeMillis() + ANIMATION_TIME;
@@ -68,18 +72,19 @@ public class Main
 	    {
 			next_images();
 	        next_time = time + ANIMATION_TIME;
-	        moves();
+	        try {
+				moves();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	    }
 		this.view.draw_viewport();
 	}
 	
-	public void load_world(WorldModel world, HashMap<String, List<PImage>> i_store, File filename)
+	private void moves() throws IOException
 	{
 		
-	}
-	
-	private void moves()
-	{
 		for (int x = 0; x < world.num_cols; x++)
 		{
 			for (int y = 0; y < world.num_rows; y++)
@@ -87,8 +92,13 @@ public class Main
 				Point tile_location = new Point(x, y);
 				if (world.is_occupied(tile_location))
 				{
-					Location entity = world.get_tile_occupant(tile_location);
-					if (entity.get_pending_action())
+					Job entity = (Job) world.get_tile_occupant(tile_location);
+					if (entity.get_pending_actions().size() != 0)
+					{
+						LongConsumer action = entity.get_pending_actions().get(0);
+						action.accept(System.currentTimeMillis());
+						break;
+					}
 				}
 			}
 		}
@@ -126,7 +136,7 @@ public class Main
 	
 	public static void main(String[] args)
 	{
-		
+		PApplet.main("Main");
 	}
 	
 

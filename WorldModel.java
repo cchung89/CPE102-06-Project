@@ -13,7 +13,7 @@ public class WorldModel extends PApplet
 	private OrderedList action_queue;
 
 
-	public WorldModel(int num_rows, int num_cols)
+	public WorldModel(int num_rows, int num_cols, Background background)
 	{
 		this.background = new Background[num_rows][num_cols];
 		this.num_rows = num_rows;
@@ -21,6 +21,13 @@ public class WorldModel extends PApplet
 		this.occupancy = new Location[num_rows][num_cols];
 		this.entities = new ArrayList<Location>();
 		this.action_queue = new OrderedList();
+		for (int x = 0; x < num_cols; x++)
+		{
+			for (int y = 0; y < num_rows; y++)
+			{
+				this.background[y][x] = background;
+			}
+		}
 	}
 	
 	public int get_num_rows()
@@ -116,7 +123,7 @@ public class WorldModel extends PApplet
     	this.action_queue.remove(action);
     }
 
-    public List<Rectangle> update_on_time(long ticks)
+    public void update_on_time(long ticks)
     {
     	List<Rectangle> tiles = new ArrayList<Rectangle>();
 
@@ -124,11 +131,11 @@ public class WorldModel extends PApplet
       	while (next != null && next.get_ord() < ticks)
         {
         	this.action_queue.pop();
-         	tiles.add(next.get_item()(ticks));
+         	//tiles.add(next.get_item().accept(ticks));
          	next = this.action_queue.head();
         }
 
-      	return tiles;
+      	//return tiles;
     }
 
 	public PImage get_background_image(Point pt)

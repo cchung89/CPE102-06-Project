@@ -95,6 +95,6 @@ public abstract class Miner
         return action[0];
 	}
 	
-	protected abstract LongConsumer create_miner_action(WorldModel world, HashMap<String, List<PImage>> image_store);
+	protected abstract LongConsumer create_miner_action(WorldModel world, Image_store image_store);
 	
 }

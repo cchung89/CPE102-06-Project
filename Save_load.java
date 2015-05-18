@@ -87,14 +87,14 @@ public class Save_load
     }*/
 
 
-	public static void load_world(WorldModel world, HashMap<String, List<PImage>> images, String file, boolean run)
+	public static void load_world(WorldModel world, Image_store images, String file, boolean run)
    	{
 		try 
 		{
 			Scanner in = new Scanner(new FileInputStream(file));
 			while (in.hasNextLine())
 			{
-				String [] properties = in.nextLine().split("\\s");
+				String [] properties = in.nextLine().split(" ");
 				if (properties != null)
 				{
 					if (properties[PROPERTY_KEY] == BGND_KEY)
@@ -114,18 +114,18 @@ public class Save_load
 		}
     }
 
-	public static void add_background(WorldModel world, String[] properties, HashMap<String, List<PImage>> i_store)
+	public static void add_background(WorldModel world, String[] properties, Image_store i_store)
    	{
    		if (properties.length >= BGND_NUM_PROPERTIES)
       	{
       		Point pt = new Point(Integer.parseInt(properties[BGND_COL]), Integer.parseInt(properties[BGND_ROW]));
       		String name = properties[BGND_NAME];
-      		world.set_background(pt, new Background(name, Image_store.get_images(i_store, name)));
+      		world.set_background(pt, new Background(name, i_store.get_images(name)));
       	}
     }
 
 
-	public static void add_entity(WorldModel world, String[] properties, HashMap<String, List<PImage>> i_store, boolean run)
+	public static void add_entity(WorldModel world, String[] properties, Image_store i_store, boolean run)
    	{
    		Location new_entity = create_from_properties(properties, i_store);
    		if (new_entity != null)
@@ -139,7 +139,7 @@ public class Save_load
     }
 
 
-	public static Location create_from_properties(String[] properties, HashMap<String, List<PImage>> i_store)
+	public static Location create_from_properties(String[] properties, Image_store i_store)
    	{
    		String key = properties[PROPERTY_KEY];
    		if (properties != null)
@@ -167,7 +167,7 @@ public class Save_load
    	}
 
 
-	public static Miner create_miner(String[] properties, HashMap<String, List<PImage>>i_store)
+	public static Miner create_miner(String[] properties, Image_store i_store)
    	{
    		if (properties.length == MINER_NUM_PROPERTIES)
       	{
@@ -176,7 +176,7 @@ public class Save_load
       					Integer.parseInt(properties[MINER_LIMIT]),
       					miner_pt,
       					Integer.parseInt(properties[MINER_RATE]),
-      					Image_store.get_images(i_store, properties[PROPERTY_KEY]),
+      					i_store.get_images(properties[PROPERTY_KEY]),
          				Integer.parseInt(properties[MINER_ANIMATION_RATE]));
       		return miner;
       	}
@@ -184,7 +184,7 @@ public class Save_load
     }
 
 
-	public static Vein create_vein(String[] properties, HashMap<String, List<PImage>> i_store)
+	public static Vein create_vein(String[] properties, Image_store i_store)
    	{
    		if (properties.length == VEIN_NUM_PROPERTIES)
       	{
@@ -192,7 +192,7 @@ public class Save_load
       		Vein vein = new Vein(properties[VEIN_NAME],
       					Integer.parseInt(properties[VEIN_RATE]),
       					vein_pt,
-      					Image_store.get_images(i_store, properties[PROPERTY_KEY]),
+      					i_store.get_images(properties[PROPERTY_KEY]),
          				Integer.parseInt(properties[VEIN_REACH]));
       		return vein;
       	}
@@ -200,14 +200,14 @@ public class Save_load
     }
 
 
-	public static Ore create_ore(String[] properties, HashMap<String, List<PImage>> i_store)
+	public static Ore create_ore(String[] properties, Image_store i_store)
    	{
    		if (properties.length == ORE_NUM_PROPERTIES)
       	{
       		Point ore_pt = new Point(Integer.parseInt(properties[ORE_COL]), Integer.parseInt(properties[ORE_ROW]));
       		Ore ore = new Ore(properties[ORE_NAME],
       					ore_pt,
-      					Image_store.get_images(i_store, properties[PROPERTY_KEY]),
+      					i_store.get_images(properties[PROPERTY_KEY]),
          				Integer.parseInt(properties[ORE_RATE]));
       		return ore;
       	}
@@ -215,14 +215,14 @@ public class Save_load
     }
 
 
-	public static Blacksmith create_blacksmith(String[] properties, HashMap<String, List<PImage>> i_store)
+	public static Blacksmith create_blacksmith(String[] properties, Image_store i_store)
    	{
    		if (properties.length == SMITH_NUM_PROPERTIES)
       	{
       		Point smith_pt = new Point(Integer.parseInt(properties[SMITH_COL]), Integer.parseInt(properties[SMITH_ROW]));
       		Blacksmith smith = new Blacksmith(properties[SMITH_NAME],
       					smith_pt,
-      					Image_store.get_images(i_store, properties[PROPERTY_KEY]),
+      					i_store.get_images(properties[PROPERTY_KEY]),
          				Integer.parseInt(properties[SMITH_LIMIT]), 
          				Integer.parseInt(properties[SMITH_RATE]),
          				Integer.parseInt(properties[SMITH_REACH]));
@@ -231,20 +231,20 @@ public class Save_load
       	return null;	
     }
 
-	public static Obstacle create_obstacle(String[] properties, HashMap<String, List<PImage>> i_store)
+	public static Obstacle create_obstacle(String[] properties, Image_store i_store)
    	{
    		if (properties.length == OBSTACLE_NUM_PROPERTIES)
       	{
       		Point obstacle_pt = new Point(Integer.parseInt(properties[OBSTACLE_COL]), Integer.parseInt(properties[OBSTACLE_ROW]));
       		Obstacle obstacle = new Obstacle(properties[OBSTACLE_NAME],
       						obstacle_pt,
-      						Image_store.get_images(i_store, properties[PROPERTY_KEY]));
+      						i_store.get_images(properties[PROPERTY_KEY]));
       		return obstacle;
         }
 		return null;
     }
 
-	public static void schedule_entity(WorldModel world, Location entity, HashMap<String, List<PImage>> i_store)
+	public static void schedule_entity(WorldModel world, Location entity, Image_store i_store)
    	{
    		if (entity instanceof MinerNotFull)
       	{
