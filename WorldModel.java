@@ -3,7 +3,8 @@ import java.util.function.*;
 
 import processing.core.*;
 
-public class WorldModel extends PApplet
+public class WorldModel 
+	extends PApplet
 {
 	private Background[][] background;
 	public final int num_rows;
@@ -122,8 +123,6 @@ public class WorldModel extends PApplet
 
     public void update_on_time(long ticks)
     {
-    	List<Rectangle> tiles = new ArrayList<Rectangle>();
-
       	ListItem next = this.action_queue.head();
       	while (next != null && next.get_ord() < ticks)
         {
@@ -131,8 +130,6 @@ public class WorldModel extends PApplet
          	next.get_item().accept(ticks);
          	next = this.action_queue.head();
         }
-
-      	//return tiles;
     }
 
 	public PImage get_background_image(Point pt)

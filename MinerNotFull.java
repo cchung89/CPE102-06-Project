@@ -27,7 +27,6 @@ public class MinerNotFull
 		LongConsumer[] action = {null};
 		action[0] = (long current_ticks) -> {
 			this.remove_pending_action(action[0]);
-			System.out.println("not full " + current_ticks + " " + this.get_rate());
 
           	Point entity_pt = this.get_position();
           	Ore ore = (Ore) world.find_nearest(entity_pt, Ore.class);

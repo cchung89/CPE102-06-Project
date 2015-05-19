@@ -1,9 +1,6 @@
 import processing.core.*;
 
 import java.util.*;
-import java.util.function.*;
-import java.io.File;
-import java.io.IOException;
 
 
 public class Main 
@@ -37,7 +34,6 @@ public class Main
 	
 	public void setup()
 	{
-		new Random();
 		size(SCREEN_WIDTH, SCREEN_HEIGHT);
 		background(BACKGROUND_COLOR);
 		
@@ -74,33 +70,33 @@ public class Main
 	    {
 			next_images();
 	        next_time = time + ANIMATION_TIME;
-	        this.world.update_on_time(time);
+	        this.world.update_on_time(time); //update the action_queue
 	    }
 		this.view.draw_viewport();
 	}
 	
-	public void keyPressed()
+	public void keyPressed() //move the current viewing rectangle
 	{
 		int dy = 0;
 		int dx = 0;
-		switch(key)
+		switch(keyCode)
 		{
-			case 'w':
+			case UP:
 			{
 				dy = -1;
 				break;
 			}
-			case 's':
+			case DOWN:
 			{
 				dy = 1;
 				break;
 			}
-			case 'd':
+			case RIGHT:
 			{
 				dx = 1;
 				break;
 			}
-			case 'a':
+			case LEFT:
 			{
 				dx = -1;
 				break;

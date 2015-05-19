@@ -4,7 +4,6 @@ import java.io.*;
 import processing.core.*;
 
 import java.util.Scanner;
-import java.io.FileInputStream;
 
 
 public class Save_load
@@ -60,14 +59,12 @@ public class Save_load
 
 	public static void load_world(WorldModel world, HashMap<String, List<PImage>> images, String filename, boolean run)
    	{
-		Scanner in;
 		try 
 		{
 			in = new Scanner(new File(filename));
 			while (in.hasNextLine())
 			{
 				String [] properties = in.nextLine().split("\\s");
-				System.out.println(properties[PROPERTY_KEY]);
 				if (properties != null && properties.length > 0)
 				{
 					if (properties[PROPERTY_KEY].equals(BGND_KEY))

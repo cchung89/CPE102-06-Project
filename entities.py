@@ -389,14 +389,9 @@ class Blacksmith(Character):
       
 
 class Obstacle(Location):
-
-   
-   def __init__(self, name, position, imgs):
-      super(Obstacle,self).__init__(name,imgs,position)
-
    def __init__(self, name, position, imgs):
       super(Obstacle, self).__init__(name, imgs, position)
-
+      
    def entity_string(self):
       return ' '.join(['obstacle', self.name, str(self.position.x),
          str(self.position.y)])
@@ -409,7 +404,6 @@ class OreBlob(Destroyer):
    
    def get_rate(self):
       return self.rate 
-
 
    def create_ore_blob_action(self, world, i_store):
        def action(current_ticks):

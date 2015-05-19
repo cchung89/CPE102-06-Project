@@ -1,8 +1,6 @@
 import java.io.*;
 import java.util.List;
 import java.util.Scanner;
-import java.io.FileInputStream;
-import processing.core.PConstants;
 
 import processing.core.*;
 
@@ -14,10 +12,11 @@ public class Image_store
 {
 	private static final int COLOR_MASK = 0xffffff;
 	public static final String DEFAULT_IMAGE_NAME = "background_default";
+	Scanner imageFile;
+	Scanner lines;
 	
 	public HashMap<String, List<PImage>> load_images(String filename, int tile_width, int tile_height)
 	{
-		Scanner imageFile;
 		try
 		{
 			imageFile = new Scanner(new File(filename));
@@ -40,7 +39,6 @@ public class Image_store
 	public int count_lines(File file)
 	   {
 	      int count = 0;
-	      Scanner lines;
 	      try
 	      {
 	         lines = new Scanner(file);
@@ -77,7 +75,7 @@ public class Image_store
 	
 	public void process_image_line(HashMap<String, List<PImage>> images, String line)
 	{
-		String[] attrs = line.split(" ");
+		String[] attrs = line.split("\\s");
 		if (attrs.length >= 2)
 		{
 			String key = attrs[0];
