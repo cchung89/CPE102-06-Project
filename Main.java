@@ -44,11 +44,6 @@ public class Main
 		background(BACKGROUND_COLOR);
 		
 		HashMap<String, List<PImage>> images = new Image_store().load_images(IMAGE_LIST_FILE_NAME, TILE_WIDTH, TILE_HEIGHT);
-		/*List<PImage> picture = images.get(Image_store.DEFAULT_IMAGE_NAME);
-		for (PImage image : picture)
-		{
-			System.out.println(image);
-		}*/
 		
 		int num_cols = SCREEN_WIDTH / TILE_WIDTH * WORLD_WIDTH_SCALE; // TILE_WIDTH * WORLD_WIDTH_SCALE
 		int num_rows = SCREEN_HEIGHT / TILE_HEIGHT * WORLD_HEIGHT_SCALE; // TILE_HEIGHT * WORLD_HEIGHT_SCALE
@@ -81,50 +76,9 @@ public class Main
 	    {
 			next_images();
 	        next_time = time + ANIMATION_TIME;
-	        /*
-				try {
-					moves();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}*/
 	        this.world.update_on_time(time);
 	    }
 		this.view.draw_viewport();
-	}
-	
-	private void moves() throws IOException
-	{
-		
-		for (int x = 0; x < world.num_cols; x++)
-		{
-			for (int y = 0; y < world.num_rows; y++)
-			{
-				Point tile_location = new Point(x, y);
-				if (world.is_occupied(tile_location))
-				{
-					try
-					{
-						Job entity = (Job) world.get_tile_occupant(tile_location);
-						if (entity.get_pending_actions().size() != 0)
-						{
-							LongConsumer action = entity.get_pending_actions().get(0);
-							action.accept(System.currentTimeMillis());
-							break;
-						}
-					}
-					catch (ClassCastException e)
-					{
-						
-					}
-				}
-			}
-		}
-	}
-	
-	public void handler_time_event(WorldModel world)
-	{
-		world.update_on_time(System.currentTimeMillis());
 	}
 	
 	public void keyPressed()

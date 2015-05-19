@@ -47,7 +47,6 @@ public class Vein
 		LongConsumer [] action = {null};
 		action[0] = (long current_ticks) -> {
 			this.remove_pending_action(action[0]);
-			System.out.println("vein action");
 
           	Point open_pt = Actions.find_open_around(world, this.get_position(),
             				this.get_resource_distance());

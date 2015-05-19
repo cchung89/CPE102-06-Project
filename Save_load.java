@@ -58,6 +58,8 @@ public class Save_load
 
 	private static Scanner in;
 
+	
+	//Implemented for later
 	/*
 	public static void save_world(WorldModel world, String file)
    	{
