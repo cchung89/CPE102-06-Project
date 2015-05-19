@@ -11,7 +11,7 @@ public class MinerFull
 		super(name, imgs, position, rate, resource_limit, resource_limit, animation_rate);
 	}
 	
-	public LongConsumer create_miner_full_action(WorldModel world, Image_store i_store)
+	public LongConsumer create_miner_full_action(WorldModel world, HashMap<String, List<PImage>> i_store)
 	{
 		LongConsumer [] action = {null};
 		action[0] = (long current_ticks) -> {
@@ -33,7 +33,7 @@ public class MinerFull
        	return action[0];
 	}
 	
-	public LongConsumer create_miner_action(WorldModel world, Image_store image_store)
+	public LongConsumer create_miner_action(WorldModel world, HashMap<String, List<PImage>> image_store)
 	{
 		return this.create_miner_full_action(world, image_store);
 	}

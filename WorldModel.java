@@ -28,6 +28,13 @@ public class WorldModel extends PApplet
 				this.background[y][x] = background;
 			}
 		}
+		for(int y = 0; y < num_rows; y++)
+		{
+	         for(int x = 0; x < num_cols; x++)
+	         {
+	            occupancy[y][x] = null;
+	         }
+	      }
 	}
 
 	public boolean within_bounds(Point pt)
@@ -59,10 +66,10 @@ public class WorldModel extends PApplet
 		Point pt = entity.get_position();
       	if (within_bounds(pt))
       	{
-        	Job old_entity = (Job) occupancy[pt.y][pt.x];
-        	if (old_entity != null)
+        	Location old_entity = occupancy[pt.y][pt.x];
+        	if (old_entity != null && !(old_entity instanceof Job))
         	{
-            	old_entity.clear_pending_actions();
+            	((Job) old_entity).clear_pending_actions();
         	}
         	occupancy[pt.y][pt.x] = entity;
         	entities.add(entity);
@@ -121,7 +128,7 @@ public class WorldModel extends PApplet
       	while (next != null && next.get_ord() < ticks)
         {
         	this.action_queue.pop();
-         	//tiles.add(next.get_item().accept(ticks));
+         	next.get_item().accept(ticks);
          	next = this.action_queue.head();
         }
 

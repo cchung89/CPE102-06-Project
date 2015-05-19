@@ -59,9 +59,9 @@ public class Actions
       return null;
    }
 
-   public static OreBlob create_blob(WorldModel world, String name, Point pt, int rate, long ticks, Image_store i_store)
+   public static OreBlob create_blob(WorldModel world, String name, Point pt, int rate, long ticks, HashMap<String, List<PImage>> i_store)
    {
-      OreBlob blob = new OreBlob(name, pt, rate, i_store.get_images("blob"), 
+      OreBlob blob = new OreBlob(name, pt, rate, new Image_store().get_images(i_store, "blob"), 
     		  (int)(Math.random() * BLOB_ANIMATION_MAX + BLOB_ANIMATION_MIN)
     		  * BLOB_ANIMATION_RATE_SCALE);
       blob.schedule_blob(world, ticks, i_store);
@@ -69,28 +69,28 @@ public class Actions
    }
 
 
-   public static Ore create_ore(WorldModel world, String name, Point pt, long ticks, Image_store i_store)
+   public static Ore create_ore(WorldModel world, String name, Point pt, long ticks, HashMap<String, List<PImage>> i_store)
    {
-      Ore ore = new Ore(name, pt, i_store.get_images("ore"), 
+      Ore ore = new Ore(name, pt, new Image_store().get_images(i_store, "ore"), 
          (int)(Math.random() * (ORE_CORRUPT_MAX + 1 - ORE_CORRUPT_MIN) + ORE_CORRUPT_MIN));
       ore.schedule_ore(world,  ticks, i_store);
 
       return ore;
    }
 
-   public static Quake create_quake(WorldModel world, Point pt, long ticks, Image_store i_store)
+   public static Quake create_quake(WorldModel world, Point pt, long ticks, HashMap<String, List<PImage>> i_store)
    {
-      Quake quake = new Quake("quake", pt, i_store.get_images("quake"), 
+      Quake quake = new Quake("quake", pt, new Image_store().get_images(i_store, "quake"), 
           QUAKE_ANIMATION_RATE);
       quake.schedule_quake(world,  ticks);
       return quake;
    }
 
-   public static Vein create_vein(WorldModel world, String name, Point pt, long ticks, Image_store i_store)
+   public static Vein create_vein(WorldModel world, String name, Point pt, long ticks, HashMap<String, List<PImage>> i_store)
    {
       Vein vein = new Vein("vein" + name, 
     		  		(int)(Math.random() * (VEIN_RATE_MAX + 1 - VEIN_RATE_MIN) + VEIN_RATE_MIN),
-    		  		pt, i_store.get_images("vein"));
+    		  		pt, new Image_store().get_images(i_store, "vein"));
       return vein;
    }
 }

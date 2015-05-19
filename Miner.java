@@ -24,6 +24,7 @@ public abstract class Miner
 	protected void schedule_action(WorldModel world, LongConsumer action, long time)
 	{
 		this.add_pending_action(action);
+		world.schedule_action(action, time);
 	}
 	
 	protected void remove_entity(WorldModel world)
@@ -96,6 +97,6 @@ public abstract class Miner
         return action[0];
 	}
 	
-	protected abstract LongConsumer create_miner_action(WorldModel world, Image_store image_store);
+	protected abstract LongConsumer create_miner_action(WorldModel world, HashMap<String, List<PImage>> image_store);
 	
 }

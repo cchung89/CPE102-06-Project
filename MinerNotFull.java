@@ -22,11 +22,12 @@ public class MinerNotFull
 		return result;
 	}
 	
-	public LongConsumer create_miner_not_full_action(WorldModel world, Image_store i_store)
+	public LongConsumer create_miner_not_full_action(WorldModel world, HashMap<String, List<PImage>> i_store)
 	{
 		LongConsumer[] action = {null};
 		action[0] = (long current_ticks) -> {
 			this.remove_pending_action(action[0]);
+			System.out.println("not full " + current_ticks + " " + this.get_rate());
 
           	Point entity_pt = this.get_position();
           	Ore ore = (Ore) world.find_nearest(entity_pt, Ore.class);
@@ -59,7 +60,7 @@ public class MinerNotFull
 		}
 	}
 	
-	protected LongConsumer create_miner_action(WorldModel world, Image_store image_store)
+	protected LongConsumer create_miner_action(WorldModel world, HashMap<String, List<PImage>> image_store)
 	{
 		return this.create_miner_not_full_action(world, image_store);
 	}
@@ -94,7 +95,7 @@ public class MinerNotFull
         }
 	}
 	
-	public void schedule_miner(WorldModel world, int ticks, Image_store i_store)	
+	public void schedule_miner(WorldModel world, long ticks, HashMap<String, List<PImage>> i_store)	
 	{
 		this.schedule_action(world, this.create_miner_action(world, i_store),
 				ticks + this.get_rate());

@@ -14,82 +14,106 @@ public class Image_store
 {
 	private static final int COLOR_MASK = 0xffffff;
 	public static final String DEFAULT_IMAGE_NAME = "background_default";
-	public final String image_list_file_name;
-	public final String source_path;
-	private static Scanner imageFile;
-	private HashMap<String, List<PImage>> images = new HashMap<String, List<PImage>>();
 	PApplet processor;
    
-	public Image_store(Main processor, String source_path, String image_list_file_name)
+	/*public Image_store(Main processor, String source_path, String image_list_file_name)
 	{
 		this.processor = processor;
 		this.source_path = source_path;
 		this.image_list_file_name = image_list_file_name;
-	}
+	}*/
    
-	private PImage create_default_image(int tile_width, int tile_height)
+	/*private PImage create_default_image(int tile_width, int tile_height)
 	{
 		return processor.loadImage(source_path + "grass.bmp");
-	}
+	}*/
 	
-	public HashMap<String, List<PImage>> load_images(int tile_width, int tile_height)
+	public HashMap<String, List<PImage>> load_images(String filename, int tile_width, int tile_height)
 	{
-		
-		HashMap<String, List<PImage>> images = new HashMap<String, List<PImage>>();
+		Scanner imageFile;
 		try
 		{
-			imageFile = new Scanner(new FileInputStream(image_list_file_name));
+			imageFile = new Scanner(new File(filename));
+			int linecount = countLines(new File(filename));
+		    HashMap<String, List<PImage>> images = new HashMap<String, List<PImage>>(linecount);
 			while(imageFile.hasNextLine())	  
 			{
 				String line = imageFile.nextLine();
-				process_image_line(line);
+				process_image_line(images, line);
 			}
+			return images;
 		}
 		catch (FileNotFoundException e)
 		{
 			System.err.println(e.getMessage());
 		}
+		return null;
 		
-        if (!(images.containsKey(DEFAULT_IMAGE_NAME)))
+        /*if (!(images.containsKey(DEFAULT_IMAGE_NAME)))
         {
         	List<PImage> default_list = new ArrayList<PImage>();
         	default_list.add(create_default_image(tile_width, tile_height));
          	images.put(DEFAULT_IMAGE_NAME, default_list);
-        }
-        return images;
+        }*/
 	}
+	
+	public int countLines(File file)
+	   {
+	      int count = 0;
+	      Scanner lines;
+	      try
+	      {
+	         lines = new Scanner(file);
+	      }
+	      catch(FileNotFoundException e)
+	      {
+	         System.out.println(e);
+	         return -1;
+	      }
+	      while(lines.hasNextLine())
+	      {
+	         count++;
+	         lines.nextLine();
+	      }
+	      return count;
+	   }
 
-	private static PImage setAlpha(PImage img, int maskColor, int alpha)
+	private PImage setAlpha(PImage img, int maskColor, int alpha)
 	{
 		int alphaValue = alpha << 24;
-	    img.format = PConstants.ARGB;
+		int non_alpha = maskColor & COLOR_MASK;
+	    img.format = PApplet.ARGB;
 	    img.loadPixels();
 	    for (int i = 0; i < img.pixels.length; i++)
 	    {
-	       if ((img.pixels[i] & COLOR_MASK) == maskColor)
+	       if ((img.pixels[i] & COLOR_MASK) == non_alpha)
 	       {
-	          img.pixels[i] = alphaValue | maskColor;
+	          img.pixels[i] = alphaValue | non_alpha;
 	       }
 	    }
 	    img.updatePixels();
 	    return img;
 	}
 	
-	public void process_image_line(String line)
+	public void process_image_line(HashMap<String, List<PImage>> images, String line)
 	{
 		String[] attrs = line.split(" ");
 		if (attrs.length >= 2)
 		{
 			String key = attrs[0];
-			PImage img = setAlpha(processor.loadImage(attrs[1]), processor.color(252, 252, 252), 0);
-			img = setAlpha(img, processor.color(201, 26, 26), 0);
-			if (key.compareTo("blob") == 0 || key.compareTo("quake") == 0)
+			PImage img;
+			if (attrs.length == 2)
 			{
-				img = setAlpha(img, processor.color(255, 255, 255), 0);
+				img = loadImage(attrs[1]);
+			}
+			else
+			{
+				img = setAlpha(loadImage(attrs[1]), color(Integer.parseInt(attrs[2]),Integer.parseInt(attrs[3]),
+			               Integer.parseInt(attrs[4])), Integer.parseInt(attrs[5]));
 			}
 			if (img != null)
 			{
-				List<PImage> imgs = get_images_internal(key);
+				List<PImage> imgs = get_images_internal(images, key);
 				imgs.add(img);
 				images.put(key, imgs);
 			}
@@ -97,7 +121,7 @@ public class Image_store
 	}
 
 
-   public List<PImage> get_images_internal(String key)
+   public List<PImage> get_images_internal(HashMap<String, List<PImage>> images, String key)
    {
       if (images.containsKey(key))
       {
@@ -111,7 +135,7 @@ public class Image_store
    }
 
 
-   public List<PImage> get_images(String key)
+   public List<PImage> get_images(HashMap<String, List<PImage>> images, String key)
    {
       if (images.containsKey(key))
       {

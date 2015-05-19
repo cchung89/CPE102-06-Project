@@ -20,7 +20,7 @@ public class OreBlob
 		  return rate;
 		}
 	
-	public LongConsumer create_ore_blob_action(WorldModel world, Image_store i_store)
+	public LongConsumer create_ore_blob_action(WorldModel world, HashMap<String, List<PImage>> i_store)
 	{
 		LongConsumer [] action = { null };
 		action[0] = (long current_ticks) -> {
@@ -100,7 +100,7 @@ public class OreBlob
         }
 	}
 	
-	public void schedule_blob(WorldModel world, long ticks, Image_store i_store)
+	public void schedule_blob(WorldModel world, long ticks, HashMap<String, List<PImage>> i_store)
 	{
 		this.schedule_action(world, this.create_ore_blob_action(world, i_store),
           ticks + this.get_rate());

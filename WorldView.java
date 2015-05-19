@@ -17,6 +17,8 @@ public class WorldView
 	
     public WorldView(PApplet processor, int view_cols, int view_rows, WorldModel world , int tile_width, int tile_height)
     {
+    	this.view_cols = view_cols;
+    	this.view_rows = view_rows;
     	this.processor = processor;
     	this.world = world;
     	this.tile_width = tile_width;
@@ -35,7 +37,7 @@ public class WorldView
     			Point w_pt = this.viewport_to_world(new Point(x,y));
     			PImage img = this.world.get_background_image(w_pt);
     			processor.image(img,x * this.tile_width , y * this.tile_height);			
-    		}	
+    		}
     	}
     }
     
@@ -60,7 +62,7 @@ public class WorldView
     public void update_view(int delta_x, int delta_y)
     {
     	this.viewport = this.create_shifted_viewport(delta_x, delta_y, this.num_rows , this.num_cols);
-    	//this.draw_viewport();
+    	this.draw_viewport();
 	}
 
 	public void update_view_tiles(List<Point> tiles)

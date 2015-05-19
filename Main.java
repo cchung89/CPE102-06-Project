@@ -15,7 +15,7 @@ public class Main
 	private final int BACKGROUND_COLOR = color(100, 100, 100);
 	
 	private static final boolean RUN_AFTER_LOAD = true;
-	private static String SOURCE_PATH = "images/";
+	//private static String SOURCE_PATH = "images/";
 	private static final String IMAGE_LIST_FILE_NAME = "imagelist";
 	private static final String WORLD_FILE = "gaia.sav";
 
@@ -29,7 +29,7 @@ public class Main
 	
 	private WorldModel world;
 	private WorldView view;
-	private Image_store image_store = new Image_store(this, SOURCE_PATH, IMAGE_LIST_FILE_NAME);
+	//private Image_store image_store = new Image_store(this, SOURCE_PATH, IMAGE_LIST_FILE_NAME);
 	
 	
 	private Background create_default_background(List<PImage> imgs)
@@ -43,20 +43,25 @@ public class Main
 		size(SCREEN_WIDTH, SCREEN_HEIGHT);
 		background(BACKGROUND_COLOR);
 		
-		image_store.load_images(TILE_WIDTH, TILE_HEIGHT);
+		HashMap<String, List<PImage>> images = new Image_store().load_images(IMAGE_LIST_FILE_NAME, TILE_WIDTH, TILE_HEIGHT);
+		/*List<PImage> picture = images.get(Image_store.DEFAULT_IMAGE_NAME);
+		for (PImage image : picture)
+		{
+			System.out.println(image);
+		}*/
 		
 		int num_cols = SCREEN_WIDTH / TILE_WIDTH * WORLD_WIDTH_SCALE; // TILE_WIDTH * WORLD_WIDTH_SCALE
 		int num_rows = SCREEN_HEIGHT / TILE_HEIGHT * WORLD_HEIGHT_SCALE; // TILE_HEIGHT * WORLD_HEIGHT_SCALE
 		
-		default_background = create_default_background(image_store.get_images(Image_store.DEFAULT_IMAGE_NAME));
+		default_background = create_default_background(new Image_store().get_images(images, Image_store.DEFAULT_IMAGE_NAME));
 		
 		world = new WorldModel(num_rows, num_cols, default_background);
 		view = new WorldView(this, SCREEN_WIDTH / TILE_WIDTH, SCREEN_HEIGHT / TILE_HEIGHT, world, TILE_WIDTH, TILE_HEIGHT);
 		
-		Save_load.load_world(world, image_store, WORLD_FILE, RUN_AFTER_LOAD);
+		Save_load.load_world(world, images, WORLD_FILE, RUN_AFTER_LOAD);
 		
 		view.update_view(0, 0);
-		view.draw_viewport();
+		
 		
 		next_time = System.currentTimeMillis() + ANIMATION_TIME;
 	}
@@ -76,12 +81,14 @@ public class Main
 	    {
 			next_images();
 	        next_time = time + ANIMATION_TIME;
+	        /*
 				try {
 					moves();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
+				}*/
+	        this.world.update_on_time(time);
 	    }
 		this.view.draw_viewport();
 	}
