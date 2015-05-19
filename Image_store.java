@@ -14,19 +14,6 @@ public class Image_store
 {
 	private static final int COLOR_MASK = 0xffffff;
 	public static final String DEFAULT_IMAGE_NAME = "background_default";
-	PApplet processor;
-   
-	/*public Image_store(Main processor, String source_path, String image_list_file_name)
-	{
-		this.processor = processor;
-		this.source_path = source_path;
-		this.image_list_file_name = image_list_file_name;
-	}*/
-   
-	/*private PImage create_default_image(int tile_width, int tile_height)
-	{
-		return processor.loadImage(source_path + "grass.bmp");
-	}*/
 	
 	public HashMap<String, List<PImage>> load_images(String filename, int tile_width, int tile_height)
 	{
@@ -34,7 +21,7 @@ public class Image_store
 		try
 		{
 			imageFile = new Scanner(new File(filename));
-			int linecount = countLines(new File(filename));
+			int linecount = count_lines(new File(filename));
 		    HashMap<String, List<PImage>> images = new HashMap<String, List<PImage>>(linecount);
 			while(imageFile.hasNextLine())	  
 			{
@@ -48,16 +35,9 @@ public class Image_store
 			System.err.println(e.getMessage());
 		}
 		return null;
-		
-        /*if (!(images.containsKey(DEFAULT_IMAGE_NAME)))
-        {
-        	List<PImage> default_list = new ArrayList<PImage>();
-        	default_list.add(create_default_image(tile_width, tile_height));
-         	images.put(DEFAULT_IMAGE_NAME, default_list);
-        }*/
 	}
 	
-	public int countLines(File file)
+	public int count_lines(File file)
 	   {
 	      int count = 0;
 	      Scanner lines;

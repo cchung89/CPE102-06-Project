@@ -96,10 +96,6 @@ public class WorldView
     	if (occupant != null)
     	{
     		return occupant.get_image();
-    		/*PGraphics graphic = processor.createGraphics(this.tile_width, this.tile_height);
-		    graphic.image(bgnd, 0, 0);
-		    graphic.image(occupant.get_image(), 0, 0);
-		    return graphic.get();*/
 		}
 		else
 		{

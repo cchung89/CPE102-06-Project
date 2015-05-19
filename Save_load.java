@@ -58,39 +58,6 @@ public class Save_load
 
 	private static Scanner in;
 
-	
-	//Implemented for later
-	/*
-	public static void save_world(WorldModel world, String file)
-   	{
-   		save_entities(world, file);
-   		save_background(world, file);
-   	}
-
-	public static void save_entities(WorldModel world, String file)
-   	{
-   		for (Entity entity : world.get_entities())
-      	{
-      		file.write(entity.entity_string() + 'n');
-      	}
-    }
-
-	public static void save_background(WorldModel world, String file)
-   	{
-   		for (int row = 0; row < world.num_rows; row++)
-      	{
-      		for (int col = 0; col < world.num_cols; col++)
-         	{
-         		Point pt = new Point(col, row);
-         		file.write("background" +
-           				entities.get_name(
-               			world.get_background(pt)) +
-            			' ' + String.valueOf(col) + ' ' + String.valueOf(row) + 'n');
-         	}
-        }
-    }*/
-
-
 	public static void load_world(WorldModel world, HashMap<String, List<PImage>> images, String filename, boolean run)
    	{
 		Scanner in;
@@ -106,7 +73,6 @@ public class Save_load
 					if (properties[PROPERTY_KEY].equals(BGND_KEY))
 					{
 						add_background(world, properties, images);
-						//System.out.println(world.get_background(new Point(Integer.parseInt(properties[BGND_COL]), Integer.parseInt(properties[BGND_ROW]))));
 					}
 					else
 					{

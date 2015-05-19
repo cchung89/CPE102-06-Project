@@ -15,7 +15,6 @@ public class Main
 	private final int BACKGROUND_COLOR = color(100, 100, 100);
 	
 	private static final boolean RUN_AFTER_LOAD = true;
-	//private static String SOURCE_PATH = "images/";
 	private static final String IMAGE_LIST_FILE_NAME = "imagelist";
 	private static final String WORLD_FILE = "gaia.sav";
 
@@ -29,7 +28,6 @@ public class Main
 	
 	private WorldModel world;
 	private WorldView view;
-	//private Image_store image_store = new Image_store(this, SOURCE_PATH, IMAGE_LIST_FILE_NAME);
 	
 	
 	private Background create_default_background(List<PImage> imgs)
