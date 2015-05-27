@@ -61,7 +61,7 @@ public class MinerFull
         }
        	else
         {
-        	Point new_pt = this.next_position(world, smith_pt);
+        	Point new_pt = this.next_position(world, smith_pt, Blacksmith.class);
         	tiles_boolean = new SimpleEntry<List<Point>, Boolean>(world.move_entity(this, new_pt), false);
           	return tiles_boolean;
         }

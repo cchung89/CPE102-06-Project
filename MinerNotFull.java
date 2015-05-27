@@ -88,7 +88,7 @@ public class MinerNotFull
         }
        	else
         {
-        	Point new_pt = this.next_position(world, ore_pt);
+        	Point new_pt = this.next_position(world, ore_pt, Ore.class);
         	tiles_boolean = new SimpleEntry<List<Point>, Boolean>(world.move_entity(this, new_pt), false);
           	return tiles_boolean;
         }

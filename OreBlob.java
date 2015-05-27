@@ -1,5 +1,7 @@
 import java.util.*;
+
 import processing.core.*;
+
 import java.util.AbstractMap.SimpleEntry;
 import java.util.function.*;
 
@@ -8,11 +10,13 @@ public class OreBlob
 	extends Destroyer
 {
 	private int rate;
+	private List<Point> path;
 	
 	public OreBlob(String name, Point position, int rate, List<PImage> imgs, int animation_rate)
 		{
 			super(name, imgs, position, animation_rate);
 			this.rate = rate;
+			this.path = path;
 		}
 
 	public int get_rate()
@@ -46,7 +50,7 @@ public class OreBlob
        	return action[0];	
 	}
 	
-	public Point blob_next_position(WorldModel world, Point dest_pt)
+	/*public Point blob_next_position(WorldModel world, Point dest_pt)
 	{
 		int horiz = Actions.sign(dest_pt.x - this.get_position().x);
        	Point new_pt = new Point(this.get_position().x + horiz, this.get_position().y);
@@ -65,6 +69,31 @@ public class OreBlob
         }
 
        	return new_pt;
+	}*/
+	
+	protected Point blob_next_position(WorldModel world, Point goal, Class dest_entity)
+	{
+		Point start = this.get_position();
+		List<Point> path = create_path(world, start, goal, dest_entity);
+		if (path.size() > 1)
+		{
+			return path.get(path.size() - 2);
+		}
+		else
+		{
+			return start;
+		}
+	}
+	
+	public List<Point> create_path(WorldModel world, Point start, Point goal, Class dest_entity)
+	{
+		path = Actions.a_star(start, goal, world, dest_entity);
+		return path;
+	}
+	
+	public List<Point> get_path()
+	{
+		return this.path;
 	}
 	
 	public SimpleEntry<List<Point>, Boolean> blob_to_vein(WorldModel world, Vein vein)
@@ -89,7 +118,7 @@ public class OreBlob
         }
        	else
         {
-        	Point new_pt = this.blob_next_position(world, vein_pt);
+        	Point new_pt = this.blob_next_position(world, vein_pt, Vein.class);
         	if (world.get_tile_occupant(new_pt) instanceof Ore)
             {
         		Ore old_entity = (Ore) world.get_tile_occupant(new_pt);

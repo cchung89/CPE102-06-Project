@@ -8,11 +8,13 @@ public abstract class Miner
 	extends Character
 {
 	private int animation_rate;
+	private List<Point> path;
 
 	public Miner(String name, List<PImage> imgs, Point position , int rate, int resource_limit, int resource_count, int animation_rate)
 	{	
 		super(name, imgs, position, rate, resource_limit, resource_count);
 		this.animation_rate = animation_rate;
+		this.path = path;
 	}
 	
 	protected int get_animation_rate()
@@ -36,8 +38,8 @@ public abstract class Miner
 		this.clear_pending_actions();
 		world.remove_entity(this);
 	}
-
-	public Point next_position(WorldModel world, Point dest_pt)
+	
+	/*public Point next_position(WorldModel world, Point dest_pt)
 	{
 		int horiz = Actions.sign(dest_pt.x - this.get_position().x);
        	Point new_pt = new Point(this.get_position().x + horiz, this.get_position().y);
@@ -54,6 +56,31 @@ public abstract class Miner
         }
 
        	return new_pt;
+	}*/
+	
+	protected Point next_position(WorldModel world, Point goal, Class dest_entity)
+	{
+		Point start = this.get_position();
+		List<Point> path = create_path(world, start, goal, dest_entity);
+		if (path.size() > 1)
+		{
+			return path.get(path.size() - 2);
+		}
+		else
+		{
+			return start;
+		}
+	}
+	
+	public List<Point> create_path(WorldModel world, Point start, Point goal, Class dest_entity)
+	{
+		path = Actions.a_star(start, goal, world, dest_entity);
+		return path;
+	}
+	
+	public List<Point> get_path()
+	{
+		return this.path;
 	}
 	
 	public Miner try_transform_miner(WorldModel world, Function<WorldModel, Miner> transform)

@@ -26,7 +26,6 @@ public class Main
 	private WorldModel world;
 	private WorldView view;
 	
-	
 	private Background create_default_background(List<PImage> imgs)
 	{
 		return new Background(Image_store.DEFAULT_IMAGE_NAME, imgs);
@@ -73,6 +72,40 @@ public class Main
 	        this.world.update_on_time(time); //update the action_queue
 	    }
 		this.view.draw_viewport();
+		draw_path();
+	}
+	
+	public void draw_path()
+	{
+		int x = mouseX / TILE_WIDTH;
+		int y = mouseY / TILE_HEIGHT;
+		
+		Point world_pt = view.viewport_to_world(new Point(x, y));
+		
+		if (world.is_occupied(world_pt))
+		{
+				List<Point> path = new ArrayList<Point>();
+				Location entity = world.get_tile_occupant(world_pt);
+				if (entity instanceof Miner)
+				{
+					path = ((Miner) entity).get_path();
+				}
+				else if (entity instanceof OreBlob)
+				{
+					path = ((OreBlob) entity).get_path();
+				}
+				if (path != null)
+				{
+					for (int i = 0; i < path.size(); i++)
+					{
+						Point view_pt = view.world_to_viewport(path.get(i));
+						fill(100, 100, 100);
+						rect(view_pt.x * TILE_WIDTH + 3 * TILE_WIDTH / 8, 
+								view_pt.y * TILE_HEIGHT + 3 * TILE_HEIGHT / 8, 
+								TILE_WIDTH / 4, TILE_HEIGHT / 4);
+					}
+				}
+		}
 	}
 	
 	public void keyPressed() //move the current viewing rectangle

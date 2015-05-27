@@ -22,6 +22,7 @@ public class WorldModel
 		this.occupancy = new Location[num_rows][num_cols];
 		this.entities = new ArrayList<Location>();
 		this.action_queue = new OrderedList();
+		
 		for (int x = 0; x < num_cols; x++)
 		{
 			for (int y = 0; y < num_rows; y++)
@@ -29,13 +30,14 @@ public class WorldModel
 				this.background[y][x] = background;
 			}
 		}
+		
 		for(int y = 0; y < num_rows; y++)
 		{
 	         for(int x = 0; x < num_cols; x++)
 	         {
 	            occupancy[y][x] = null;
 	         }
-	      }
+	    }
 	}
 
 	public boolean within_bounds(Point pt)
