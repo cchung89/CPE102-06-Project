@@ -81,7 +81,7 @@ public class Actions
 	  return lowest;
    }
    
-   public static List<Node> neighbor_nodes(Node current, Node[][] node_grid, WorldModel world, Class type)
+   public static List<Node> neighbor_nodes(Node current, Node[][] node_grid, WorldModel world, Class dest_entity)
    {
 	   List<Node> neighbors = new ArrayList<Node>();
 	   
@@ -94,27 +94,42 @@ public class Actions
 	   Point down = new Point(current_x, current_y + 1);
 	   Point left = new Point(current_x - 1, current_y);
 	   
-	   if (world.within_bounds(up) && (world.get_tile_occupant(up) == null || type.isInstance(world.get_tile_occupant(up))))
+	   
+	   //if (world.within_bounds(up) && (world.get_tile_occupant(up) == null || dest_entity.isInstance(world.get_tile_occupant(up))))
+	   if (neighbor_check(up, world, dest_entity, world.get_tile_occupant(up)))
 	   {
 		   neighbors.add(node_grid[up.y][up.x]);
 	   }
 		
-	   if (world.within_bounds(right) && (world.get_tile_occupant(right) == null || type.isInstance(world.get_tile_occupant(right))))
+	   //if (world.within_bounds(right) && (world.get_tile_occupant(right) == null || dest_entity.isInstance(world.get_tile_occupant(right))))
+	   if (neighbor_check(right, world, dest_entity, world.get_tile_occupant(right)))
 	   {
 		   neighbors.add(node_grid[right.y][right.x]);
 	   }
 		
-	   if (world.within_bounds(down) && (world.get_tile_occupant(down) == null || type.isInstance(world.get_tile_occupant(down))))
+	   //if (world.within_bounds(down) && (world.get_tile_occupant(down) == null || dest_entity.isInstance(world.get_tile_occupant(down))))
+	   if (neighbor_check(down, world, dest_entity, world.get_tile_occupant(down)))
 	   {
 		   neighbors.add(node_grid[down.y][down.x]);
 	   }
 	   
-	   if (world.within_bounds(left) && (world.get_tile_occupant(left) == null || type.isInstance(world.get_tile_occupant(left))))
+	   //if (world.within_bounds(left) && (world.get_tile_occupant(left) == null || dest_entity.isInstance(world.get_tile_occupant(left))))
+	   if (neighbor_check(left, world, dest_entity, world.get_tile_occupant(left)))
 	   {
 		   neighbors.add(node_grid[left.y][left.x]);
 	   }
 	   
 	   return neighbors;
+   }
+   
+   public static boolean neighbor_check(Point pt, WorldModel world, Class dest_entity, Location entity)
+   {
+	   Location neighbor = world.get_tile_occupant(pt);
+	   if (entity instanceof OreBlob)
+	   {
+		   return world.within_bounds(pt) && (neighbor == null || neighbor instanceof Ore || dest_entity.isInstance(neighbor));
+	   }
+	   return world.within_bounds(pt) && (neighbor == null || dest_entity.isInstance(neighbor));
    }
    
    public static List<Point> a_star(Point start, Point goal, WorldModel world, Class dest_entity)

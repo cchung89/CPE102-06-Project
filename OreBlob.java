@@ -16,7 +16,6 @@ public class OreBlob
 		{
 			super(name, imgs, position, animation_rate);
 			this.rate = rate;
-			this.path = path;
 		}
 
 	public int get_rate()
@@ -75,17 +74,21 @@ public class OreBlob
 	{
 		Point start = this.get_position();
 		List<Point> path = create_path(world, start, goal, dest_entity);
-		if (path.size() > 1)
+		if(path != null)
 		{
-			return path.get(path.size() - 2);
+			if (path.size() > 1)
+			{
+				return path.get(path.size() - 2);
+			}
+			else
+			{
+				return start;
+			}
 		}
-		else
-		{
-			return start;
-		}
+		return start;
 	}
 	
-	public List<Point> create_path(WorldModel world, Point start, Point goal, Class dest_entity)
+	private List<Point> create_path(WorldModel world, Point start, Point goal, Class dest_entity)
 	{
 		path = Actions.a_star(start, goal, world, dest_entity);
 		return path;

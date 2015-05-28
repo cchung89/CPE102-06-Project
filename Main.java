@@ -75,7 +75,7 @@ public class Main
 		draw_path();
 	}
 	
-	public void draw_path()
+	public void draw_path() // draw the entity's path
 	{
 		int x = mouseX / TILE_WIDTH;
 		int y = mouseY / TILE_HEIGHT;
@@ -94,15 +94,15 @@ public class Main
 				{
 					path = ((OreBlob) entity).get_path();
 				}
-				if (path != null)
+				if (path != null && path.size() > 1)
 				{
-					for (int i = 0; i < path.size(); i++)
+					for (int i = 0; i < path.size() - 1; i++)
 					{
 						Point view_pt = view.world_to_viewport(path.get(i));
-						fill(100, 100, 100);
-						rect(view_pt.x * TILE_WIDTH + 3 * TILE_WIDTH / 8, 
-								view_pt.y * TILE_HEIGHT + 3 * TILE_HEIGHT / 8, 
-								TILE_WIDTH / 4, TILE_HEIGHT / 4);
+						fill(200, 100, 100);
+						ellipse(view_pt.x * TILE_WIDTH + 16, 
+								view_pt.y * TILE_HEIGHT + 16, 
+								TILE_WIDTH / 2, TILE_HEIGHT / 2);
 					}
 				}
 		}
