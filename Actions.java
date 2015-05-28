@@ -95,25 +95,21 @@ public class Actions
 	   Point left = new Point(current_x - 1, current_y);
 	   
 	   
-	   //if (world.within_bounds(up) && (world.get_tile_occupant(up) == null || dest_entity.isInstance(world.get_tile_occupant(up))))
 	   if (neighbor_check(up, world, dest_entity, world.get_tile_occupant(up)))
 	   {
 		   neighbors.add(node_grid[up.y][up.x]);
 	   }
 		
-	   //if (world.within_bounds(right) && (world.get_tile_occupant(right) == null || dest_entity.isInstance(world.get_tile_occupant(right))))
 	   if (neighbor_check(right, world, dest_entity, world.get_tile_occupant(right)))
 	   {
 		   neighbors.add(node_grid[right.y][right.x]);
 	   }
 		
-	   //if (world.within_bounds(down) && (world.get_tile_occupant(down) == null || dest_entity.isInstance(world.get_tile_occupant(down))))
 	   if (neighbor_check(down, world, dest_entity, world.get_tile_occupant(down)))
 	   {
 		   neighbors.add(node_grid[down.y][down.x]);
 	   }
 	   
-	   //if (world.within_bounds(left) && (world.get_tile_occupant(left) == null || dest_entity.isInstance(world.get_tile_occupant(left))))
 	   if (neighbor_check(left, world, dest_entity, world.get_tile_occupant(left)))
 	   {
 		   neighbors.add(node_grid[left.y][left.x]);

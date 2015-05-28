@@ -49,27 +49,6 @@ public class OreBlob
        	return action[0];	
 	}
 	
-	/*public Point blob_next_position(WorldModel world, Point dest_pt)
-	{
-		int horiz = Actions.sign(dest_pt.x - this.get_position().x);
-       	Point new_pt = new Point(this.get_position().x + horiz, this.get_position().y);
-
-       	if (horiz == 0 || (world.is_occupied(new_pt) &&
-          	!(world.get_tile_occupant(new_pt) instanceof Ore)))
-        {
-        	int vert = Actions.sign(dest_pt.y - this.get_position().y);
-          	new_pt = new Point(this.get_position().x, this.get_position().y + vert);
-
-          	if (vert == 0 || (world.is_occupied(new_pt) &&
-             	!(world.get_tile_occupant(new_pt) instanceof Ore)))
-            {
-            	new_pt = new Point(this.get_position().x, this.get_position().y);
-            }
-        }
-
-       	return new_pt;
-	}*/
-	
 	protected Point blob_next_position(WorldModel world, Point goal, Class dest_entity)
 	{
 		Point start = this.get_position();

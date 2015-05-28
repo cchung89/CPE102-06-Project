@@ -38,25 +38,6 @@ public abstract class Miner
 		world.remove_entity(this);
 	}
 	
-	/*public Point next_position(WorldModel world, Point dest_pt)
-	{
-		int horiz = Actions.sign(dest_pt.x - this.get_position().x);
-       	Point new_pt = new Point(this.get_position().x + horiz, this.get_position().y);
-
-       	if (horiz == 0 || world.is_occupied(new_pt))
-        {
-        	int vert = Actions.sign(dest_pt.y - this.get_position().y);
-          	new_pt = new Point(this.get_position().x, this.get_position().y + vert);
-
-          	if (vert == 0 || world.is_occupied(new_pt))
-            {
-            	new_pt = new Point(this.get_position().x, this.get_position().y);
-            }
-        }
-
-       	return new_pt;
-	}*/
-	
 	protected Point next_position(WorldModel world, Point goal, Class dest_entity)
 	{
 		Point start = this.get_position();
