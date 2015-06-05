@@ -101,9 +101,9 @@ public class Main
 				{
 					path = ((OreBlob) entity).get_path();
 				}
-				else if (entity instanceof Knight)
+				else if (entity instanceof Purifier)
 				{
-					path = ((Knight) entity).get_path();
+					path = ((Purifier) entity).get_path();
 				}
 				if (path != null && path.size() > 1)
 				{
@@ -221,7 +221,7 @@ public class Main
 							Point new_pt = new Point(world_pt.x + dx, world_pt.y + dy);
 							if (!(world.is_occupied(new_pt)))
 							{
-								Knight knight = Actions.create_knight(world, "knight", new_pt, GUARDIAN_KNIGHT_RATE, System.currentTimeMillis(), images);
+								Purifier knight = Actions.create_purifier(world, "knight", new_pt, GUARDIAN_KNIGHT_RATE, System.currentTimeMillis(), images);
 								world.add_entity(knight);
 							}
 						}

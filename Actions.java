@@ -21,7 +21,7 @@ public class Actions
    
    public static final int TENT_RATE = 100000;
    
-   public static final int KNIGHT_ANIMATION_RATE = 100;
+   public static final int PURIFIER_ANIMATION_RATE = 100;
    
    public static final int MINER_ANIMATION_RATE = 100;
    
@@ -243,12 +243,12 @@ public class Actions
       return tent;
    }
    
-   public static Knight create_knight(WorldModel world, String name, Point pt, int rate, long ticks, HashMap<String, List<PImage>> i_store)
+   public static Purifier create_purifier(WorldModel world, String name, Point pt, int rate, long ticks, HashMap<String, List<PImage>> i_store)
    {
-      Knight knight = new Knight(name, pt, rate, new Image_store().get_images(i_store, "knight"), 
-    		  (int)(Math.random() * KNIGHT_ANIMATION_RATE));
-      knight.schedule_knight(world, ticks, i_store);
-      return knight;
+      Purifier purifier = new Purifier(name, pt, rate, new Image_store().get_images(i_store, "purifier"), 
+    		  (int)(Math.random() * PURIFIER_ANIMATION_RATE));
+      purifier.schedule_purifier(world, ticks, i_store);
+      return purifier;
    }
    
    public static Miner create_miner(WorldModel world, String name, Point pt, int rate, long ticks, HashMap<String, List<PImage>> i_store)

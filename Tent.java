@@ -62,7 +62,7 @@ public class Tent
             {
             	if (Math.random() < 0.75)
             	{
-            		Knight knight = Actions.create_knight(world,
+            		Purifier knight = Actions.create_purifier(world,
             				"knight - " + this.get_name() + " - " + String.valueOf(current_ticks),
             				open_pt, KNIGHT_RATE, current_ticks, i_store);
             		world.add_entity(knight);

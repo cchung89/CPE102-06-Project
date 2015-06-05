@@ -7,13 +7,13 @@ import java.util.function.LongConsumer;
 import processing.core.PImage;
 
 
-public class Knight 
+public class Purifier 
 	extends Destroyer 
 {
 	private int rate;
 	private List<Point> path;
 	
-	public Knight(String name, Point position, int rate, List<PImage> imgs, int animation_rate)
+	public Purifier(String name, Point position, int rate, List<PImage> imgs, int animation_rate)
 	{
 		super(name, imgs, position, animation_rate);
 		this.rate = rate;
@@ -24,7 +24,7 @@ public class Knight
 		 return rate;
 	}
 	
-	public LongConsumer create_knight_action(WorldModel world, HashMap<String, List<PImage>> i_store)
+	public LongConsumer create_purifier_action(WorldModel world, HashMap<String, List<PImage>> i_store)
 	{
 		LongConsumer [] action = { null };
 		action[0] = (long current_ticks) -> {
@@ -32,25 +32,30 @@ public class Knight
           	
           	Point entity_pt = this.get_position();
           	OreBlob blob = (OreBlob) world.find_nearest(entity_pt, OreBlob.class);
-          	SimpleEntry<List<Point>, Boolean> tiles_found = this.knight_to_blob(world, blob);
+          	SimpleEntry<List<Point>, Boolean> tiles_found = this.purifier_to_blob(world, blob);
           	List<Point> tiles = tiles_found.getKey();
 
           	long next_time = current_ticks + this.get_rate();
           	if (tiles_found.getValue())
             {
-            	Quake quake = Actions.create_quake(world, tiles.get(0), current_ticks, i_store);
-            	world.add_entity(quake);
+            	//Quake quake = Actions.create_quake(world, tiles.get(0), current_ticks, i_store);
+            	//world.add_entity(quake);
+            	Vein vein = Actions.create_vein(world,
+            			"vein - " + this.get_name() + " - " + String.valueOf(current_ticks),
+            			tiles.get(0), current_ticks, i_store);
+            	vein.schedule_vein(world, current_ticks, i_store);
+            	world.add_entity(vein);
              	next_time = current_ticks + this.get_rate() * 2;   	
             }
           	
           	this.schedule_action(world, 
-             				this.create_knight_action(world, i_store),
+             				this.create_purifier_action(world, i_store),
              				next_time);
 		};
        	return action[0];	
 	}
 	
-	protected Point knight_next_position(WorldModel world, Point goal, Class dest_entity)
+	protected Point purifier_next_position(WorldModel world, Point goal, Class dest_entity)
 	{
 		Point start = this.get_position();
 		List<Point> path = create_path(world, start, goal, dest_entity);
@@ -79,7 +84,7 @@ public class Knight
 		return this.path;
 	}
 	
-	public SimpleEntry<List<Point>, Boolean> knight_to_blob(WorldModel world, OreBlob blob)
+	public SimpleEntry<List<Point>, Boolean> purifier_to_blob(WorldModel world, OreBlob blob)
 	{
 		Point entity_pt = this.get_position();
 		SimpleEntry<List<Point>, Boolean> tiles_boolean;
@@ -101,16 +106,17 @@ public class Knight
         }
        	else
         {
-        	Point new_pt = this.knight_next_position(world, blob_pt, OreBlob.class);
+        	Point new_pt = this.purifier_next_position(world, blob_pt, OreBlob.class);
         	tiles_boolean = new SimpleEntry<List<Point>, Boolean>(world.move_entity(this, new_pt), false);
           	return tiles_boolean;
         }
 	}
 	
-	public void schedule_knight(WorldModel world, long ticks, HashMap<String, List<PImage>> i_store)
+	public void schedule_purifier(WorldModel world, long ticks, HashMap<String, List<PImage>> i_store)
 	{
-		this.schedule_action(world, this.create_knight_action(world, i_store),
+		this.schedule_action(world, this.create_purifier_action(world, i_store),
           ticks + this.get_rate());
        	this.schedule_animation(world);
 	}
 }
+
