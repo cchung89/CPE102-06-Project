@@ -19,6 +19,12 @@ public class Actions
    public static final int VEIN_RATE_MIN = 8000;
    public static final int VEIN_RATE_MAX = 17000;
    
+   public static final int TENT_RATE = 100000;
+   
+   public static final int KNIGHT_ANIMATION_RATE = 100;
+   
+   public static final int MINER_ANIMATION_RATE = 100;
+   
    public static Node[][] node_grid;
    
    public static int sign(int x)
@@ -121,11 +127,12 @@ public class Actions
    public static boolean neighbor_check(Point pt, WorldModel world, Class dest_entity, Location entity)
    {
 	   Location neighbor = world.get_tile_occupant(pt);
+	   Background bgnd = world.get_background(pt);
 	   if (entity instanceof OreBlob)
 	   {
 		   return world.within_bounds(pt) && (neighbor == null || neighbor instanceof Ore || dest_entity.isInstance(neighbor));
 	   }
-	   return world.within_bounds(pt) && (neighbor == null || dest_entity.isInstance(neighbor));
+	   return world.within_bounds(pt) && (neighbor == null || dest_entity.isInstance(neighbor)) && !(bgnd.get_name().equals("lava"));
    }
    
    public static List<Point> a_star(Point start, Point goal, WorldModel world, Class dest_entity)
@@ -226,5 +233,29 @@ public class Actions
     		  		(int)(Math.random() * (VEIN_RATE_MAX + 1 - VEIN_RATE_MIN) + VEIN_RATE_MIN),
     		  		pt, new Image_store().get_images(i_store, "vein"));
       return vein;
+   }
+   
+   public static Tent create_tent(WorldModel world, String name, Point pt, long ticks, HashMap<String, List<PImage>> i_store)
+   {
+      Tent tent = new Tent("tent" + name, 
+    		  		(int)(Math.random() *TENT_RATE),
+    		  		pt, new Image_store().get_images(i_store, "tent"));
+      return tent;
+   }
+   
+   public static Knight create_knight(WorldModel world, String name, Point pt, int rate, long ticks, HashMap<String, List<PImage>> i_store)
+   {
+      Knight knight = new Knight(name, pt, rate, new Image_store().get_images(i_store, "knight"), 
+    		  (int)(Math.random() * KNIGHT_ANIMATION_RATE));
+      knight.schedule_knight(world, ticks, i_store);
+      return knight;
+   }
+   
+   public static Miner create_miner(WorldModel world, String name, Point pt, int rate, long ticks, HashMap<String, List<PImage>> i_store)
+   {
+	   MinerNotFull miner = new MinerNotFull(name, 4, pt, rate, new Image_store().get_images(i_store, "miner"),
+			   MINER_ANIMATION_RATE);
+	   miner.schedule_miner(world, ticks, i_store);
+	   return miner;
    }
 }

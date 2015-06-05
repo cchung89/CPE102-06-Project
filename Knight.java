@@ -1,18 +1,19 @@
-import java.util.*;
-
-import processing.core.*;
-
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.AbstractMap.SimpleEntry;
-import java.util.function.*;
+import java.util.function.LongConsumer;
+
+import processing.core.PImage;
 
 
-public class OreBlob 
-	extends Destroyer
+public class Knight 
+	extends Destroyer 
 {
 	private int rate;
 	private List<Point> path;
 	
-	public OreBlob(String name, Point position, int rate, List<PImage> imgs, int animation_rate)
+	public Knight(String name, Point position, int rate, List<PImage> imgs, int animation_rate)
 	{
 		super(name, imgs, position, animation_rate);
 		this.rate = rate;
@@ -23,15 +24,15 @@ public class OreBlob
 		 return rate;
 	}
 	
-	public LongConsumer create_ore_blob_action(WorldModel world, HashMap<String, List<PImage>> i_store)
+	public LongConsumer create_knight_action(WorldModel world, HashMap<String, List<PImage>> i_store)
 	{
 		LongConsumer [] action = { null };
 		action[0] = (long current_ticks) -> {
 			this.remove_pending_action(action[0]);
           	
           	Point entity_pt = this.get_position();
-          	Vein vein = (Vein) world.find_nearest(entity_pt, Vein.class);
-          	SimpleEntry<List<Point>, Boolean> tiles_found = this.blob_to_vein(world, vein);
+          	OreBlob blob = (OreBlob) world.find_nearest(entity_pt, OreBlob.class);
+          	SimpleEntry<List<Point>, Boolean> tiles_found = this.knight_to_blob(world, blob);
           	List<Point> tiles = tiles_found.getKey();
 
           	long next_time = current_ticks + this.get_rate();
@@ -39,17 +40,17 @@ public class OreBlob
             {
             	Quake quake = Actions.create_quake(world, tiles.get(0), current_ticks, i_store);
             	world.add_entity(quake);
-             	next_time = current_ticks + this.get_rate() * 2;
+             	next_time = current_ticks + this.get_rate() * 2;   	
             }
-
+          	
           	this.schedule_action(world, 
-             				this.create_ore_blob_action(world, i_store),
+             				this.create_knight_action(world, i_store),
              				next_time);
 		};
        	return action[0];	
 	}
 	
-	protected Point blob_next_position(WorldModel world, Point goal, Class dest_entity)
+	protected Point knight_next_position(WorldModel world, Point goal, Class dest_entity)
 	{
 		Point start = this.get_position();
 		List<Point> path = create_path(world, start, goal, dest_entity);
@@ -78,44 +79,38 @@ public class OreBlob
 		return this.path;
 	}
 	
-	public SimpleEntry<List<Point>, Boolean> blob_to_vein(WorldModel world, Vein vein)
+	public SimpleEntry<List<Point>, Boolean> knight_to_blob(WorldModel world, OreBlob blob)
 	{
 		Point entity_pt = this.get_position();
 		SimpleEntry<List<Point>, Boolean> tiles_boolean;
-       	if (!(vein != null))
+       	if (!(blob != null))
        	{
-       		List<Point> not_vein = new ArrayList<Point>();
-       		not_vein.add(entity_pt);
-       		tiles_boolean = new SimpleEntry<List<Point>, Boolean>(not_vein, false);
+       		List<Point> not_blob = new ArrayList<Point>();
+       		not_blob.add(entity_pt);
+       		tiles_boolean = new SimpleEntry<List<Point>, Boolean>(not_blob, false);
           	return tiles_boolean;
         }
-       	Point vein_pt = vein.get_position();
-       	if (Actions.adjacent(entity_pt, vein_pt))
+       	Point blob_pt = blob.get_position();
+       	if (Actions.adjacent(entity_pt, blob_pt))
        	{
-          	vein.remove_entity(world);
-          	List<Point> adjacent_vein = new ArrayList<Point>();
-          	adjacent_vein.add(vein_pt);
-          	tiles_boolean = new SimpleEntry<List<Point>, Boolean>(adjacent_vein, true);
+          	blob.remove_entity(world);
+          	List<Point> adjacent_blob = new ArrayList<Point>();
+          	adjacent_blob.add(blob_pt);
+          	tiles_boolean = new SimpleEntry<List<Point>, Boolean>(adjacent_blob, true);
           	return tiles_boolean;
         }
        	else
         {
-        	Point new_pt = this.blob_next_position(world, vein_pt, Vein.class);
-        	if (world.get_tile_occupant(new_pt) instanceof Ore)
-            {
-        		Ore old_entity = (Ore) world.get_tile_occupant(new_pt);
-            	old_entity.remove_entity(world);
-            }
+        	Point new_pt = this.knight_next_position(world, blob_pt, OreBlob.class);
         	tiles_boolean = new SimpleEntry<List<Point>, Boolean>(world.move_entity(this, new_pt), false);
           	return tiles_boolean;
         }
 	}
 	
-	public void schedule_blob(WorldModel world, long ticks, HashMap<String, List<PImage>> i_store)
+	public void schedule_knight(WorldModel world, long ticks, HashMap<String, List<PImage>> i_store)
 	{
-		this.schedule_action(world, this.create_ore_blob_action(world, i_store),
+		this.schedule_action(world, this.create_knight_action(world, i_store),
           ticks + this.get_rate());
        	this.schedule_animation(world);
 	}
-	
 }

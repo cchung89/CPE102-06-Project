@@ -21,7 +21,6 @@ public abstract class Miner
 		return animation_rate;
 	}
 	
-	
 	protected void schedule_action(WorldModel world, LongConsumer action, long time)
 	{
 		this.add_pending_action(action);

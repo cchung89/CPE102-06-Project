@@ -27,4 +27,11 @@ quake images/quake5.bmp 255 255 255 0
 quake images/quake6.bmp 255 255 255 0
 rocks images/rock.bmp
 vein images/vein.bmp
+vein2 images/vein2.gif
 background_default images/none.bmp
+earth images/earth.gif
+tent images/tent.png 255 255 255 0
+knight images/knight1.png 255 255 255 0
+knight images/knight2.png 255 255 255 0
+knight images/knight3.png 255 255 255 0
+lava images/lava.gif

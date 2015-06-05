@@ -53,8 +53,8 @@ public class Vein
             if (open_pt != null)
             {
             	Ore ore = Actions.create_ore(world,
-                "ore - " + this.get_name() + " - " + String.valueOf(current_ticks),
-                open_pt, current_ticks, i_store);
+            			"ore - " + this.get_name() + " - " + String.valueOf(current_ticks),
+            			open_pt, current_ticks, i_store);
             	world.add_entity(ore);
         	}
         	this.schedule_action(world,

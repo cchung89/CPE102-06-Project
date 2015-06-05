@@ -54,6 +54,14 @@ public class Save_load
 	private static final int VEIN_COL = 2;
 	private static final int VEIN_ROW = 3;
 	private static final int VEIN_REACH = 5;
+	
+	private static final String TENT_KEY = "vein";
+	private static final int TENT_NUM_PROPERTIES = 6;
+	private static final int TENT_NAME = 1;
+	private static final int TENT_RATE = 4;
+	private static final int TENT_COL = 2;
+	private static final int TENT_ROW = 3;
+	private static final int TENT_REACH = 5;
 
 	private static Scanner in;
 
@@ -215,7 +223,7 @@ public class Save_load
         }
 		return null;
     }
-
+	
 	public static void schedule_entity(WorldModel world, Location entity, HashMap<String, List<PImage>> i_store)
    	{
    		if (entity instanceof MinerNotFull)
