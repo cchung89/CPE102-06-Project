@@ -1,0 +1,20 @@
+Assignment 6 Project's World Event Description by Chin Chao for CSC 141-06:
+
+The World Event Description:
+
+NOTE: There are two world events. The main world event and a secondary event. The main world event is the one I will focus on for Assignment 6.
+
+1) How to trigger the event
+   You can trigger the main world event by the clicking the left mouse button.
+   ** You can trigger the secondary world event by clicking the right mouse button.
+
+2) What should happen when the event is triggered
+   When the main world event is triggered. The 5 by 5 area surrounding the mouse turns into earth tiles (background tile change), the tile the mouse is clicked spawn a Tent (a new entity) if no other entity is there, and each corner of the 5 by 5 area will spawn a Knight (another new entity) if the there is no entity there; but the knights will not spawn if the tent did not spawn from the main world event.
+   Lastly, if there are any veins that are within the 5 by 5 range, then the main world event upgrade the Vein into "super" Vein.
+   ** For the secondary event, the 3 by 3 area surrounding the mouse turns into lava tiles, which immediately destroy anything that is on those tiles. The lava tiles are treated as an obstacle that the movable entities cannot go into; however, ore and OreBlob can still be spawn in those tiles, but they cannot move at all.
+
+3) What the affected entities do
+   The Vein that is affected by the main world event has greater ore spawn range and its appearance changes as well but it still functions the same as any other vein since oreblob can still destroys these "super" vein. Its spawn range is 5 by 5 range instead of the usual 3 by 3 range (resource_distance increases to 2).
+
+4) What the entity is and how it should behave
+   There are two new entities, but the main one is the Knight. Knight is a new movable entity that functions similar to the OreBlob; but instead of seeking out Ores and destroy them, Knight seeks out OreBlobs and destroy them. For the other entity, Tent is stationary entity that functions similar to the Vein, but Tent spawns either Knight or faster Miner. Tent can only spawn Knight and Miner within the earth tiles, which is within thhe 5 by 5 area range.
