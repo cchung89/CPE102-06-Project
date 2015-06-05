@@ -12,7 +12,7 @@ public class Tent
 	extends Mineral 
 {
 	public static final int SUPER_MINER_RATE = 500;
-	public static final int KNIGHT_RATE = 8000;
+	public static final int PURIFY_RATE = 8000;
 	
 	private int resource_distance;
 	
@@ -64,7 +64,7 @@ public class Tent
             	{
             		Purifier knight = Actions.create_purifier(world,
             				"knight - " + this.get_name() + " - " + String.valueOf(current_ticks),
-            				open_pt, KNIGHT_RATE, current_ticks, i_store);
+            				open_pt, PURIFY_RATE, current_ticks, i_store);
             		world.add_entity(knight);
             	}
             	else

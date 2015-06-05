@@ -27,7 +27,7 @@ public class Main
 	private static final int SUPER_VEIN_RATE_MIN = 5000;
 	private static final int SUPER_VEIN_RATE_MAX = 10000;
 	
-	private static final int GUARDIAN_KNIGHT_RATE = 4000;
+	private static final int PURIFIER_RATE = 4000;
 	private static final int SPAWNED_BLOB_RATE = 5000;
 	
 	private WorldModel world;
@@ -193,6 +193,14 @@ public class Main
 					world.add_entity(obstacle);
 				}
 			}
+			case '6':
+			{
+				if (!(world.is_occupied(world_pt)))
+				{
+					Purifier purifier = Actions.create_purifier(world, "purifier", world_pt, PURIFIER_RATE, System.currentTimeMillis(), images);
+					world.add_entity(purifier);
+				}
+			}
 		}
 		view.update_view(dx, dy);
 	}
@@ -221,7 +229,7 @@ public class Main
 							Point new_pt = new Point(world_pt.x + dx, world_pt.y + dy);
 							if (!(world.is_occupied(new_pt)))
 							{
-								Purifier knight = Actions.create_purifier(world, "knight", new_pt, GUARDIAN_KNIGHT_RATE, System.currentTimeMillis(), images);
+								Purifier knight = Actions.create_purifier(world, "knight", new_pt, PURIFIER_RATE, System.currentTimeMillis(), images);
 								world.add_entity(knight);
 							}
 						}
