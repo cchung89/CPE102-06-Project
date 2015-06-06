@@ -60,12 +60,13 @@ public class Tent
             				this.get_resource_distance());
             if (open_pt != null)
             {
+            	// create either a purifier or miner, but chance of purifier is higher
             	if (Math.random() < 0.75)
             	{
-            		Purifier knight = Actions.create_purifier(world,
-            				"knight - " + this.get_name() + " - " + String.valueOf(current_ticks),
+            		Purifier purifier = Actions.create_purifier(world,
+            				"purifier - " + this.get_name() + " - " + String.valueOf(current_ticks),
             				open_pt, PURIFY_RATE, current_ticks, i_store);
-            		world.add_entity(knight);
+            		world.add_entity(purifier);
             	}
             	else
             	{

@@ -224,6 +224,7 @@ public class Actions
       Quake quake = new Quake("quake", pt, new Image_store().get_images(i_store, "quake"), 
           QUAKE_ANIMATION_RATE);
       quake.schedule_quake(world,  ticks);
+      
       return quake;
    }
 
@@ -232,6 +233,7 @@ public class Actions
       Vein vein = new Vein("vein" + name, 
     		  		(int)(Math.random() * (VEIN_RATE_MAX + 1 - VEIN_RATE_MIN) + VEIN_RATE_MIN),
     		  		pt, new Image_store().get_images(i_store, "vein"));
+      
       return vein;
    }
    
@@ -240,6 +242,7 @@ public class Actions
       Tent tent = new Tent("tent" + name, 
     		  		(int)(Math.random() *TENT_RATE),
     		  		pt, new Image_store().get_images(i_store, "tent"));
+      
       return tent;
    }
    
@@ -248,6 +251,7 @@ public class Actions
       Purifier purifier = new Purifier(name, pt, rate, new Image_store().get_images(i_store, "purifier"), 
     		  (int)(Math.random() * PURIFIER_ANIMATION_RATE));
       purifier.schedule_purifier(world, ticks, i_store);
+      
       return purifier;
    }
    
@@ -256,6 +260,7 @@ public class Actions
 	   MinerNotFull miner = new MinerNotFull(name, 4, pt, rate, new Image_store().get_images(i_store, "miner"),
 			   MINER_ANIMATION_RATE);
 	   miner.schedule_miner(world, ticks, i_store);
+	   
 	   return miner;
    }
 }

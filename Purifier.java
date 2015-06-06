@@ -38,13 +38,23 @@ public class Purifier
           	long next_time = current_ticks + this.get_rate();
           	if (tiles_found.getValue())
             {
-            	//Quake quake = Actions.create_quake(world, tiles.get(0), current_ticks, i_store);
-            	//world.add_entity(quake);
-            	Vein vein = Actions.create_vein(world,
-            			"vein - " + this.get_name() + " - " + String.valueOf(current_ticks),
-            			tiles.get(0), current_ticks, i_store);
-            	vein.schedule_vein(world, current_ticks, i_store);
-            	world.add_entity(vein);
+          		// convert the OreBlob into either a Vein or an Ore, chance of ore is higher
+          		
+          		if (Math.random() < 0.80)
+          		{
+          			Ore ore = Actions.create_ore(world,
+          					"ore - " + this.get_name() + " - " + String.valueOf(current_ticks),
+          					tiles.get(0), current_ticks, i_store);
+          			world.add_entity(ore);
+          		}
+          		else
+          		{
+          			Vein vein = Actions.create_vein(world,
+          					"vein - " + this.get_name() + " - " + String.valueOf(current_ticks),
+          					tiles.get(0), current_ticks, i_store);
+          			vein.schedule_vein(world, current_ticks, i_store);
+          			world.add_entity(vein);
+          		}
              	next_time = current_ticks + this.get_rate() * 2;   	
             }
           	
@@ -98,7 +108,7 @@ public class Purifier
        	Point blob_pt = blob.get_position();
        	if (Actions.adjacent(entity_pt, blob_pt))
        	{
-          	blob.remove_entity(world);
+          	blob.remove_entity(world); // destroy OreBlob
           	List<Point> adjacent_blob = new ArrayList<Point>();
           	adjacent_blob.add(blob_pt);
           	tiles_boolean = new SimpleEntry<List<Point>, Boolean>(adjacent_blob, true);

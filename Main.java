@@ -119,7 +119,7 @@ public class Main
 		}
 	}
 	
-	public void keyPressed() //move the current viewing rectangle
+	public void keyPressed() // move the current viewing rectangle
 	{
 		int dy = 0;
 		int dx = 0;
@@ -151,7 +151,8 @@ public class Main
 				dx = -1;
 				break;
 			}
-			case '1':
+			// the number key press allows people to spawn entities
+			case '1': // spawn OreBlob
 			{
 				if (!(world.is_occupied(world_pt)))
 				{
@@ -159,7 +160,7 @@ public class Main
 					world.add_entity(blob);
 				}
 			}
-			case '2':
+			case '2': // spawn Vein
 			{
 				if (!(world.is_occupied(world_pt)))
 				{
@@ -168,7 +169,7 @@ public class Main
 					world.add_entity(vein);
 				}
 			}
-			case '3':
+			case '3': // spawn Ore
 			{
 				if (!(world.is_occupied(world_pt)))
 				{
@@ -176,7 +177,7 @@ public class Main
 					world.add_entity(ore);
 				}
 			}
-			case '4':
+			case '4': // spawn Miner
 			{
 				if (!(world.is_occupied(world_pt)))
 				{
@@ -185,7 +186,7 @@ public class Main
 					world.add_entity(miner);
 				}
 			}
-			case '5':
+			case '5': // spawn Obstacle
 			{
 				if (!(world.is_occupied(world_pt)))
 				{
@@ -193,7 +194,7 @@ public class Main
 					world.add_entity(obstacle);
 				}
 			}
-			case '6':
+			case '6': // spawn Purifier
 			{
 				if (!(world.is_occupied(world_pt)))
 				{
@@ -205,7 +206,7 @@ public class Main
 		view.update_view(dx, dy);
 	}
 	
-	public void mouseClicked()
+	public void mouseClicked() // control the world event through mouse click
 	{
 		int x = mouseX / TILE_WIDTH;
 		int y = mouseY / TILE_HEIGHT;
@@ -214,7 +215,8 @@ public class Main
 		Point world_pt = view.viewport_to_world(new Point(x, y));
 		switch(mouseButton)
 		{
-			case LEFT:
+			// main world event: create a tent, changing background tiles into earth tiles, and changing any veins within the range
+			case LEFT: 
 			{
 				if (!(world.is_occupied(world_pt)))
 				{
@@ -229,12 +231,13 @@ public class Main
 							Point new_pt = new Point(world_pt.x + dx, world_pt.y + dy);
 							if (!(world.is_occupied(new_pt)))
 							{
-								Purifier knight = Actions.create_purifier(world, "knight", new_pt, PURIFIER_RATE, System.currentTimeMillis(), images);
-								world.add_entity(knight);
+								Purifier purifier = Actions.create_purifier(world, "purifier", new_pt, PURIFIER_RATE, System.currentTimeMillis(), images);
+								world.add_entity(purifier);
 							}
 						}
 					}
 				}
+				// any veins within the world event changing range becomes 'super' veins with twice the spawn range
 				for (int dy = -2; dy < 3; dy++)
 				{
 					for (int dx = -2; dx < 3; dx++)
@@ -255,6 +258,7 @@ public class Main
 				}
 				break;
 			}
+			// secondary world event: create a 3 by 3 lava background tiles that immediately destroy anything within the range and are treated as obstacles
 			case RIGHT:
 			{
 				for (int dy = -1; dy < 2; dy++)
